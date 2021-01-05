@@ -8,14 +8,15 @@ public class Player {
     private final Account account = new Account(0);
     private int position = 0;
     private boolean isInJail = false;
-
+    private int id;
     private boolean[] ownsboth = new boolean[8];
 
     private boolean[] ownedFields = new boolean[16];
 
-    public Player(String n, int money){
+    public Player(String n, int money, int id){
         this.name = n;
         this.account.addToBalance(money);
+        this.id = id;
     }
     // Definerer spillerens navn
     public void setName(String p_name){
@@ -26,6 +27,13 @@ public class Player {
     public void addMoney(int p_money){
         account.addToBalance(p_money);
     }
+
+    // Gives the player an ID
+    public void setID(int id){
+        this.id = id;
+    }
+
+    public int getID(){return id;}
 
     // Retunerer navn
     public String getName(){
