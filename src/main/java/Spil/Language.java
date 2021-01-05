@@ -9,7 +9,7 @@ public class Language {
 
     public Language(String fileName) {
         try {
-            FileInputStream  stream = new FileInputStream("./Languages/" + fileName);
+            FileInputStream stream = new FileInputStream("./Languages/" + fileName);
             prop.load(stream);
         } catch (FileNotFoundException e) {
 
