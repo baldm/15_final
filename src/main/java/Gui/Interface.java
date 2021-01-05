@@ -6,6 +6,8 @@ import gui_fields.GUI_Player;
 import gui_fields.GUI_Start;
 import gui_main.GUI;
 
+import java.awt.*;
+
 // Nedenstående kode er en modificeret udgave, med udgangspunkt i:
 // CDIO2 og CDIO3 af os, gruppe 15.
 
@@ -14,10 +16,14 @@ public class Interface {
     private GUI_Player[] guiPlayerList;
 
     public Interface() {
-        GUI_Field[] fields = new GUI_Field[]{
-                new GUI_Start(),
-        };
-        gui = new GUI(fields);
+
+    }
+    public String initLanguage(String[] languages) {
+        GUI_Field[] fields = new GUI_Field[]{};
+
+        gui = new GUI(fields, Color.GRAY);
+        String choice = displayMultiButtonMsg("Choose a language:", languages);
+        return choice;
     }
 
     /**
@@ -72,15 +78,20 @@ public class Interface {
         return gui.getUserSelection(msg, args);
     }
 
+
+    public String displayEnterStringMsg(String msg) {
+        return gui.getUserString(msg);
+    }
+
     /**
      * Displays a chance card on the gui.
-     * @param stringInput
+     * @param input
      */
-    public void displayChance(String stringInput) {
+    public void displayChance(String input) {
 
         // It seems to work best calling both of these commands at the same time.
-        gui.setChanceCard(stringInput);
-        gui.displayChanceCard(stringInput);
+        gui.setChanceCard(input);
+        gui.displayChanceCard(input);
     }
 
 
