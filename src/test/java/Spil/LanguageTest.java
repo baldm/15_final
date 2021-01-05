@@ -12,4 +12,10 @@ public class LanguageTest extends TestCase {
                 assertEquals(test1.equals("Danish") ,true);
 
     }
+
+    public void testInternational(){
+        String test = lang.getString("internationalTest");
+
+        assertEquals(test.equals("æ æ å e båj u'e i e sø") ,true);
+    }
 }
