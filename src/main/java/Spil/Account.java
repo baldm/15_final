@@ -19,8 +19,15 @@ public class Account {
     //Tilføjer et beløb til balancen og checker om balancen er mindre end 0
     public void addToBalance(int amount){ balance += amount;  }
 
+    /**
+     * Check if player is bankrupt
+     * @param balance Current balance
+     * @param amount Amount to bed added to balance
+     * @return if player is bankrupt
+     */
+    private boolean checkBankrupt(int balance, int amount){
 
-    private void checkBalance(int balance){
+        return balance - amount < 0;
 
     }
 
