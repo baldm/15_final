@@ -1,5 +1,6 @@
 # Personal settings
 /.idea/
+*.iml
 
 # Compiled class file
 *.class
