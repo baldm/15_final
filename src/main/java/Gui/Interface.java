@@ -15,9 +15,9 @@ public class Interface {
     private GUI gui;
     private GUI_Player[] guiPlayerList;
 
-    public Interface() {
+    // TODO: Forsæt med ny metode for valg af spiller navne
+    // Muligvis flyt til gamecontroller?
 
-    }
     public String initLanguage(String[] languages) {
         GUI_Field[] fields = new GUI_Field[]{};
 
@@ -64,7 +64,6 @@ public class Interface {
      * tilføjer en delta balance til player
      * @param player playerObject
      */
-
     public void setPlayerBalance(Player player) {
         guiPlayerList[player.getID()].setBalance(player.getMoney());
     }
@@ -78,7 +77,11 @@ public class Interface {
         return gui.getUserSelection(msg, args);
     }
 
-
+    /**
+     * Displays a box to type in
+     * @param msg - String message
+     * @return String - Input value
+     */
     public String displayEnterStringMsg(String msg) {
         return gui.getUserString(msg);
     }
@@ -93,9 +96,5 @@ public class Interface {
         gui.setChanceCard(input);
         gui.displayChanceCard(input);
     }
-
-
-
-
 
 }
