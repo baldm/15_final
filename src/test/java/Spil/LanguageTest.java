@@ -3,13 +3,13 @@ package Spil;
 import junit.framework.TestCase;
 
 public class LanguageTest extends TestCase {
-    Language lang = new Language("test.properties");
+    Language lang = new Language("Danish.properties");
     public void testGetString() {
 
-                String test1 = lang.getString("test");
-                String test2 = lang.getString("test2");
+                String test1 = lang.getString("Language");
 
-                assertEquals(test1.equals("test") && test2.equals("hello tester!"),true);
+
+                assertEquals(test1.equals("Danish") ,true);
 
     }
 }
