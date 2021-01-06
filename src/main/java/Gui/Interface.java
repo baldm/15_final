@@ -1,5 +1,6 @@
 package Gui;
 
+import Spil.Language;
 import Spil.Player;
 import gui_fields.GUI_Field;
 import gui_fields.GUI_Player;
@@ -15,9 +16,12 @@ public class Interface {
     private GUI gui;
     private GUI_Player[] guiPlayerList;
 
-    // TODO: Forsæt med ny metode for valg af spiller navne
-    // Muligvis flyt til gamecontroller?
 
+    /**
+     * Asks the player to choose a language
+     * @param languages Array of possible languages
+     * @return Chosen language
+     */
     public String initLanguage(String[] languages) {
         GUI_Field[] fields = new GUI_Field[]{};
 
@@ -25,6 +29,18 @@ public class Interface {
         String choice = displayMultiButtonMsg("Choose a language:", languages);
         return choice;
     }
+    public String[] initPlayerNames(Language lang) {
+        String stringNumPlayers = displayMultiButtonMsg(lang.getString("EnterPlayerNumber"), "2", "3", "4", "5", "6");
+        int numPlayers = Integer.parseInt(stringNumPlayers);
+        String[] playerArray = new String[numPlayers];
+
+        for (int i = 0; i < numPlayers; i++) {
+            playerArray[i] = displayEnterStringMsg(lang.getString("EnterPlayerName"));
+        }
+        return playerArray;
+
+    }
+
 
     /**
      * Internal method for finding a player in the array of gui player objects
