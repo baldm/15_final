@@ -28,4 +28,8 @@ public class ChanceCard {
         }
 
     }
+
+    public String getCardName() {
+        return cardName;
+    }
 }
