@@ -93,9 +93,18 @@ public class Interface {
             }
             // Adds player to storage
             guiPlayerList[i] = new GUI_Player(playerArray[i], 30000, car);
-        }
-        return playerArray;
 
+        }
+        gui.close();
+        return playerArray;
+    }
+
+
+    public void gameInit(){
+        gui = new GUI();
+        for (int i = 0; i < guiPlayerList.length; i++) {
+            gui.addPlayer(guiPlayerList[i]);
+        }
     }
 
 

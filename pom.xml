@@ -6,7 +6,7 @@
 
     <groupId>groupId</groupId>
     <artifactId>15_final</artifactId>
-    <version>0.1</version>
+    <version>0.5</version>
 
     <properties>
         <maven.compiler.source>15</maven.compiler.source>

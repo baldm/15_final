@@ -3,8 +3,10 @@ package Launcher;
 import Gui.Interface;
 import Spil.Language;
 import Spil.LanguageScanner;
+import Spil.Player;
 
 public class gameController {
+    Player[] playerArray = new Player[];
 
     public static void main(String[] args) {
         gameInit();
@@ -22,7 +24,13 @@ public class gameController {
 
         // Dialog for entering player names
         String[] playerStringArray = gameInterface.initPlayerNames(lang);
-        System.out.println(playerStringArray);
+
+        // Creates player objects
+        for (int i = 0; i < playerStringArray.length; i++) {
+
+        }
+
+        gameInterface.gameInit();
 
 
 
