@@ -7,9 +7,12 @@ public class Account {
 
     private int balance;
 
+    private int active_value;
+
     public Account(int start_balance){
 
         this.balance = start_balance;
+        active_value = start_balance;
 
     }
 
@@ -20,14 +23,25 @@ public class Account {
     public void addToBalance(int amount){ balance += amount;  }
 
     /**
+     * Returns the total value of all properties owned by a player
+     * @return Integer value of the active_value
+     */
+    public int getActiveValue(){ return active_value; }
+
+    /**
+     * Add an amount to the total value of all properties owned by a player
+     * @param value value of the property
+     */
+    public void addToActiveValue(int value){ active_value += value; }
+
+    /**
      * Check if player is bankrupt
-     * @param balance Current balance
      * @param amount Amount to bed added to balance
      * @return if player is bankrupt
      */
-    private boolean checkBankrupt(int balance, int amount){
+    public boolean checkBankrupt(int amount){
 
-        return balance - amount < 0;
+        return (balance + active_value) - amount < 0;
 
     }
 
