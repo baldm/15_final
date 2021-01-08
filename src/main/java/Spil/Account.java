@@ -12,7 +12,7 @@ public class Account {
     public Account(int start_balance){
 
         this.balance = start_balance;
-        active_value = start_balance;
+        active_value = 0;
 
     }
 
