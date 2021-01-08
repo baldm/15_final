@@ -1,6 +1,7 @@
 package Launcher;
 
 import Gui.Interface;
+import Spil.Dice;
 import Spil.Language;
 import Spil.LanguageScanner;
 import Spil.Player;
@@ -8,6 +9,8 @@ import Spil.Player;
 public class gameController {
     private Player[] playerArray;
     private Language lang;
+    private Dice diceOne = new Dice(6);
+    private Dice diceTwo = new Dice(6);
 
     public static void main(String[] args) {
         gameController game = new gameController();
@@ -37,6 +40,7 @@ public class gameController {
         gameInterface.gameInit();
     }
     private void takeTurn() {
-
+        // Simple turn
+        diceOne.roll();
     }
 }
