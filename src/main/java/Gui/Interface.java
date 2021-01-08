@@ -5,7 +5,6 @@ import Spil.Player;
 import gui_fields.GUI_Car;
 import gui_fields.GUI_Field;
 import gui_fields.GUI_Player;
-import gui_fields.GUI_Start;
 import gui_main.GUI;
 
 import java.awt.*;
@@ -27,8 +26,7 @@ public class Interface {
         GUI_Field[] fields = new GUI_Field[]{};
 
         gui = new GUI(fields, Color.GRAY);
-        String choice = displayMultiButtonMsg("Choose a language:", languages);
-        return choice;
+        return displayMultiButtonMsg("Choose a language:", languages);
     }
 
     /**
@@ -56,41 +54,23 @@ public class Interface {
                     "UFO");
 
             // Handles the type of car
-            GUI_Car.Type type = GUI_Car.Type.CAR;
-            switch (playerIcon) {
-                case "Car":
-                    type = GUI_Car.Type.CAR;
-                    break;
-                case "Tractor":
-                    type = GUI_Car.Type.TRACTOR;
-                    break;
-                case "Racecar":
-                    type = GUI_Car.Type.RACECAR;
-                    break;
-                case "UFO":
-                    type = GUI_Car.Type.UFO;
-                    break;
-            }
+            GUI_Car.Type type = switch (playerIcon) {
+                case "Tractor" -> GUI_Car.Type.TRACTOR;
+                case "Racecar" -> GUI_Car.Type.RACECAR;
+                case "UFO" -> GUI_Car.Type.UFO;
+                default -> GUI_Car.Type.CAR;
+            };
 
             // Creates the car object
-            GUI_Car car = new GUI_Car();
-            switch (i) {
-                case 0:
-                    car = new GUI_Car(Color.BLUE, Color.BLACK, type, GUI_Car.Pattern.FILL);
-                    break;
-                case 1:
-                    car = new GUI_Car(Color.RED, Color.BLACK, type, GUI_Car.Pattern.FILL);
-                    break;
-                case 2:
-                    car = new GUI_Car(Color.YELLOW, Color.BLACK, type, GUI_Car.Pattern.FILL);
-                    break;
-                case 3:
-                    car = new GUI_Car(Color.GREEN, Color.BLACK, type, GUI_Car.Pattern.FILL);
-                    break;
-                case 4:
-                    car = new GUI_Car(Color.PINK, Color.BLACK, type, GUI_Car.Pattern.CHECKERED);
-                    break;
-            }
+            new GUI_Car();
+            GUI_Car car = switch (i) {
+                case 0 -> new GUI_Car(Color.BLUE, Color.BLACK, type, GUI_Car.Pattern.FILL);
+                case 1 -> new GUI_Car(Color.RED, Color.BLACK, type, GUI_Car.Pattern.FILL);
+                case 2 -> new GUI_Car(Color.YELLOW, Color.BLACK, type, GUI_Car.Pattern.FILL);
+                case 3 -> new GUI_Car(Color.GREEN, Color.BLACK, type, GUI_Car.Pattern.FILL);
+                case 4 -> new GUI_Car(Color.PINK, Color.BLACK, type, GUI_Car.Pattern.CHECKERED);
+                default -> new GUI_Car();
+            };
             // Adds player to storage
             guiPlayerList[i] = new GUI_Player(playerArray[i], 30000, car);
 
@@ -102,8 +82,8 @@ public class Interface {
 
     public void gameInit(){
         gui = new GUI();
-        for (int i = 0; i < guiPlayerList.length; i++) {
-            gui.addPlayer(guiPlayerList[i]);
+        for (GUI_Player gui_player : guiPlayerList) {
+            gui.addPlayer(gui_player);
         }
     }
 
@@ -135,7 +115,7 @@ public class Interface {
 
     /**
      * Display a message on the gui.
-     * @param message
+     * @param message String message
      */
     public void displayMessage(String message) {
         gui.showMessage("\n\n\n"+message);
@@ -178,7 +158,7 @@ public class Interface {
 
     /**
      * Displays a chance card on the gui.
-     * @param input
+     * @param input String message
      */
     public void displayChance(String input) {
 
