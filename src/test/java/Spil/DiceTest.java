@@ -92,13 +92,13 @@ class DiceTest {
         double afvigelseMu = Math.abs(muT-mu)/muT;
         double afvigelseSigma = Math.abs(sigmaT-sigma)/sigmaT;
 
-        assertEquals(afvigelseSigma < 0.05 && afvigelseMu < 0.05, true);
+        assertEquals(true, afvigelseSigma < 0.05 && afvigelseMu < 0.05);
 
     }
 
     @Test
     void getValue() {
         Dice dice_one = new Dice(6);
-        assertEquals(dice_one.getValue(), 6);
+        assertEquals(6, dice_one.getValue());
     }
 }
