@@ -46,13 +46,12 @@ class AccountTest {
     @Test
     void getActiveValue() {
         Account account = new Account(1000);
-        assertEquals(0, account.getActiveValue()); // Burde den ikke være true her?
+        assertEquals(0, account.getActiveValue());
 
         account.addToBalance(1500);
-        assertEquals(2500, account.getBalance());
-        assertEquals(2500, account.getActiveValue()); // Failer her, por que
-
-
+        assertEquals(0, account.getActiveValue());
+        account.addToActiveValue(1000);
+        assertEquals(1000, account.getActiveValue()); // Failer her, por que
     }
 
     @Test
@@ -60,7 +59,7 @@ class AccountTest {
         Account account = new Account(1000);
         account.addToActiveValue(1500);
         assertEquals(1000, account.getBalance());
-        assertEquals(2500, account.getActiveValue());
+        assertEquals(1500, account.getActiveValue());
 
     }
 
