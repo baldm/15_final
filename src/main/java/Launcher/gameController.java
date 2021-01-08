@@ -7,7 +7,7 @@ import Spil.LanguageScanner;
 import Spil.Player;
 
 public class gameController {
-    private Player[] playerArray;
+    private static Player[] playerArray;
     private Language lang;
     private Interface gameInterface;
     private Dice diceOne = new Dice(6);
@@ -16,7 +16,14 @@ public class gameController {
     public static void main(String[] args) {
         gameController game = new gameController();
         game.gameInit();
-        game.takeTurn();
+
+        // Simple turn
+        Player currentPlayer;
+        while (true) {
+            for (int i = 0; i < playerArray.length; i++) {
+                game.takeTurn(playerArray[i]);
+            }
+        }
     }
 
     private void gameInit() {
@@ -41,12 +48,16 @@ public class gameController {
         // Creates final game interface
         gameInterface.gameInit();
     }
-    private void takeTurn() {
-        // Simple turn
-        gameInterface.displayMessage(lang.getString("RollDice"));
+    private void takeTurn(Player currentPlayer) {
+        gameInterface.displayMessage(lang.getString("PlayersTurn")+" "+currentPlayer.getName()+" "+lang.getString("RollDice"));
+
         int sumRolls = diceOne.Roll() + diceTwo.Roll();
+        gameInterface.removePlayer(currentPlayer);
+        currentPlayer.setPosition(sumRolls+currentPlayer.getPosition());
+
         gameInterface.setBoardDice(diceOne.getValue(), diceTwo.getValue());
-        gameInterface.displayMessage(lang.getString("DiceResult")+" "+diceOne.getValue()+" & "+diceTwo.getValue());
+        gameInterface.movePlayer(currentPlayer);
+        gameInterface.displayMessage(lang.getString("DiceResult") + " " + diceOne.getValue() + " & " + diceTwo.getValue());
 
     }
 }

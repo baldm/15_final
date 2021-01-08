@@ -52,13 +52,13 @@ public class Player {
 
     // Setter positionen af playeren
     public void setPosition(int newPos){
-        if (newPos >= 24) {
-            position = newPos - 24;
+        if (newPos >= 40) {
+            position = newPos - 40;
             addMoney(2);
         }
         else {
             position = newPos;
-            if (position == 18) {
+            if (position == 30) {
                 position = 6;
                 isInJail = true;
             }

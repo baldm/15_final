@@ -126,6 +126,14 @@ public class Interface {
     }
 
     /**
+     * Method that removes a player on the grid
+     * @param player - Player object
+     */
+    public void removePlayer(Player player){
+        gui.getFields()[player.getPosition()].setCar(guiPlayerList[player.getID()], false);
+    }
+
+    /**
      * Display a message on the gui.
      * @param message
      */
