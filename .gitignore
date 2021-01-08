@@ -1,6 +1,7 @@
 # Personal settings
 /.idea/
 *.iml
+placeholder.java
 
 # Compiled class file
 *.class
