@@ -59,7 +59,7 @@ public class Player {
         else {
             position = newPos;
             if (position == 30) {
-                position = 6;
+                position = 10;
                 isInJail = true;
             }
         }

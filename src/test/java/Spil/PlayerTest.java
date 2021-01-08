@@ -67,7 +67,7 @@ class PlayerTest {
 
         // Tests jail
         player.setPosition(30);
-        assertEquals(6, player.getPosition());
+        assertEquals(10, player.getPosition());
     }
 
     @Test

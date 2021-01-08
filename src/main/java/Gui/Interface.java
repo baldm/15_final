@@ -5,6 +5,7 @@ import Spil.Player;
 import gui_fields.GUI_Car;
 import gui_fields.GUI_Field;
 import gui_fields.GUI_Player;
+import gui_fields.GUI_Street;
 import gui_main.GUI;
 
 import java.awt.*;
@@ -165,6 +166,32 @@ public class Interface {
         // It seems to work best calling both of these commands at the same time.
         gui.setChanceCard(input);
         gui.displayChanceCard(input);
+    }
+
+    /**
+     * Sets the houses on a field - Remember to update players balance before buying a house
+     * @param fieldID - The id of the field, max 39
+     * @param houseAmount - amount of houses on field, max 4
+     * @param player - player object the owns the house
+     */
+    public void setFieldHouses(int fieldID, int houseAmount, Player player) {
+        GUI_Field field = gui.getFields()[fieldID];     // Finds the field
+        GUI_Street street = (GUI_Street) field;   // Changes the field to a street field
+        street.setHouses(houseAmount);
+        setPlayerBalance(player); // Updates the gui balance of the player
+    }
+
+    /**
+     *  Sets the hotel on a field - Remember to update players balance before buying a hotel
+     * @param fieldID - The id of the field, max 39
+     * @param hotelBool - true for a hotel, false for none
+     * @param player - player object the owns the hotel
+     */
+    public void setFieldHotel(int fieldID, boolean hotelBool, Player player) {
+        GUI_Field field = gui.getFields()[fieldID];     // Finds the field
+        GUI_Street street = (GUI_Street) field;   // Changes the field to a street field
+        street.setHotel(hotelBool);
+        setPlayerBalance(player); // Updates the gui balance of the player
     }
 
 }

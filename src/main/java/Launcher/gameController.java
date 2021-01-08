@@ -18,7 +18,6 @@ public class gameController {
         game.gameInit();
 
         // Simple turn
-        Player currentPlayer;
         while (true) {
             for (int i = 0; i < playerArray.length; i++) {
                 game.takeTurn(playerArray[i]);
@@ -49,6 +48,11 @@ public class gameController {
         gameInterface.gameInit();
     }
     private void takeTurn(Player currentPlayer) {
+        if (currentPlayer.isInJail()) {
+            gameInterface.displayMessage(lang.getString("LandedInJail"));
+            // Jail logic here
+        }
+
         gameInterface.displayMessage(lang.getString("PlayersTurn")+" "+currentPlayer.getName()+" "+lang.getString("RollDice"));
 
         int sumRolls = diceOne.Roll() + diceTwo.Roll();
@@ -58,6 +62,12 @@ public class gameController {
         gameInterface.setBoardDice(diceOne.getValue(), diceTwo.getValue());
         gameInterface.movePlayer(currentPlayer);
         gameInterface.displayMessage(lang.getString("DiceResult") + " " + diceOne.getValue() + " & " + diceTwo.getValue());
+
+        gameInterface.setFieldHouses(1,3,currentPlayer);
+        gameInterface.setFieldHouses(3,1,currentPlayer);
+        gameInterface.setFieldHotel(6, true, currentPlayer);
+
+
 
     }
 }
