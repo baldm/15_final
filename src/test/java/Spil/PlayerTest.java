@@ -57,7 +57,6 @@ class PlayerTest {
         assertEquals(newpos, player.getPosition());
 
         // Tests if going past start works
-
         newpos = player.getPosition() + 29;
         player.setPosition(newpos);
         assertEquals(newpos, player.getPosition());
@@ -66,9 +65,9 @@ class PlayerTest {
         player.setPosition(newpos);
         assertEquals(4, player.getPosition());
 
-
-
-
+        // Tests jail
+        player.setPosition(30);
+        assertEquals(6, player.getPosition());
     }
 
     @Test
@@ -105,6 +104,14 @@ class PlayerTest {
         for (int i = 0; i < ownsboth.length; i++) {
             assertTrue(ownedFields[i]);
         }
+    }
+
+    @Test
+    void isInJail() {
+        Player playerJail = new Player("Donald Trump",-10000, 45);
+        assertFalse(playerJail.isInJail());
+        playerJail.setPosition(30);
+        assertTrue(playerJail.isInJail());
     }
 
 
