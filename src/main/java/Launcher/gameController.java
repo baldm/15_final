@@ -25,6 +25,7 @@ public class gameController {
         }
     }
 
+    // TODO: Write docstring
     private void gameInit() {
 
         LanguageScanner langScanner = new LanguageScanner();
@@ -47,6 +48,8 @@ public class gameController {
         // Creates final game interface
         gameInterface.gameInit();
     }
+
+    // TODO: Write docstring
     private void takeTurn(Player currentPlayer) {
         if (currentPlayer.isInJail()) {
             gameInterface.displayMessage(lang.getString("LandedInJail"));
@@ -55,12 +58,14 @@ public class gameController {
 
         gameInterface.displayMessage(lang.getString("PlayersTurn")+" "+currentPlayer.getName()+" "+lang.getString("RollDice"));
 
+        // Rolls dices and moves player
         int sumRolls = diceOne.Roll() + diceTwo.Roll();
         gameInterface.removePlayer(currentPlayer);
         currentPlayer.setPosition(sumRolls+currentPlayer.getPosition());
-
-        gameInterface.setBoardDice(diceOne.getValue(), diceTwo.getValue());
         gameInterface.movePlayer(currentPlayer);
+
+        // Displays dices and the result of dices on gui
+        gameInterface.setBoardDice(diceOne.getValue(), diceTwo.getValue());
         gameInterface.displayMessage(lang.getString("DiceResult") + " " + diceOne.getValue() + " & " + diceTwo.getValue());
 
         gameInterface.setFieldHouses(1,3,currentPlayer);
