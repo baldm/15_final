@@ -15,6 +15,7 @@ class ChanceCardChangeMoneyTest {
         assertEquals("Kørt over for rødt",test.cardName);
         assertEquals("De har kørt over for rødt. Betal 1000 kroner i bøde",test.description);
         assertEquals(-1000,test.getMoneyChange());
+        assertEquals(1,test.cardCount);
 
 
     }
