@@ -23,7 +23,7 @@ public class ChanceCardChangeMoney extends ChanceCard{
             System.out.println(cardID);
             description = language.getString(prop.getProperty("Description"));
             System.out.println(description);
-            cardGroup = Integer.parseInt("cardGroup");
+            cardGroup = Integer.parseInt(prop.getProperty("cardGroup"));
             System.out.println(cardGroup);
 
 

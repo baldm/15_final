@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ChanceCardChangeMoneyTest {
-    Language lang = new Language("Danish");
+    Language lang = new Language("Danish.properties");
     @Test
     void ChanceCardChangeMoneyTest(){
         ChanceCardChangeMoney test = new ChanceCardChangeMoney("FuldtStop.properties",lang);
