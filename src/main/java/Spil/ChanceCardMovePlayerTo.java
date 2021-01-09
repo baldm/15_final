@@ -5,13 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-public class ChanceCardMovePlayer extends ChanceCard {
-        private boolean moveToSpecificField;
-        private int numberOfMoves;
+public class ChanceCardMovePlayerTo extends ChanceCard {
+
         private int moveTo;
-    public ChanceCardMovePlayer(String fileName, Language language){
+    public ChanceCardMovePlayerTo(String fileName, Language language){
         try {
-            FileInputStream input = new FileInputStream("./ChanceCards/ChangeMoney/"+ fileName);
+            FileInputStream input = new FileInputStream("./ChanceCards/MovePlayerTo/"+ fileName);
 
             Properties prop = new Properties();
             prop.load(input);
@@ -20,6 +19,13 @@ public class ChanceCardMovePlayer extends ChanceCard {
             cardID = Integer.parseInt(prop.getProperty("cardID"));
             description = language.getString(prop.getProperty("Description"));
             cardGroup = Integer.parseInt(prop.getProperty("cardGroup"));
+            cardCount = Integer.parseInt(prop.getProperty("cardCount"));
+
+            moveTo = Integer.parseInt(prop.getProperty("moveTo"));
+
+
+
+
 
         } catch (FileNotFoundException e){
 
@@ -27,5 +33,9 @@ public class ChanceCardMovePlayer extends ChanceCard {
 
         }
 
+    }
+
+    public int getMoveTo() {
+        return moveTo;
     }
 }
