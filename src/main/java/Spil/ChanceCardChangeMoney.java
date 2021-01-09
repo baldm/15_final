@@ -16,17 +16,11 @@ public class ChanceCardChangeMoney extends ChanceCard{
             prop.load(input);
 
             cardName = language.getString(prop.getProperty("name"));
-            System.out.println("cardname " + cardName);
             moneyChange = Integer.parseInt(prop.getProperty("MoneyChange"));
-            System.out.println(moneyChange);
             cardID = Integer.parseInt(prop.getProperty("cardID"));
-            System.out.println(cardID);
             description = language.getString(prop.getProperty("Description"));
-            System.out.println(description);
             cardGroup = Integer.parseInt(prop.getProperty("cardGroup"));
-            System.out.println(cardGroup);
-
-
+            cardCount = Integer.parseInt(prop.getProperty("cardCount"));
 
         } catch (FileNotFoundException e){
 

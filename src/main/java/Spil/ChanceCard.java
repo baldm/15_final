@@ -10,7 +10,7 @@ public class ChanceCard {
     public static String description;
     public static int cardID;
     public static int cardGroup;
-
+    public static int cardCount;
 
 
 
