@@ -4,15 +4,15 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ChanceCardFactoryTest {
+ class ChanceCardFactoryTest {
 
-    @Test
+   @Test
     void getCards() {
         Language lang = new Language("Danish");
         ChanceCard[] test;
-        ChanceCardFactory FactoryTest = new ChanceCardFactory(lang);
+        ChanceCardFactoryTestDriver FactoryTest = new ChanceCardFactoryTestDriver(lang);
         test = FactoryTest.getCards();
 
-        assertEquals(test[0].getCardName(), lang.getString("internationalTest"));
+        assertEquals(test[0].cardName, lang.getString("internationalTest"));
     }
 }

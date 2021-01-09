@@ -9,8 +9,9 @@ class ChanceCardTest {
     @Test
 public void ChanceCardTest(){
         Language lang = new Language("Danish");
-        ChanceCard test = new ChanceCard("test",lang);
-        assertEquals(test.getCardName(),lang.getString("internationalTest"));
+        ChanceCardTestDriver test = new ChanceCardTestDriver("test",lang);
+        assertEquals(test.cardName,lang.getString("internationalTest"));
+        assertEquals(test.cardID,0);
     }
 
 }
