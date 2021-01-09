@@ -34,14 +34,27 @@ public void ChanceCardTest(){
 
         assertEquals(24,test.cardID);
         assertEquals(3,test.cardGroup);
-        assertEquals("Ryk frem til START",test.cardName);
-        assertEquals("De rykker frem til START",test.description);
+        assertEquals("Ryk Felt",test.cardName);
+        assertEquals("Ryk frem til START",test.description);
         assertEquals(2,test.cardCount);
         assertEquals(0,test.getMoveTo());
 
 
 
     }
+    @Test
+    void ChanceCardMovePlayerTest(){
+        ChanceCardMovePlayer test = new ChanceCardMovePlayer("MoveForward.properties",lang);
 
+        assertEquals(25,test.cardID);
+        assertEquals(4,test.cardGroup);
+        assertEquals("Ryk Felt",test.cardName);
+        assertEquals("Ryk tre felter frem",test.description);
+        assertEquals(1,test.cardCount);
+        assertEquals(3,test.getMovePlayer());
+
+
+
+    }
 
 }
