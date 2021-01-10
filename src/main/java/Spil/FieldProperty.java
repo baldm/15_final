@@ -5,15 +5,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-public class FieldProperties extends Field {
+public class FieldProperty extends Field {
     private int price;
     private int[] rent;
     private int groupID;
     private int mortageValue;
     private int houseNumber =   0;
-    private int hotelNumber =   0;
 
-    public FieldProperties(String fileName, Language language){
+
+    public FieldProperty(String fileName, Language language){
         try {
             FileInputStream input = new FileInputStream("./Field/FieldProperties/"+ fileName);
 
@@ -26,13 +26,15 @@ public class FieldProperties extends Field {
             fieldType = Integer.parseInt(prop.getProperty("fieldType"));
             fieldID = Integer.parseInt(prop.getProperty("fieldID"));
 
+            price = Integer.parseInt(prop.getProperty("price"));
             String[] rents = prop.getProperty("rent").split(",");
 
             rent = new int[rents.length];
             for(int i=0;i<rents.length;i++){
                 rent[i] = Integer.parseInt(rents[i]);
             }
-
+            groupID = Integer.parseInt(prop.getProperty("groupID"));
+            mortageValue = price;
 
 
 
@@ -48,5 +50,27 @@ public class FieldProperties extends Field {
     }
 
 
+    public int getPrice() {
+        return price;
+    }
 
+    public int[] getRent() {
+        return rent;
+    }
+
+    public int getGroupID() {
+        return groupID;
+    }
+
+    public int getMortageValue() {
+        return mortageValue;
+    }
+
+    public int getHouseNumber() {
+        return houseNumber;
+    }
+
+    public void setHouseNumber(int input){
+        houseNumber = input;
+    }
 }
