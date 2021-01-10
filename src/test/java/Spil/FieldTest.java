@@ -7,12 +7,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 class FieldTest {
-    Language lang = new Language("Danish.properties");
+
 
 
     @Test
     void FieldPropertiesTest(){
-        FieldProperty test = new FieldProperty("rødovrevej.properties",lang);
+        FieldProperty test = new FieldProperty("rødovrevej.properties");
 
         assertEquals("Rødovrevej",test.name);
         assertEquals(1,test.position);

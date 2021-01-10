@@ -13,7 +13,7 @@ public class FieldProperty extends Field {
     private int houseNumber =   0;
 
 
-    public FieldProperty(String fileName, Language language){
+    public FieldProperty(String fileName){
         try {
             FileInputStream input = new FileInputStream("./Field/FieldProperties/"+ fileName);
 
