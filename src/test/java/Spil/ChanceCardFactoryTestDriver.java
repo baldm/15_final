@@ -1,6 +1,8 @@
 package Spil;
 
 
+    import Spil.ChanceCards.ChanceCard;
+
     import java.io.File;
 
     public class ChanceCardFactoryTestDriver {

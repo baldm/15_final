@@ -1,36 +1,43 @@
-package Spil;
+package Spil.ChanceCards;
+
+import Spil.Language;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-public class ChanceCardChangeMoney extends ChanceCard{
-    private int moneyChange;
+public class ChanceCardMovePlayerTo extends ChanceCard {
 
-    public ChanceCardChangeMoney(String fileName, Language language){
+        private int moveTo;
+    public ChanceCardMovePlayerTo(String fileName, Language language){
         try {
-            FileInputStream input = new FileInputStream("./ChanceCards/ChangeMoney/"+ fileName);
+            FileInputStream input = new FileInputStream("./ChanceCards/MovePlayerTo/"+ fileName);
 
             Properties prop = new Properties();
             prop.load(input);
 
-            cardName = language.getString(prop.getProperty("name"));
+            cardName = language.getString("MoveField");
             cardID = Integer.parseInt(prop.getProperty("cardID"));
             description = language.getString(prop.getProperty("Description"));
             cardGroup = Integer.parseInt(prop.getProperty("cardGroup"));
             cardCount = Integer.parseInt(prop.getProperty("cardCount"));
 
-            moneyChange = Integer.parseInt(prop.getProperty("MoneyChange"));
+            moveTo = Integer.parseInt(prop.getProperty("moveTo"));
+
+
+
+
 
         } catch (FileNotFoundException e){
 
         } catch (IOException e){
 
         }
+
     }
 
-    public int getMoneyChange() {
-        return moneyChange;
+    public int getMoveTo() {
+        return moveTo;
     }
 }

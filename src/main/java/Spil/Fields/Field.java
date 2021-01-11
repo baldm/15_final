@@ -1,4 +1,4 @@
-package Spil;
+package Spil.Fields;
 
 public class Field {
     public String name;

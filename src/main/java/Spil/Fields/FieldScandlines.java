@@ -1,4 +1,4 @@
-package Spil;
+package Spil.Fields;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

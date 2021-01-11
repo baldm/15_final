@@ -1,5 +1,7 @@
 package Spil;
 
+import Spil.ChanceCards.ChanceCard;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;

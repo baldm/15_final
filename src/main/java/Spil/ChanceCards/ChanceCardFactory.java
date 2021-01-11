@@ -1,6 +1,4 @@
-package Spil;
-
-import java.io.File;
+package Spil.ChanceCards;
 
 public class ChanceCardFactory {
     private String[] cardNames;

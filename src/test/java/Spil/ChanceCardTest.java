@@ -1,5 +1,8 @@
 package Spil;
 
+import Spil.ChanceCards.ChanceCardChangeMoney;
+import Spil.ChanceCards.ChanceCardMovePlayer;
+import Spil.ChanceCards.ChanceCardMovePlayerTo;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
