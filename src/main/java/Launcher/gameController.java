@@ -19,8 +19,8 @@ public class gameController {
 
         // Simple turn
         while (true) {
-            for (int i = 0; i < playerArray.length; i++) {
-                game.takeTurn(playerArray[i]);
+            for (Player player : playerArray) {
+                game.takeTurn(player);
             }
         }
     }
