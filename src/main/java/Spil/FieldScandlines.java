@@ -13,7 +13,7 @@ public class FieldScandlines extends Field{
 
 public FieldScandlines(String fileName){
     try {
-        FileInputStream input = new FileInputStream("./Field/FieldProperties/"+ fileName);
+        FileInputStream input = new FileInputStream("./Field/Scandlines/"+ fileName);
 
         Properties prop = new Properties();
         prop.load(input);
