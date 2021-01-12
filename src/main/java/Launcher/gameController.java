@@ -6,6 +6,10 @@ import Spil.Language;
 import Spil.LanguageScanner;
 import Spil.Player;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class gameController {
     private static Player[] playerArray;
     private Language lang;
@@ -51,28 +55,77 @@ public class gameController {
 
     // TODO: Write docstring
     private void takeTurn(Player currentPlayer) {
+        gameInterface.displayMessage(lang.getString("PlayersTurn")+" "+currentPlayer.getName());
         if (currentPlayer.isInJail()) {
-            gameInterface.displayMessage(lang.getString("LandedInJail"));
             // Jail logic here
+            jailTurn(currentPlayer);
+        } else {
+            // Standard turn
+            int sumRolls = diceRoll(currentPlayer);
+            // Moves player
+            movePlayer(currentPlayer, sumRolls + currentPlayer.getPosition());
         }
 
-        gameInterface.displayMessage(lang.getString("PlayersTurn")+" "+currentPlayer.getName()+" "+lang.getString("RollDice"));
 
-        // Rolls dices and moves player
-        int sumRolls = diceOne.Roll() + diceTwo.Roll();
-        gameInterface.removePlayer(currentPlayer);
-        currentPlayer.setPosition(sumRolls+currentPlayer.getPosition());
-        gameInterface.movePlayer(currentPlayer);
 
-        // Displays dices and the result of dices on gui
-        gameInterface.setBoardDice(diceOne.getValue(), diceTwo.getValue());
-        gameInterface.displayMessage(lang.getString("DiceResult") + " " + diceOne.getValue() + " & " + diceTwo.getValue());
 
-        gameInterface.setFieldHouses(1,3,currentPlayer);
-        gameInterface.setFieldHouses(3,1,currentPlayer);
-        gameInterface.setFieldHotel(6, true, currentPlayer);
 
+
+        // Chance card logic
+        Integer[] values = {2,7,17,22, 33, 36};                          // Replace with logic for field group
+        List<Integer> intList = new ArrayList<>(Arrays.asList(values));  // Replace with logic for field group
+        if (intList.contains(currentPlayer.getPosition())) {
+            drawChanceCard(currentPlayer);
+        }
+
+        // Landed on buyable field logic
+        if (true)  // Change to if fieldArray[currentPlayer.getPosition()].isBuyable() ??
+        {
+            buyableField(currentPlayer);
+
+        }
 
 
     }
+
+    private void drawChanceCard(Player player) {
+        gameInterface.displayMessage(lang.getString("LandedOnChancecard"));
+
+    }
+
+    private void jailTurn(Player player) {
+        gameInterface.displayMessage(lang.getString("LandedInJail"));
+        if (player.getMoney() >= 1000) {
+            String choice = gameInterface.displayMultiButton("Vil du betale for at komme ud?", "Betal 1000 kr", "Nej"); // TODO: Change to support language
+            System.out.println(choice);
+        }
+
+
+        // if out
+        player.setInJail(false);
+    }
+
+    private void buyableField(Player player) {
+        gameInterface.displayMessage(lang.getString("LandedOnBuyableProperty"));
+
+    }
+
+    private int diceRoll(Player player) {
+        gameInterface.displayMessage(lang.getString("RollDice"));
+
+        // Rolls dices
+        int sumRolls = diceOne.Roll() + diceTwo.Roll();
+        // Displays dices and the result of dices on gui
+        gameInterface.setBoardDice(diceOne.getValue(), diceTwo.getValue());
+        gameInterface.displayMessage(lang.getString("DiceResult") + " " + diceOne.getValue() + " & " + diceTwo.getValue());
+        return sumRolls;
+    }
+
+    private void movePlayer(Player player, int toPosition) {
+        gameInterface.removePlayer(player);
+        player.setPosition(toPosition);
+        gameInterface.movePlayer(player);
+    }
+
+
 }
