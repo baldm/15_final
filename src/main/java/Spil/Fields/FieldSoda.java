@@ -32,7 +32,7 @@ public class FieldSoda extends Field {
                 rentMultiplier[i] = Integer.parseInt(rents[i]);
             }
 
-            mortageValue = price;
+            mortageValue = Integer.parseInt(prop.getProperty("mortageValue"));
 
 
 

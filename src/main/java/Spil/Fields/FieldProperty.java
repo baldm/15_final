@@ -34,7 +34,8 @@ public class FieldProperty extends Field {
                 rent[i] = Integer.parseInt(rents[i]);
             }
             groupID = Integer.parseInt(prop.getProperty("groupID"));
-            mortageValue = price;
+            mortageValue = Integer.parseInt(prop.getProperty("mortageValue"));
+
 
 
 
