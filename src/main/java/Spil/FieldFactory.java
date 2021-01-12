@@ -63,13 +63,15 @@ public class FieldFactory {
             allFields[i++] = new FieldSoda(input[n]);
         }
 
-
-
-        Field[] unsortedFields = new Field[allFields.length];
+        for(int n = 0;n< allFields.length;n++){
+            System.out.println(allFields[n].position);
+        }
+        System.out.println(allFields[17].position);
+        Field[] unsortedFields;
         unsortedFields = allFields.clone();
 
 
-        for(int k = 0; k< placeholder.length;k++){
+        for(int k = 0; k< unsortedFields.length;k++){
             allFields[unsortedFields[k].position] = unsortedFields[k];
         }
 
@@ -86,7 +88,7 @@ public class FieldFactory {
     private String[] getNames(String folderName) {
 
         File allFields = new File("./Field/" + folderName);
-        String[] input = allFields.list();
+        input = allFields.list();
 
         return input;
     }
