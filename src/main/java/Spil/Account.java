@@ -40,9 +40,7 @@ public class Account {
      * @return if player is bankrupt
      */
     public boolean checkBankrupt(int amount){
-        // TODO: Skal den mulighvis være <= her?
         return (balance + active_value) - amount < 0;
-
     }
 
 }
