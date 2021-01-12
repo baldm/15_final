@@ -44,4 +44,16 @@ public class FieldSoda extends Field {
 
         }
     }
+
+    public int getMortageValue() {
+        return mortageValue;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public int[] getRentMultiplier() {
+        return rentMultiplier;
+    }
 }
