@@ -1,8 +1,6 @@
 package Gui;
 
-import Spil.Fields.Field;
-import Spil.Fields.FieldProperty;
-import Spil.Fields.FieldScandlines;
+import Spil.Fields.*;
 import Spil.Language;
 import Spil.Player;
 import gui_fields.*;
@@ -108,9 +106,30 @@ public class Interface {
                     guiFieldArray[i] = shippingField;
                 }
                 case 3 -> {
-                    if (currentField.name.equals(""))
-                    GUI_Brewery = new GUI_Brewery("./Images/parking.PNG", currentField.name, "subtext", "description", String.valueOf(((FieldScandlines) currentField).getMortageValue()), Color.WHITE, Color.BLACK);
-                    guiFieldArray[i] = refugeField;
+                    GUI_Brewery breweryField;
+                    if (currentField.name.equals("Tuborg Squash")) {
+                        breweryField = new GUI_Brewery("./Images/squash.PNG", currentField.name, "subtext", "description", String.valueOf(((FieldSoda) currentField).getMortageValue()), Color.WHITE, Color.BLACK);
+                    } else {
+                        breweryField = new GUI_Brewery("./Images/cola.PNG", currentField.name, "subtext", "description", String.valueOf(((FieldSoda) currentField).getMortageValue()), Color.WHITE, Color.BLACK);
+                    }
+                    guiFieldArray[i] = breweryField;
+                }
+                case 4 -> {
+                    if (currentField.name.equals("Parking")) {
+                        GUI_Refuge specialField = new GUI_Refuge("./Images/parking.PNG", currentField.name, "subtext", "description", Color.WHITE, Color.BLACK);
+                        guiFieldArray[i] = specialField;
+                    } else {
+                        GUI_Tax specialField = new GUI_Tax(currentField.name, "subtext", "description", Color.WHITE, Color.BLACK);
+                        guiFieldArray[i] = specialField;
+                    }
+                }
+                case 5 -> {
+                    GUI_Chance chanceField = new GUI_Chance(currentField.name, "subtext", "description", Color.WHITE, Color.BLACK);
+                    guiFieldArray[i] = chanceField;
+                }
+                case 6 -> {
+                    GUI_Jail jailField= new GUI_Jail("default", currentField.name, "subtext", "description", Color.WHITE, Color.BLACK);
+                    guiFieldArray[i] = jailField;
                 }
             }
 
