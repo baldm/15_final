@@ -1,12 +1,17 @@
 package Launcher;
 
+
 import Gui.Interface;
 import Spil.*;
+import Spil.ChanceCardFactory;
 import Spil.Fields.Field;
+import Spil.ChanceCards.*;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class gameController {
     private static Player[] playerArray;
@@ -15,6 +20,8 @@ public class gameController {
     private Field[] fieldArray;
     private Dice diceOne = new Dice(6);
     private Dice diceTwo = new Dice(6);
+    private ChanceCard[] allChanceCards;
+    private ChanceCard[] drawAbleChanceCards;
 
     public static void main(String[] args) {
         gameController game = new gameController();
@@ -57,6 +64,11 @@ public class gameController {
 
         // Creates final game interface
         gameInterface.gameInit(fieldArray);
+
+        //Creates ChanceCards
+        ChanceCardFactory chanceCardFactory = new ChanceCardFactory(lang);
+        allChanceCards = chanceCardFactory.getAllCards();
+        drawAbleChanceCards = chanceCardFactory.getAllCards();
     }
 
     // TODO: Write docstring
@@ -97,6 +109,23 @@ public class gameController {
 
     private void drawChanceCard(Player player) {
         gameInterface.displayMessage(lang.getString("LandedOnChancecard"));
+
+        if(drawAbleChanceCards.length > 1){
+            int drawedCardNumber = ThreadLocalRandom.current().nextInt(0, drawAbleChanceCards.length);
+            ChanceCard drawedCard = drawAbleChanceCards[drawedCardNumber];
+            ChanceCard[] chanceCardsPlaceholder = drawAbleChanceCards.clone();
+            drawAbleChanceCards = new ChanceCard[drawAbleChanceCards.length-1];
+
+            for(int i = 0, k=0; i<chanceCardsPlaceholder.length;i++){
+                if(i != drawedCardNumber){
+                    drawAbleChanceCards[k++] = chanceCardsPlaceholder[i];
+                }
+            }
+        } else {
+            ChanceCard drawedCard = drawAbleChanceCards[0];
+            drawAbleChanceCards = new ChanceCard[allChanceCards.length];
+            drawAbleChanceCards = allChanceCards.clone();
+        }
 
     }
 
