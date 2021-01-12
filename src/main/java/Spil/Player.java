@@ -8,6 +8,7 @@ public class Player {
     private final Account account = new Account(0);
     private int position = 0;
     private boolean isInJail = false;
+    public int hasBeenInJail = 0;
     private int id;
     private boolean[] ownsboth = new boolean[8];
 

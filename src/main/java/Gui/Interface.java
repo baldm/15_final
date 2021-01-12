@@ -158,6 +158,16 @@ public class Interface {
     }
 
     /**
+     *  Displays a number of buttons dependant on arguments
+     * @param msg - String message
+     * @param args - Strings seperated by comma
+     * @return
+     */
+    public String displayMultiButton(String msg, String... args) {
+        return gui.getUserButtonPressed(msg, args);
+    }
+
+    /**
      * Displays a chance card on the gui.
      * @param input String message
      */
