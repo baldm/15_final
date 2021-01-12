@@ -110,6 +110,9 @@ public class gameController {
                 gameInterface.setPlayerBalance(player);
                 player.setInJail(false);
                 player.hasBeenInJail = 0;
+                int sumRolls = diceRoll();
+                movePlayer(player, sumRolls + player.getPosition());
+
 
             } else {
                 gameInterface.displayMessage("Du skal rulle 2 ens for at komme ud");  // TODO: Change to support language
