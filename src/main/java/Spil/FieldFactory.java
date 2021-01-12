@@ -62,11 +62,15 @@ public class FieldFactory {
         for(int n = 0; n< input.length;n++){
             allFields[i++] = new FieldSoda(input[n]);
         }
-        placeholder = new Field[allFields.length];
-        placeholder = allFields;
 
-        for(int n = 0; n< placeholder.length;n++){
-            allFields[placeholder[n].position] = placeholder[n];
+
+
+        Field[] unsortedFields = new Field[allFields.length];
+        unsortedFields = allFields.clone();
+
+
+        for(int k = 0; k< placeholder.length;k++){
+            allFields[unsortedFields[k].position] = unsortedFields[k];
         }
 
 
