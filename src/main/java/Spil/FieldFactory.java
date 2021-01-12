@@ -63,10 +63,6 @@ public class FieldFactory {
             allFields[i++] = new FieldSoda(input[n]);
         }
 
-        for(int n = 0;n< allFields.length;n++){
-            System.out.println(allFields[n].position);
-        }
-        System.out.println(allFields[17].position);
         Field[] unsortedFields;
         unsortedFields = allFields.clone();
 
