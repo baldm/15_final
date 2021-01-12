@@ -62,7 +62,7 @@ public class FieldFactory {
         for(int n = 0; n< input.length;n++){
             allFields[i++] = new FieldSoda(input[n]);
         }
-
+        placeholder = new Field[allFields.length];
         placeholder = allFields;
 
         for(int n = 0; n< placeholder.length;n++){
