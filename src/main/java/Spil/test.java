@@ -10,6 +10,10 @@ public class test {
         for(int i = 0; i< testfields.length;i++){
             System.out.println(testfields[i].name);
         }
+        for(int i = 0; i< testfields.length;i++){
+            System.out.println(testfields[i].position);
+        }
+
 
 
     }
