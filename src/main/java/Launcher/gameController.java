@@ -79,11 +79,12 @@ public class gameController {
         }
 
         // Landed on buyable field logic
+        /*
         if (true)  // Change to if fieldArray[currentPlayer.getPosition()].isBuyable() ??
         {
             buyableField(currentPlayer);
 
-        }
+        }*/
 
 
     }
@@ -125,11 +126,8 @@ public class gameController {
                     gameInterface.displayMessage("Du slog ikke 2 ens og bliver i fængsel"); // TODO: Change to support language
                     player.hasBeenInJail++;
                 }
-
             }
         }
-
-
     }
 
     private void buyableField(Player player) {
