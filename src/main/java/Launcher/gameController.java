@@ -56,7 +56,7 @@ public class gameController {
         }
 
         // Creates final game interface
-        gameInterface.gameInit();
+        gameInterface.gameInit(fieldArray);
     }
 
     // TODO: Write docstring

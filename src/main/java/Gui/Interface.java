@@ -1,5 +1,6 @@
 package Gui;
 
+import Spil.Fields.Field;
 import Spil.Language;
 import Spil.Player;
 import gui_fields.GUI_Car;
@@ -81,8 +82,18 @@ public class Interface {
     }
 
 
-    public void gameInit(){
+    public void gameInit(Field[] fieldArray){
+
+        // Handles field objects
+        for (int i = 0; i < fieldArray.length; i++) {
+            System.out.println(fieldArray[i].position);
+        }
+
+
+        // Creates final gui
         gui = new GUI();
+
+        // Adds players to the game
         for (GUI_Player gui_player : guiPlayerList) {
             gui.addPlayer(gui_player);
         }
