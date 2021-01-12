@@ -27,7 +27,7 @@ public class FieldJail extends Field{
 
             isVisit = Boolean.parseBoolean(prop.getProperty("isVisit"));
 
-            Description = lang.getString(prop.getProperty("JailvisitDescription"));
+            Description = lang.getString(prop.getProperty("description"));
 
         } catch (FileNotFoundException e){
 
