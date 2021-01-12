@@ -85,9 +85,27 @@ public class Interface {
     public void gameInit(Field[] fieldArray){
 
         // Handles field objects
+        GUI_Field[] guiFieldArray = new GUI_Field[fieldArray.length];
+
+        // Builds gui fields
+        /*
         for (int i = 0; i < fieldArray.length; i++) {
-            System.out.println(fieldArray[i].position);
+            Field currentField = fieldArray[i];
+            System.out.println("\nNow processing field:"+currentField.name);
+            System.out.println("Field id:"+currentField.fieldID);
+            System.out.println("Field type:"+currentField.fieldType);
+            System.out.println("Field position:"+currentField.position);
+
+
+            switch (currentField.fieldType) {
+                case 1:
+                    GUI_Street guiField = new GUI_Street(currentField.name, "subtext", "description", , Color.WHITE, Color.BLACK);
+                    break;
+            }
+
         }
+        */
+
 
 
         // Creates final gui

@@ -55,7 +55,7 @@ public class Player {
     public void setPosition(int newPos){
         if (newPos >= 40) {
             position = newPos - 40;
-            addMoney(2);
+            addMoney(4000);
         }
         else {
             position = newPos;

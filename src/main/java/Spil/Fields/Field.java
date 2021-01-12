@@ -5,4 +5,5 @@ public class Field {
     public int position;
     public int fieldType;
     public int fieldID;
+
 }
