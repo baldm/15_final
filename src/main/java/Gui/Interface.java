@@ -1,12 +1,11 @@
 package Gui;
 
 import Spil.Fields.Field;
+import Spil.Fields.FieldProperty;
+import Spil.Fields.FieldScandlines;
 import Spil.Language;
 import Spil.Player;
-import gui_fields.GUI_Car;
-import gui_fields.GUI_Field;
-import gui_fields.GUI_Player;
-import gui_fields.GUI_Street;
+import gui_fields.*;
 import gui_main.GUI;
 
 import java.awt.*;
@@ -88,7 +87,7 @@ public class Interface {
         GUI_Field[] guiFieldArray = new GUI_Field[fieldArray.length];
 
         // Builds gui fields
-        /*
+
         for (int i = 0; i < fieldArray.length; i++) {
             Field currentField = fieldArray[i];
             System.out.println("\nNow processing field:"+currentField.name);
@@ -96,15 +95,28 @@ public class Interface {
             System.out.println("Field type:"+currentField.fieldType);
             System.out.println("Field position:"+currentField.position);
 
+            // TODO: Find color af field
 
+            // Sorts types of field
             switch (currentField.fieldType) {
-                case 1:
-                    GUI_Street guiField = new GUI_Street(currentField.name, "subtext", "description", , Color.WHITE, Color.BLACK);
-                    break;
+                case 1 -> {
+                    GUI_Street streetField = new GUI_Street(currentField.name, "subtext", "description", String.valueOf(((FieldProperty) currentField).getMortageValue()), Color.WHITE, Color.BLACK);
+                    guiFieldArray[i] = streetField;
+                }
+                case 2 -> {
+                    GUI_Shipping shippingField = new GUI_Shipping("./Images/shipping.PNG", currentField.name, "subtext", "description", String.valueOf(((FieldScandlines) currentField).getMortageValue()), Color.WHITE, Color.BLACK);
+                    guiFieldArray[i] = shippingField;
+                }
+                case 3 -> {
+                    if (currentField.name.equals(""))
+                    GUI_Brewery = new GUI_Brewery("./Images/parking.PNG", currentField.name, "subtext", "description", String.valueOf(((FieldScandlines) currentField).getMortageValue()), Color.WHITE, Color.BLACK);
+                    guiFieldArray[i] = refugeField;
+                }
             }
 
+
+
         }
-        */
 
 
 
