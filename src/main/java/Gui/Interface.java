@@ -87,7 +87,6 @@ public class Interface {
 
         // Builds gui fields
 
-
         for (int i = 0; i < fieldArray.length; i++) {
             Field currentField = fieldArray[i];
             System.out.println("\nNow processing field:"+currentField.name);
@@ -110,21 +109,22 @@ public class Interface {
             };*/
 
             // Sorts types of field
+            // TODO: FIX LANGUAGE
             switch (currentField.fieldType) {
                 case 1 -> {
-                    GUI_Street streetField = new GUI_Street(currentField.name, String.valueOf(((FieldProperty) currentField).getPrice()), "description", String.valueOf(((FieldProperty) currentField).getMortageValue()), Color.WHITE, Color.BLACK);
+                    GUI_Street streetField = new GUI_Street(currentField.name, String.valueOf(((FieldProperty) currentField).getPrice()), "description", "0", Color.WHITE, Color.BLACK); //String.valueOf(((FieldProperty) currentField).getMortageValue())
                     guiFieldArray[i] = streetField;
                 }
                 case 2 -> {
-                    GUI_Shipping shippingField = new GUI_Shipping("default", currentField.name, String.valueOf(((FieldScandlines) currentField).getPrice()), "description", String.valueOf(((FieldScandlines) currentField).getMortageValue()), Color.WHITE, Color.BLACK);
+                    GUI_Shipping shippingField = new GUI_Shipping("default", currentField.name, String.valueOf(((FieldScandlines) currentField).getPrice()), "description", "0", Color.WHITE, Color.BLACK);
                     guiFieldArray[i] = shippingField;
                 }
                 case 3 -> {
                     GUI_Brewery breweryField;
                     if (currentField.name.equals("Tuborg Squash")) {
-                        breweryField = new GUI_Brewery("./Images/squash.PNG", currentField.name, String.valueOf(((FieldSoda) currentField).getPrice()), "description", String.valueOf(((FieldSoda) currentField).getMortageValue()), Color.WHITE, Color.BLACK);
+                        breweryField = new GUI_Brewery("./Images/squash.PNG", currentField.name, String.valueOf(((FieldSoda) currentField).getPrice()), "description", "0", Color.WHITE, Color.BLACK);
                     } else {
-                        breweryField = new GUI_Brewery("./Images/cola.PNG", currentField.name, String.valueOf(((FieldSoda) currentField).getPrice()), "description", String.valueOf(((FieldSoda) currentField).getMortageValue()), Color.WHITE, Color.BLACK);
+                        breweryField = new GUI_Brewery("./Images/cola.PNG", currentField.name, String.valueOf(((FieldSoda) currentField).getPrice()), "description", "0", Color.WHITE, Color.BLACK);
                     }
                     guiFieldArray[i] = breweryField;
                 }
@@ -142,11 +142,11 @@ public class Interface {
                     }
                 }
                 case 5 -> {
-                    GUI_Chance chanceField = new GUI_Chance("?", "subtext", "description", Color.GREEN, Color.BLACK);
+                    GUI_Chance chanceField = new GUI_Chance("?", "Prøv lykken", "description", Color.BLACK, Color.GREEN);
                     guiFieldArray[i] = chanceField;
                 }
                 case 6 -> {
-                    GUI_Jail jailField= new GUI_Jail("default", currentField.name, "subtext", "description", Color.BLACK, Color.WHITE);
+                    GUI_Jail jailField= new GUI_Jail("default", currentField.name, currentField.name, "description", Color.BLACK, Color.WHITE);
                     guiFieldArray[i] = jailField;
                 }
             }
