@@ -102,7 +102,7 @@ public class Interface {
                     guiFieldArray[i] = streetField;
                 }
                 case 2 -> {
-                    GUI_Shipping shippingField = new GUI_Shipping("./Images/shipping.PNG", currentField.name, "subtext", "description", String.valueOf(((FieldScandlines) currentField).getMortageValue()), Color.WHITE, Color.BLACK);
+                    GUI_Shipping shippingField = new GUI_Shipping("default", currentField.name, "subtext", "description", String.valueOf(((FieldScandlines) currentField).getMortageValue()), Color.WHITE, Color.BLACK);
                     guiFieldArray[i] = shippingField;
                 }
                 case 3 -> {
@@ -110,7 +110,7 @@ public class Interface {
                     if (currentField.name.equals("Tuborg Squash")) {
                         breweryField = new GUI_Brewery("./Images/squash.PNG", currentField.name, "subtext", "description", String.valueOf(((FieldSoda) currentField).getMortageValue()), Color.WHITE, Color.BLACK);
                     } else {
-                        breweryField = new GUI_Brewery("./Images/cola.PNG", currentField.name, "subtext", "description", String.valueOf(((FieldSoda) currentField).getMortageValue()), Color.WHITE, Color.BLACK);
+                        breweryField = new GUI_Brewery("./Images/squash.PNG", currentField.name, "subtext", "description", String.valueOf(((FieldSoda) currentField).getMortageValue()), Color.WHITE, Color.BLACK);
                     }
                     guiFieldArray[i] = breweryField;
                 }
@@ -124,7 +124,7 @@ public class Interface {
                     }
                 }
                 case 5 -> {
-                    GUI_Chance chanceField = new GUI_Chance(currentField.name, "subtext", "description", Color.WHITE, Color.BLACK);
+                    GUI_Chance chanceField = new GUI_Chance("?", "subtext", "description", Color.WHITE, Color.BLACK);
                     guiFieldArray[i] = chanceField;
                 }
                 case 6 -> {
@@ -132,15 +132,12 @@ public class Interface {
                     guiFieldArray[i] = jailField;
                 }
             }
-
-
-
         }
 
 
 
         // Creates final gui
-        gui = new GUI();
+        gui = new GUI(guiFieldArray, Color.GREEN);
 
         // Adds players to the game
         for (GUI_Player gui_player : guiPlayerList) {
