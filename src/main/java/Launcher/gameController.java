@@ -1,10 +1,8 @@
 package Launcher;
 
 import Gui.Interface;
-import Spil.Dice;
-import Spil.Language;
-import Spil.LanguageScanner;
-import Spil.Player;
+import Spil.*;
+import Spil.Fields.Field;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,12 +12,16 @@ public class gameController {
     private static Player[] playerArray;
     private Language lang;
     private Interface gameInterface;
+    private Field[] fieldArray;
     private Dice diceOne = new Dice(6);
     private Dice diceTwo = new Dice(6);
 
     public static void main(String[] args) {
         gameController game = new gameController();
         game.gameInit();
+
+
+
 
         // Simple turn
         while (true) {
@@ -39,6 +41,10 @@ public class gameController {
         gameInterface = new Interface();
         String langChoice = gameInterface.initLanguage(languageArray);
         lang = new Language(langChoice+".properties"); // Sets the language
+
+        // Creates fields
+        FieldFactory factory = new FieldFactory(lang);
+        fieldArray = factory.getAllFields();
 
         // Dialog for entering player names
         String[] playerStringArray = gameInterface.initPlayerNames(lang);
