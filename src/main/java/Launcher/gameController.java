@@ -61,7 +61,7 @@ public class gameController {
             jailTurn(currentPlayer);
         } else {
             // Standard turn
-            int sumRolls = diceRoll(currentPlayer);
+            int sumRolls = diceRoll();
             // Moves player
             movePlayer(currentPlayer, sumRolls + currentPlayer.getPosition());
         }
@@ -95,14 +95,41 @@ public class gameController {
 
     private void jailTurn(Player player) {
         gameInterface.displayMessage(lang.getString("LandedInJail"));
+
         if (player.getMoney() >= 1000) {
             String choice = gameInterface.displayMultiButton("Vil du betale for at komme ud?", "Betal 1000 kr", "Nej"); // TODO: Change to support language
-            System.out.println(choice);
+            if (choice.equals("Betal 1000 kr")) {
+                player.addMoney(-1000);
+                gameInterface.setPlayerBalance(player);
+                player.setInJail(false);
+                player.hasBeenInJail = 0;
+
+            } else {
+                gameInterface.displayMessage("Du skal rulle 2 ens for at komme ud");  // TODO: Change to support language
+                int sumRolls = diceRoll();
+                if (player.hasBeenInJail > 2) {
+                    gameInterface.displayMessage("Du har været i fængsel mere end 3 omgange\nHvis ikke du slår 2 ens nu skal du betale 1000 kr og rykke frem til summen af dit slag");  // TODO: Change to support language
+                }
+                if (diceOne.getValue() == diceTwo.getValue()) {
+                    gameInterface.displayMessage("Du slå 2 ens og rykker frem til summen af terningerne");  // TODO: Change to support language
+                    player.hasBeenInJail = 0;
+                    player.setInJail(false);
+                    movePlayer(player, sumRolls + player.getPosition());
+
+                } else if (player.hasBeenInJail > 2) {
+                    gameInterface.displayMessage("Du rykker frem til summen af slaget og betaler 1000 kr"); // TODO: Change to support language
+                    player.hasBeenInJail = 0;
+                    player.setInJail(false);
+                    movePlayer(player, sumRolls + player.getPosition());
+                } else {
+                    gameInterface.displayMessage("Du slog ikke 2 ens og bliver i fængsel"); // TODO: Change to support language
+                    player.hasBeenInJail++;
+                }
+
+            }
         }
 
 
-        // if out
-        player.setInJail(false);
     }
 
     private void buyableField(Player player) {
@@ -110,7 +137,7 @@ public class gameController {
 
     }
 
-    private int diceRoll(Player player) {
+    private int diceRoll() {
         gameInterface.displayMessage(lang.getString("RollDice"));
 
         // Rolls dices
