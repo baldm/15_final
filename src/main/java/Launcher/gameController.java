@@ -23,7 +23,7 @@ public class gameController {
     private ChanceCard[] allChanceCards;
     private ChanceCard[] drawAbleChanceCards;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         gameController game = new gameController();
         game.gameInit();
 
@@ -72,7 +72,7 @@ public class gameController {
     }
 
     // TODO: Write docstring
-    private void takeTurn(Player currentPlayer) {
+    private void takeTurn(Player currentPlayer) throws Exception {
         gameInterface.displayMessage(lang.getString("PlayersTurn")+" "+currentPlayer.getName());
         if (currentPlayer.isInJail()) {
             // Jail logic here
@@ -107,17 +107,19 @@ public class gameController {
 
     }
 
-    private void drawChanceCard(Player player) {
-        gameInterface.displayMessage(lang.getString("LandedOnChancecard"));
+    private void drawChanceCard(Player player) throws Exception {
         ChanceCard drawedCard;
-        if(drawAbleChanceCards.length > 1){
-            int drawedCardNumber = ThreadLocalRandom.current().nextInt(0, drawAbleChanceCards.length);
+        int drawedCardNumber;
+
+        System.out.println(drawAbleChanceCards.length);
+        if (drawAbleChanceCards.length > 1) {
+            drawedCardNumber = ThreadLocalRandom.current().nextInt(0, drawAbleChanceCards.length+1);
             drawedCard = drawAbleChanceCards[drawedCardNumber];
             ChanceCard[] chanceCardsPlaceholder = drawAbleChanceCards.clone();
-            drawAbleChanceCards = new ChanceCard[drawAbleChanceCards.length-1];
+            drawAbleChanceCards = new ChanceCard[drawAbleChanceCards.length - 1];
 
-            for(int i = 0, k=0; i<chanceCardsPlaceholder.length;i++){
-                if(i != drawedCardNumber){
+            for (int i = 0, k = 0; i < chanceCardsPlaceholder.length; i++) {
+                if (i != drawedCardNumber) {
                     drawAbleChanceCards[k++] = chanceCardsPlaceholder[i];
                 }
             }
@@ -130,12 +132,16 @@ public class gameController {
         switch (drawedCard.cardGroup){
             case 2:
                 player.addMoney(((ChanceCardChangeMoney) drawedCard).getMoneyChange());
+                break;
             case 3:
                 player.setPosition(((ChanceCardMovePlayerTo) drawedCard).getMoveTo());
+                break;
             case 4:
                 player.setPosition(player.getPosition() + ((ChanceCardMovePlayer) drawedCard).getMovePlayer());
+                break;
+            default:
+                throw new Exception("Error in ChanceCard reader");
         }
-
     }
 
     private void jailTurn(Player player) {

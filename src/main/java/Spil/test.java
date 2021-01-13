@@ -11,7 +11,7 @@ public class test {
     private static ChanceCard[] allChanceCards;
     private static ChanceCard[] drawAbleChanceCards;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Language lang = new Language("Danish.properties");
         ChanceCardFactory chanceCardFactory = new ChanceCardFactory(lang);
         allChanceCards = chanceCardFactory.getAllCards();
@@ -29,7 +29,7 @@ public class test {
 
     }
 
-    private static void drawChanceCard(Player player) {
+    private static void drawChanceCard(Player player) throws Exception {
         ChanceCard drawedCard;
         int drawedCardNumber;
 
@@ -63,7 +63,6 @@ public class test {
                 break;
             default:
                 throw new Exception("Error in ChanceCard reader");
-                break;
         }
     }
 }
