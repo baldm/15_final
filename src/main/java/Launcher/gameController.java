@@ -1,12 +1,17 @@
 package Launcher;
 
+
 import Gui.Interface;
 import Spil.*;
+import Spil.ChanceCardFactory;
 import Spil.Fields.Field;
+import Spil.ChanceCards.*;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class gameController {
     private static Player[] playerArray;
@@ -15,8 +20,10 @@ public class gameController {
     private Field[] fieldArray;
     private Dice diceOne = new Dice(6);
     private Dice diceTwo = new Dice(6);
+    private ChanceCard[] allChanceCards;
+    private ChanceCard[] drawAbleChanceCards;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         gameController game = new gameController();
         game.gameInit();
 
@@ -56,11 +63,16 @@ public class gameController {
         }
 
         // Creates final game interface
-        gameInterface.gameInit(fieldArray, lang);
+        gameInterface.gameInit(fieldArray);
+
+        //Creates ChanceCards
+        ChanceCardFactory chanceCardFactory = new ChanceCardFactory(lang);
+        allChanceCards = chanceCardFactory.getAllCards();
+        drawAbleChanceCards = chanceCardFactory.getAllCards();
     }
 
     // TODO: Write docstring
-    private void takeTurn(Player currentPlayer) {
+    private void takeTurn(Player currentPlayer) throws Exception {
         gameInterface.displayMessage(lang.getString("PlayersTurn")+" "+currentPlayer.getName());
         if (currentPlayer.isInJail()) {
             // Jail logic here
@@ -95,9 +107,41 @@ public class gameController {
 
     }
 
-    private void drawChanceCard(Player player) {
-        gameInterface.displayMessage(lang.getString("LandedOnChancecard"));
+    private void drawChanceCard(Player player) throws Exception {
+        ChanceCard drawedCard;
+        int drawedCardNumber;
 
+        System.out.println(drawAbleChanceCards.length);
+        if (drawAbleChanceCards.length > 1) {
+            drawedCardNumber = ThreadLocalRandom.current().nextInt(0, drawAbleChanceCards.length+1);
+            drawedCard = drawAbleChanceCards[drawedCardNumber];
+            ChanceCard[] chanceCardsPlaceholder = drawAbleChanceCards.clone();
+            drawAbleChanceCards = new ChanceCard[drawAbleChanceCards.length - 1];
+
+            for (int i = 0, k = 0; i < chanceCardsPlaceholder.length; i++) {
+                if (i != drawedCardNumber) {
+                    drawAbleChanceCards[k++] = chanceCardsPlaceholder[i];
+                }
+            }
+        } else {
+            drawedCard = drawAbleChanceCards[0];
+            drawAbleChanceCards = new ChanceCard[allChanceCards.length];
+            drawAbleChanceCards = allChanceCards.clone();
+        }
+
+        switch (drawedCard.cardGroup){
+            case 2:
+                player.addMoney(((ChanceCardChangeMoney) drawedCard).getMoneyChange());
+                break;
+            case 3:
+                player.setPosition(((ChanceCardMovePlayerTo) drawedCard).getMoveTo());
+                break;
+            case 4:
+                player.setPosition(player.getPosition() + ((ChanceCardMovePlayer) drawedCard).getMovePlayer());
+                break;
+            default:
+                throw new Exception("Error in ChanceCard reader");
+        }
     }
 
     private void jailTurn(Player player) {

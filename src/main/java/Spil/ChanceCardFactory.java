@@ -2,71 +2,41 @@ package Spil;
 import Spil.ChanceCards.*;
 
 import Spil.ChanceCards.ChanceCardChangeMoney;
+import Spil.Fields.Field;
+import Spil.Fields.FieldChance;
 
 import java.io.File;
 
 public class ChanceCardFactory {
-private ChanceCard[] allCards;
+private ChanceCard[] allCards = new ChanceCard[0];
+    private String[] input;
+    private ChanceCard[] placeholder;
+    private int i = 0;
 
     public ChanceCardFactory(Language lang){
-        String[] input;
         /**
-         * ChangeMoney ChanceCards
+         * ChangeMoney
          */
         input = getNames("ChangeMoney/");
-
-        ChanceCard[] ChangeMoney = new ChanceCard[input.length];
-        for(int i = 0; i< input.length;i++){
-            ChangeMoney[i] = new ChanceCardChangeMoney(input[i],lang);
+        addCards();
+        for(int n = 0; n< input.length;n++){
+            allCards[i++] = new ChanceCardChangeMoney(input[n],lang);
         }
-
-
         /**
-         * ChanceCards Move Player
+         * MovePlayer
          */
-
         input = getNames("MovePlayer/");
-
-        ChanceCard[] ChanceMove = new ChanceCard[input.length];
-        for(int i = 0; i< input.length;i++){
-            ChanceMove[i] = new ChanceCardMovePlayer(input[i],lang);
+        addCards();
+        for(int n = 0; n< input.length;n++){
+            allCards[i++] = new ChanceCardMovePlayer(input[n],lang);
         }
-
         /**
-         * ChanceCards MovePlayerTo
+         * MovePlayerTo
          */
-
         input = getNames("MovePlayerTo/");
-
-
-        ChanceCard[] ChanceMoveTo = new ChanceCard[input.length];
-
-        for(int i = 0; i< input.length;i++){
-            ChanceMove[i] = new ChanceCardMovePlayerTo(input[i],lang);
-        }
-
-        allCards = new ChanceCard[ChangeMoney.length+ChanceMoveTo.length+ChanceMove.length];
-
-
-        int k=0;
-        for(int i =0;i< allCards.length;i++){
-
-            if(i < ChangeMoney.length){
-                allCards[i] = ChangeMoney[k++];
-                if(i == ChangeMoney.length-1){
-                    k=0;
-                }
-            } else if(i < ChangeMoney.length+ChanceMove.length){
-            allCards[i] = ChanceMove[k++];
-                if(i == ChangeMoney.length+ChanceMove.length-1){
-                    k=0;
-                }
-            } else if(i < ChangeMoney.length+ChanceMove.length+ChanceMoveTo.length){
-                allCards[i] = ChanceMoveTo[k];
-                if(i== ChangeMoney.length+ChanceMove.length+ChanceMoveTo.length-1){
-                    k=0;
-                }
-            }
+        addCards();
+        for(int n = 0; n< input.length;n++){
+            allCards[i++] = new ChanceCardMovePlayerTo(input[n],lang);
         }
 
     }
@@ -82,6 +52,19 @@ private ChanceCard[] allCards;
 
 
 
+    }
+
+    private ChanceCard[] addCards(){
+
+        placeholder = new ChanceCard[allCards.length];
+        placeholder = allCards.clone();
+        allCards = new ChanceCard[allCards.length + input.length];
+
+        for (int n = 0; n< placeholder.length;n++){
+            allCards[n]=placeholder[n];
+        }
+
+        return allCards;
     }
 
 }
