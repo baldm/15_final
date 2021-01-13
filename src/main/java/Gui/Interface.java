@@ -99,7 +99,7 @@ public class Interface {
             */
 
             // Creates field color by field id
-            /*
+            /* TODO: Add group id's
             Color curColor = switch (currentField) {
                 case 0 -> Color.pink;
                 case 1 -> Color.CYAN;
@@ -187,11 +187,11 @@ public class Interface {
      * @param player - Player object
      */
     public void movePlayer(Player player){
-        gui.getFields()[player.getPosition()].setCar(guiPlayerList[player.getID()], true);
+        guiPlayerList[player.getID()].getCar().setPosition( gui.getFields()[player.getPosition()]);
     }
 
     /**
-     * Method that removes a player on the grid
+     * deprecated  - With matadorgiu:3.2.1 removes the car one the board by itself.
      * @param player - Player object
      */
     public void removePlayer(Player player){

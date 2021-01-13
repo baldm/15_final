@@ -63,7 +63,7 @@ public class gameController {
         }
 
         // Creates final game interface
-        gameInterface.gameInit(fieldArray);
+        gameInterface.gameInit(fieldArray, lang);
 
         //Creates ChanceCards
         ChanceCardFactory chanceCardFactory = new ChanceCardFactory(lang);
@@ -96,13 +96,12 @@ public class gameController {
             drawChanceCard(currentPlayer);
         }
 
-        // Landed on buyable field logic
-        /*
-        if (true)  // Change to if fieldArray[currentPlayer.getPosition()].isBuyable() ??
+
+        if (fieldArray[currentPlayer.getPosition()].fieldType == 1)  // Checks if the field i buyable
         {
             buyableField(currentPlayer);
 
-        }*/
+        }
 
 
     }
@@ -200,7 +199,7 @@ public class gameController {
     }
 
     private void movePlayer(Player player, int toPosition) {
-        gameInterface.removePlayer(player);
+        //gameInterface.removePlayer(player);
         player.setPosition(toPosition);
         gameInterface.movePlayer(player);
     }
