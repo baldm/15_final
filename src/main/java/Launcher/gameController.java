@@ -183,6 +183,24 @@ public class gameController {
     private void buyableField(Player player) {
         gameInterface.displayMessage(lang.getString("LandedOnBuyableProperty"));
 
+        // LOGIC
+        /*
+        1. check if field is available else see (4.)
+
+        2. Prompt buy screen
+
+        3. If bought add to players properties else (auction?)
+
+        4. Check owner of field, if self skip else (5.)
+
+        5. Pay rent to owner that is equivalent of the rent determined by houses on field.
+
+         */
+
+    }
+
+    private void endOfTurn(Player player) {
+        // prompt player if they wish to do anything to their plots or whatever
     }
 
     private int diceRoll() {
