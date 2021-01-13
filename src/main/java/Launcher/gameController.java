@@ -96,8 +96,8 @@ public class gameController {
             drawChanceCard(currentPlayer);
         }
 
-
-        if (fieldArray[currentPlayer.getPosition()].fieldType == 1)  // Checks if the field i buyable
+        // Checks if the field i buyable
+        if (fieldArray[currentPlayer.getPosition()].fieldType == 1)  // Currently only works with properties
         {
             buyableField(currentPlayer);
 
