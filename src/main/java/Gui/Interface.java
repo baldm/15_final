@@ -80,7 +80,7 @@ public class Interface {
     }
 
 
-    public void gameInit(Field[] fieldArray){
+    public void gameInit(Field[] fieldArray, Language lang){
 
         // Handles field objects
         GUI_Field[] guiFieldArray = new GUI_Field[fieldArray.length];
@@ -89,10 +89,14 @@ public class Interface {
 
         for (int i = 0; i < fieldArray.length; i++) {
             Field currentField = fieldArray[i];
+
+            // Prints for debugging
+            /*
             System.out.println("\nNow processing field:"+currentField.name);
             System.out.println("Field id:"+currentField.fieldID);
             System.out.println("Field type:"+currentField.fieldType);
             System.out.println("Field position:"+currentField.position);
+            */
 
             // Creates field color by field id
             /*
@@ -116,37 +120,42 @@ public class Interface {
                     guiFieldArray[i] = streetField;
                 }
                 case 2 -> {
-                    GUI_Shipping shippingField = new GUI_Shipping("default", currentField.name, String.valueOf(((FieldScandlines) currentField).getPrice()), "description", "0", Color.WHITE, Color.BLACK);
+                    GUI_Shipping shippingField = new GUI_Shipping("default", currentField.name, String.valueOf(((FieldScandlines) currentField).getPrice()), "description", "0", Color.CYAN, Color.BLACK);
                     guiFieldArray[i] = shippingField;
                 }
                 case 3 -> {
                     GUI_Brewery breweryField;
-                    if (currentField.name.equals("Tuborg Squash")) {
-                        breweryField = new GUI_Brewery("./Images/squash.PNG", currentField.name, String.valueOf(((FieldSoda) currentField).getPrice()), "description", "0", Color.WHITE, Color.BLACK);
+                    if (currentField.name.equals("Squash")) {
+                        breweryField = new GUI_Brewery("./Images/squash.PNG", currentField.name, String.valueOf(((FieldSoda) currentField).getPrice()), "description", "0", Color.CYAN, Color.BLACK);
                     } else {
-                        breweryField = new GUI_Brewery("./Images/cola.PNG", currentField.name, String.valueOf(((FieldSoda) currentField).getPrice()), "description", "0", Color.WHITE, Color.BLACK);
+                        breweryField = new GUI_Brewery("./Images/cola.PNG", currentField.name, String.valueOf(((FieldSoda) currentField).getPrice()), "description", "0", Color.CYAN, Color.BLACK);
                     }
                     guiFieldArray[i] = breweryField;
                 }
                 case 4 -> {
                     if (currentField.name.equals("Parking")) {
-                        GUI_Refuge specialField = new GUI_Refuge("./Images/parking.PNG", currentField.name, "subtext", "description", Color.DARK_GRAY, Color.BLACK);
+                        GUI_Refuge specialField = new GUI_Refuge("./Images/parking.PNG", currentField.name, lang.getString("Parking"), lang.getString("ParkingDescription"), Color.GRAY, Color.BLACK);
                         guiFieldArray[i] = specialField;
                     } else if (currentField.name.equals("START")){
-                        GUI_Start specialField = new GUI_Start("Start", "4000", "description (Modtag 4000 når du kommer forbi start)", Color.RED, Color.BLACK);
+                        GUI_Start specialField = new GUI_Start("Start", "4000", lang.getString("StartDescription"), Color.RED, Color.BLACK);
                         guiFieldArray[i] = specialField;
                     }
                     else {
-                        GUI_Tax specialField = new GUI_Tax(currentField.name, "subtext", "description", Color.DARK_GRAY, Color.BLACK);
+                        GUI_Tax specialField = new GUI_Tax(currentField.name, "placeholder", "description", Color.GRAY, Color.BLACK);
                         guiFieldArray[i] = specialField;
                     }
                 }
                 case 5 -> {
-                    GUI_Chance chanceField = new GUI_Chance("?", "Prøv lykken", "description", Color.BLACK, Color.GREEN);
+                    GUI_Chance chanceField = new GUI_Chance("?", lang.getString("ChanceCard"), lang.getString("ChanceCardDescription"), Color.BLACK, Color.GREEN);
                     guiFieldArray[i] = chanceField;
                 }
                 case 6 -> {
-                    GUI_Jail jailField= new GUI_Jail("default", currentField.name, currentField.name, "description", Color.BLACK, Color.WHITE);
+                    GUI_Jail jailField;
+                    if (currentField.name.equals("Jail")) {
+                        jailField = new GUI_Jail("default", currentField.name, lang.getString("Jail"), lang.getString("JailDescription"), Color.BLACK, Color.WHITE);
+                    } else {
+                        jailField = new GUI_Jail("default", currentField.name, lang.getString("JailVisit"), lang.getString("JailVisitDescription"), Color.BLACK, Color.WHITE);
+                    }
                     guiFieldArray[i] = jailField;
                 }
             }
