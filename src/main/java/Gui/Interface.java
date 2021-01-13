@@ -258,7 +258,6 @@ public class Interface {
     public void displayChance(String input) {
 
         // It seems to work best calling both of these commands at the same time.
-        gui.setChanceCard(input);
         gui.displayChanceCard(input);
     }
 

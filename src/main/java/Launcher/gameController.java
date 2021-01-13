@@ -7,10 +7,6 @@ import Spil.ChanceCardFactory;
 import Spil.Fields.Field;
 import Spil.ChanceCards.*;
 
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class gameController {
@@ -71,8 +67,11 @@ public class gameController {
         drawAbleChanceCards = chanceCardFactory.getAllCards();
     }
 
-    // TODO: Write docstring
-    private void takeTurn(Player currentPlayer) throws Exception {
+    /**
+     * Most of the game logic. Handles an entire turn for the player.
+     * @param currentPlayer Player object which turn it is
+     */
+    private void takeTurn(Player currentPlayer) {
         gameInterface.displayMessage(lang.getString("PlayersTurn")+" "+currentPlayer.getName());
         if (currentPlayer.isInJail()) {
             // Jail logic here
@@ -85,32 +84,25 @@ public class gameController {
         }
 
 
-
-
-
-
         // Chance card logic
-        Integer[] values = {2,7,17,22, 33, 36};                          // Replace with logic for field group
-        List<Integer> intList = new ArrayList<>(Arrays.asList(values));  // Replace with logic for field group
-        if (intList.contains(currentPlayer.getPosition())) {
+        if (fieldArray[currentPlayer.getPosition()].fieldType == 5)  // Checks if its a chance field
+        {
             drawChanceCard(currentPlayer);
         }
 
-        // Checks if the field i buyable
+        // Buying field logic
         if (fieldArray[currentPlayer.getPosition()].fieldType == 1)  // Currently only works with properties
         {
             buyableField(currentPlayer);
 
         }
-
-
     }
 
-    private void drawChanceCard(Player player) throws Exception {
+    private void drawChanceCard(Player player) {
+        gameInterface.displayMessage(lang.getString("LandedOnChancecard"));
         ChanceCard drawedCard;
         int drawedCardNumber;
 
-        System.out.println(drawAbleChanceCards.length);
         if (drawAbleChanceCards.length > 1) {
             drawedCardNumber = ThreadLocalRandom.current().nextInt(0, drawAbleChanceCards.length+1);
             drawedCard = drawAbleChanceCards[drawedCardNumber];
@@ -130,16 +122,22 @@ public class gameController {
 
         switch (drawedCard.cardGroup){
             case 2:
+                gameInterface.displayChance(drawedCard.description);
                 player.addMoney(((ChanceCardChangeMoney) drawedCard).getMoneyChange());
+                gameInterface.setPlayerBalance(player);
                 break;
             case 3:
+                gameInterface.displayChance(drawedCard.description);
                 player.setPosition(((ChanceCardMovePlayerTo) drawedCard).getMoveTo());
+                gameInterface.movePlayer(player);
                 break;
             case 4:
+                gameInterface.displayChance(drawedCard.description);
                 player.setPosition(player.getPosition() + ((ChanceCardMovePlayer) drawedCard).getMovePlayer());
+                gameInterface.movePlayer(player);
                 break;
             default:
-                throw new Exception("Error in ChanceCard reader");
+                throw new RuntimeException("Error in ChanceCard reader");
         }
     }
 
