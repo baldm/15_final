@@ -31,8 +31,11 @@ public class test {
 
     private static void drawChanceCard(Player player) {
         ChanceCard drawedCard;
+        int drawedCardNumber;
+
+        System.out.println(drawAbleChanceCards.length);
         if (drawAbleChanceCards.length > 1) {
-            int drawedCardNumber = ThreadLocalRandom.current().nextInt(0, drawAbleChanceCards.length);
+            drawedCardNumber = ThreadLocalRandom.current().nextInt(0, drawAbleChanceCards.length+1);
             drawedCard = drawAbleChanceCards[drawedCardNumber];
             ChanceCard[] chanceCardsPlaceholder = drawAbleChanceCards.clone();
             drawAbleChanceCards = new ChanceCard[drawAbleChanceCards.length - 1];
@@ -51,10 +54,16 @@ public class test {
         switch (drawedCard.cardGroup){
             case 2:
                 player.addMoney(((ChanceCardChangeMoney) drawedCard).getMoneyChange());
+                break;
             case 3:
                 player.setPosition(((ChanceCardMovePlayerTo) drawedCard).getMoveTo());
+                break;
             case 4:
                 player.setPosition(player.getPosition() + ((ChanceCardMovePlayer) drawedCard).getMovePlayer());
+                break;
+            default:
+                throw new Exception("Error in ChanceCard reader");
+                break;
         }
     }
 }

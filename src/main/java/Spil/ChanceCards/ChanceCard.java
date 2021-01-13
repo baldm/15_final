@@ -6,11 +6,11 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class ChanceCard {
-    public static String cardName;
-    public static String description;
-    public static int cardID;
-    public static int cardGroup;
-    public static int cardCount;
+    public String cardName;
+    public String description;
+    public int cardID;
+    public int cardGroup;
+    public int cardCount;
 
 
 
