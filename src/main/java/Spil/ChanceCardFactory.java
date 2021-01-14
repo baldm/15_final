@@ -22,6 +22,13 @@ private ChanceCard[] allCards = new ChanceCard[0];
         for(int n = 0; n< input.length;n++){
             allCards[i++] = new ChanceCardChangeMoney(input[n],lang);
         }
+
+        input = getNames("getMoney/");
+        addCards();
+        for(int n = 0; n< input.length;n++){
+            allCards[i++] = new ChanceCardChangeMoney(input[n],lang);
+        }
+
         /**
          * MovePlayer
          */
@@ -38,6 +45,7 @@ private ChanceCard[] allCards = new ChanceCard[0];
         for(int n = 0; n< input.length;n++){
             allCards[i++] = new ChanceCardMovePlayerTo(input[n],lang);
         }
+
 
     }
     public ChanceCard[] getAllCards(){
