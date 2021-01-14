@@ -34,6 +34,7 @@ public class gameController {
         // Simple turn
         while (true) {
             for (Player player : playerArray) {
+                player.hasExtraTurn = 0;
                 game.takeTurn(player);
             }
         }
@@ -84,8 +85,15 @@ public class gameController {
             // Moves player
             movePlayer(currentPlayer, sumRolls + currentPlayer.getPosition());
             // Check for extra turn
-            if(extraturn){
+            if(extraturn && currentPlayer.hasExtraTurn < 2){
+                gameInterface.displayMessage(lang.getString("ExtraTurn"));
                 takeTurn(currentPlayer);
+                currentPlayer.hasExtraTurn += 1;
+            }else if(extraturn && currentPlayer.hasExtraTurn == 2){
+                // Third time 
+                gameInterface.displayMessage(lang.getString("ThirdExtraTurn"));
+                movePlayer(currentPlayer, 30);
+                currentPlayer.hasExtraTurn = 0;
             }
         }
 
