@@ -19,13 +19,20 @@ public class test {
 
         Player test = new Player("test",1000,0);
 
+        for (int i=0; i< allChanceCards.length;i++) {
+            System.out.println(allChanceCards[i].cardID);
+            System.out.println(allChanceCards[i].cardName);
+        }
+
+        /*
+        System.out.println(allChanceCards.length);
         System.out.println(test.getMoney());
         System.out.println(test.getPosition());
         drawChanceCard(test);
         System.out.println(test.getMoney());
         System.out.println(test.getPosition());
 
-
+*/
 
     }
 
