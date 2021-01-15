@@ -164,6 +164,8 @@ public class Interface {
         }
     }
 
+    // TODO: Create function to create descriptions...
+
 
     /**
      * Internal method for finding a player in the array of gui player objects
@@ -221,7 +223,7 @@ public class Interface {
      * @param args Strings seperated by comma
      */
     public String displayDropdown(String msg, String... args) {
-        return gui.getUserSelection(msg, args);
+        return gui.getUserSelection("\n\n\n"+msg, args);
     }
 
     /**
@@ -230,7 +232,7 @@ public class Interface {
      * @return String - Input value
      */
     public String displayEnterStringMsg(String msg) {
-        return gui.getUserString(msg);
+        return gui.getUserString("\n\n\n"+msg);
     }
 
     /**
@@ -240,7 +242,7 @@ public class Interface {
      * @return
      */
     public String displayMultiButton(String msg, String... args) {
-        return gui.getUserButtonPressed(msg, args);
+        return gui.getUserButtonPressed("\n\n\n"+msg, args);
     }
 
     /**
