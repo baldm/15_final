@@ -32,6 +32,9 @@ public class gameController {
             for (Player player : playerArray) {
                 player.hasExtraTurn = 0;
                 game.takeTurn(player);
+                if (player.hasExtraTurn > 0) {
+                    game.takeTurn(player);
+                }
             }
         }
     }
@@ -86,7 +89,6 @@ public class gameController {
             // Check for extra turn
             if(extraturn && currentPlayer.hasExtraTurn < 2){
                 gameInterface.displayMessage(lang.getString("ExtraTurn"));
-                takeTurn(currentPlayer);
                 currentPlayer.hasExtraTurn += 1;
             }else if(extraturn && currentPlayer.hasExtraTurn == 2){
                 // Third time 
