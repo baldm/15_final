@@ -17,15 +17,16 @@ private ChanceCard[] allCards = new ChanceCard[0];
         /**
          * ChangeMoney
          */
-        input = getNames("ChangeMoney/");
+        getNames("ChangeMoney/");
         addCards();
         for(int n = 0; n< input.length;n++){
             allCards[i++] = new ChanceCardChangeMoney(input[n],lang);
         }
+
         /**
          * MovePlayer
          */
-        input = getNames("MovePlayer/");
+        getNames("MovePlayer/");
         addCards();
         for(int n = 0; n< input.length;n++){
             allCards[i++] = new ChanceCardMovePlayer(input[n],lang);
@@ -33,23 +34,37 @@ private ChanceCard[] allCards = new ChanceCard[0];
         /**
          * MovePlayerTo
          */
-        input = getNames("MovePlayerTo/");
+        getNames("MovePlayerTo/");
         addCards();
         for(int n = 0; n< input.length;n++){
             allCards[i++] = new ChanceCardMovePlayerTo(input[n],lang);
+        }
+
+        /**
+         * Checking if multiple cards of each is needed
+         * Then implementing them in allCards
+         */
+        int length = allCards.length;
+        for(int n = 0; n<length; n++){
+            if(allCards[n].cardCount > 1){
+                for(int k=0;k<allCards[n].cardCount-1;k++){
+                    input = new String[1];
+                    input[0] = allCards[n].cardName;
+                    addCards();
+                    allCards[i++] = allCards[n];
+
+                }
+            }
         }
 
     }
     public ChanceCard[] getAllCards(){
         return allCards;
     }
-    private String[] getNames(String folderName){
+    private void getNames(String folderName){
 
         File allFields = new File("./ChanceCards/" + folderName);
-        String[] input = allFields.list();
-
-        return  input;
-
+        input = allFields.list();
 
 
     }

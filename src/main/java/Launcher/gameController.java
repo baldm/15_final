@@ -151,6 +151,12 @@ public class gameController {
                 player.setPosition(player.getPosition() + ((ChanceCardMovePlayer) drawedCard).getMovePlayer());
                 gameInterface.movePlayer(player);
                 break;
+            case 5:
+                for(int n=0;n< playerArray.length;n++){
+                    playerArray[n].addMoney(((ChanceCardChangeMoney) drawedCard).getMoneyChange());
+                    player.addMoney(((ChanceCardChangeMoney) drawedCard).getMoneyChange());
+                }
+                break;
             default:
                 throw new RuntimeException("Error in ChanceCard reader");
         }
