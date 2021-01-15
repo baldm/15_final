@@ -25,7 +25,7 @@ public class Interface {
         GUI_Field[] fields = new GUI_Field[]{};
 
         gui = new GUI(fields, Color.GRAY);
-        return displayMultiButtonMsg("Choose a language:", languages);
+        return displayDropdown("Choose a language:", languages);
     }
 
     /**
@@ -35,7 +35,7 @@ public class Interface {
      */
     public String[] initPlayerNames(Language lang) {
         // Asks for the amount of players in the game
-        String stringNumPlayers = displayMultiButtonMsg(lang.getString("EnterPlayerNumber"), "2", "3", "4", "5", "6");
+        String stringNumPlayers = displayDropdown(lang.getString("EnterPlayerNumber"), "2", "3", "4", "5", "6");
         int numPlayers = Integer.parseInt(stringNumPlayers);
 
         // Creates arrays to store player names and GUI player objects
@@ -45,7 +45,7 @@ public class Interface {
         // Loops over players
         for (int i = 0; i < numPlayers; i++) {
             playerArray[i] = displayEnterStringMsg(lang.getString("EnterPlayerName"));
-            String playerIcon = displayMultiButtonMsg(
+            String playerIcon = displayDropdown(
                     lang.getString("EnterPlayerIcon"),
                     lang.getString("Car"),
                     lang.getString("Racecar"),
@@ -160,6 +160,7 @@ public class Interface {
         // Adds players to the game
         for (GUI_Player gui_player : guiPlayerList) {
             gui.addPlayer(gui_player);
+            gui_player.getCar().setPosition(gui.getFields()[0]);
         }
     }
 
@@ -219,7 +220,7 @@ public class Interface {
      * @param msg String - A message before the choice
      * @param args Strings seperated by comma
      */
-    public String displayMultiButtonMsg(String msg, String... args) {
+    public String displayDropdown(String msg, String... args) {
         return gui.getUserSelection(msg, args);
     }
 
@@ -275,6 +276,21 @@ public class Interface {
         GUI_Field field = gui.getFields()[fieldID];     // Finds the field
         GUI_Street street = (GUI_Street) field;   // Changes the field to a street field
         street.setHotel(hotelBool);
+        setPlayerBalance(player); // Updates the gui balance of the player
+    }
+
+    public void setOwner(Player player, int fieldID) {
+        GUI_Field field = gui.getFields()[fieldID];     // Finds the field
+        GUI_Ownable guiField = (GUI_Ownable) field;   // Changes the field to a street field
+        guiField.setOwnerName(player.getName());
+        guiField.setBorder(guiPlayerList[player.getID()].getPrimaryColor());
+        setPlayerBalance(player); // Updates the gui balance of the player
+    }
+    public void removeOwner(Player player, int fieldID) {
+        GUI_Field field = gui.getFields()[fieldID];     // Finds the field
+        GUI_Ownable guiField = (GUI_Ownable) field;   // Changes the field to a street field
+        guiField.setOwnerName(null);
+        guiField.setBorder(Color.BLACK);
         setPlayerBalance(player); // Updates the gui balance of the player
     }
 
