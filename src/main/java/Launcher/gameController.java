@@ -204,6 +204,9 @@ public class gameController {
     }
 
     private void buyableField(Player player) {
+
+        
+
         gameInterface.displayMessage(lang.getString("LandedOnBuyableProperty"));
 
         // LOGIC
