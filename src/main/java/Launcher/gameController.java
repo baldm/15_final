@@ -7,10 +7,6 @@ import Spil.ChanceCardFactory;
 import Spil.Fields.Field;
 import Spil.ChanceCards.*;
 
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class gameController {
@@ -20,6 +16,7 @@ public class gameController {
     private Field[] fieldArray;
     private Dice diceOne = new Dice(6);
     private Dice diceTwo = new Dice(6);
+    private static boolean extraturn = false;
     private ChanceCard[] allChanceCards;
     private ChanceCard[] drawAbleChanceCards;
 
@@ -33,7 +30,11 @@ public class gameController {
         // Simple turn
         while (true) {
             for (Player player : playerArray) {
+                player.hasExtraTurn = 0;
                 game.takeTurn(player);
+                if (player.hasExtraTurn > 0) {
+                    game.takeTurn(player);
+                }
             }
         }
     }
@@ -63,7 +64,7 @@ public class gameController {
         }
 
         // Creates final game interface
-        gameInterface.gameInit(fieldArray);
+        gameInterface.gameInit(fieldArray, lang);
 
         //Creates ChanceCards
         ChanceCardFactory chanceCardFactory = new ChanceCardFactory(lang);
@@ -71,8 +72,11 @@ public class gameController {
         drawAbleChanceCards = chanceCardFactory.getAllCards();
     }
 
-    // TODO: Write docstring
-    private void takeTurn(Player currentPlayer) throws Exception {
+    /**
+     * Most of the game logic. Handles an entire turn for the player.
+     * @param currentPlayer Player object which turn it is
+     */
+    private void takeTurn(Player currentPlayer) {
         gameInterface.displayMessage(lang.getString("PlayersTurn")+" "+currentPlayer.getName());
         if (currentPlayer.isInJail()) {
             // Jail logic here
@@ -82,36 +86,38 @@ public class gameController {
             int sumRolls = diceRoll();
             // Moves player
             movePlayer(currentPlayer, sumRolls + currentPlayer.getPosition());
+            // Check for extra turn
+            if(extraturn && currentPlayer.hasExtraTurn < 2){
+                gameInterface.displayMessage(lang.getString("ExtraTurn"));
+                currentPlayer.hasExtraTurn += 1;
+            }else if(extraturn && currentPlayer.hasExtraTurn == 2){
+                // Third time 
+                gameInterface.displayMessage(lang.getString("ThirdExtraTurn"));
+                movePlayer(currentPlayer, 30);
+                currentPlayer.hasExtraTurn = 0;
+            }
         }
-
-
-
-
 
 
         // Chance card logic
-        Integer[] values = {2,7,17,22, 33, 36};                          // Replace with logic for field group
-        List<Integer> intList = new ArrayList<>(Arrays.asList(values));  // Replace with logic for field group
-        if (intList.contains(currentPlayer.getPosition())) {
+        if (fieldArray[currentPlayer.getPosition()].fieldType == 5)  // Checks if its a chance field
+        {
             drawChanceCard(currentPlayer);
         }
 
-        // Landed on buyable field logic
-        /*
-        if (true)  // Change to if fieldArray[currentPlayer.getPosition()].isBuyable() ??
+        // Buying field logic
+        if (fieldArray[currentPlayer.getPosition()].fieldType == 1)  // Currently only works with properties
         {
             buyableField(currentPlayer);
 
-        }*/
-
-
+        }
     }
 
-    private void drawChanceCard(Player player) throws Exception {
+    private void drawChanceCard(Player player) {
+        gameInterface.displayMessage(lang.getString("LandedOnChancecard"));
         ChanceCard drawedCard;
         int drawedCardNumber;
 
-        System.out.println(drawAbleChanceCards.length);
         if (drawAbleChanceCards.length > 1) {
             drawedCardNumber = ThreadLocalRandom.current().nextInt(0, drawAbleChanceCards.length+1);
             drawedCard = drawAbleChanceCards[drawedCardNumber];
@@ -131,13 +137,19 @@ public class gameController {
 
         switch (drawedCard.cardGroup){
             case 2:
+                gameInterface.displayChance(drawedCard.description);
                 player.addMoney(((ChanceCardChangeMoney) drawedCard).getMoneyChange());
+                gameInterface.setPlayerBalance(player);
                 break;
             case 3:
+                gameInterface.displayChance(drawedCard.description);
                 player.setPosition(((ChanceCardMovePlayerTo) drawedCard).getMoveTo());
+                gameInterface.movePlayer(player);
                 break;
             case 4:
+                gameInterface.displayChance(drawedCard.description);
                 player.setPosition(player.getPosition() + ((ChanceCardMovePlayer) drawedCard).getMovePlayer());
+                gameInterface.movePlayer(player);
                 break;
             case 5:
                 for(int n=0;n< playerArray.length;n++){
@@ -146,7 +158,7 @@ public class gameController {
                 }
                 break;
             default:
-                throw new Exception("Error in ChanceCard reader");
+                throw new RuntimeException("Error in ChanceCard reader");
         }
     }
 
@@ -154,32 +166,37 @@ public class gameController {
         gameInterface.displayMessage(lang.getString("LandedInJail"));
 
         if (player.getMoney() >= 1000) {
-            String choice = gameInterface.displayMultiButton("Vil du betale for at komme ud?", "Betal 1000 kr", "Nej"); // TODO: Change to support language
-            if (choice.equals("Betal 1000 kr")) {
+            String choice = gameInterface.displayMultiButton(lang.getString("JailQuestion"), lang.getString("JailPay"),lang.getString("JailNo")); // TODO: Bug here if not translated correctly
+            if (choice.contains("1000 kr")) {
                 player.addMoney(-1000);
                 gameInterface.setPlayerBalance(player);
                 player.setInJail(false);
                 player.hasBeenInJail = 0;
+                int sumRolls = diceRoll();
+                movePlayer(player, sumRolls + player.getPosition());
+
 
             } else {
-                gameInterface.displayMessage("Du skal rulle 2 ens for at komme ud");  // TODO: Change to support language
+                gameInterface.displayMessage(lang.getString("Jail2Equal"));
                 int sumRolls = diceRoll();
-                if (player.hasBeenInJail > 2) {
-                    gameInterface.displayMessage("Du har været i fængsel mere end 3 omgange\nHvis ikke du slår 2 ens nu skal du betale 1000 kr og rykke frem til summen af dit slag");  // TODO: Change to support language
+                if (player.hasBeenInJail >= 2) {
+                    gameInterface.displayMessage(lang.getString("Jail3Rounds"));
                 }
                 if (diceOne.getValue() == diceTwo.getValue()) {
-                    gameInterface.displayMessage("Du slå 2 ens og rykker frem til summen af terningerne");  // TODO: Change to support language
+                    gameInterface.displayMessage(lang.getString("Jail3RoundsDone"));
                     player.hasBeenInJail = 0;
                     player.setInJail(false);
                     movePlayer(player, sumRolls + player.getPosition());
 
-                } else if (player.hasBeenInJail > 2) {
-                    gameInterface.displayMessage("Du rykker frem til summen af slaget og betaler 1000 kr"); // TODO: Change to support language
+                } else if (player.hasBeenInJail >= 2) {
+                    gameInterface.displayMessage(lang.getString("JailPayedToExit"));
                     player.hasBeenInJail = 0;
                     player.setInJail(false);
+                    player.addMoney(-1000);
+                    gameInterface.setPlayerBalance(player);
                     movePlayer(player, sumRolls + player.getPosition());
                 } else {
-                    gameInterface.displayMessage("Du slog ikke 2 ens og bliver i fængsel"); // TODO: Change to support language
+                    gameInterface.displayMessage(lang.getString("JailStay"));
                     player.hasBeenInJail++;
                 }
             }
@@ -189,6 +206,53 @@ public class gameController {
     private void buyableField(Player player) {
         gameInterface.displayMessage(lang.getString("LandedOnBuyableProperty"));
 
+        // LOGIC
+        /*
+        1. check if field is available else see (4.)
+
+        2. Prompt buy screen
+
+        3. If bought add to players properties else (auction?)
+
+        4. Check owner of field, if self skip else (5.)
+
+        5. Pay rent to owner that is equivalent of the rent determined by houses on field.
+
+         */
+
+    }
+
+    private void endOfTurn(Player player) {
+        // pay rent
+
+        // prompt player if they wish to do anything to their plots or whatever
+
+        // prompt mortage
+
+    }
+
+    private void mortgage(Player player) {
+
+
+        /*
+        Man kan kun pansætte ubebyggende grunde
+
+        1. Vil du hæve pantsætning eller pantsætte noget
+
+        if hæve:
+                1. Hvilken grund vil du hæve pæntsætningen på
+                2. Det koster 10% mere end grunden
+                3. har man penge nok?
+                4. Overfør penge for at modtage property tilbage
+
+        else:
+            1. Sælg huse på grunden til banken
+            2. Få penge iforhold til hvad grunden er vær
+            3. Mærker grund som pæntsat
+
+
+
+         */
     }
 
     private int diceRoll() {
@@ -196,6 +260,14 @@ public class gameController {
 
         // Rolls dices
         int sumRolls = diceOne.Roll() + diceTwo.Roll();
+
+        // Check if dice roll the same
+        if(diceOne.getValue() == diceTwo.getValue()){
+            extraturn = true;
+        }else{
+            extraturn = false;
+        }
+
         // Displays dices and the result of dices on gui
         gameInterface.setBoardDice(diceOne.getValue(), diceTwo.getValue());
         gameInterface.displayMessage(lang.getString("DiceResult") + " " + diceOne.getValue() + " & " + diceTwo.getValue());
@@ -203,7 +275,7 @@ public class gameController {
     }
 
     private void movePlayer(Player player, int toPosition) {
-        gameInterface.removePlayer(player);
+        //gameInterface.removePlayer(player);
         player.setPosition(toPosition);
         gameInterface.movePlayer(player);
     }

@@ -9,6 +9,7 @@ public class Player {
     private int position = 0;
     private boolean isInJail = false;
     public int hasBeenInJail = 0;
+    public int hasExtraTurn = 0;
     private int id;
     private boolean[] ownsboth = new boolean[8];
 

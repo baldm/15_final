@@ -5,6 +5,7 @@ placeholder.java
 /.settings
 *.classpath
 *.project
+/.vscode
 
 # Compiled class file
 *.class
