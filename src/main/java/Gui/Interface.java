@@ -138,20 +138,10 @@ public class Interface {
                 }
                 case 4 -> {
                     switch (currentField.name) {
-                        case "Parking":
-                            guiFieldArray[i] = new GUI_Refuge("./Images/parking.PNG", currentField.name, lang.getString("Parking"), lang.getString("ParkingDescription"), Color.GRAY, Color.BLACK);
-                            break;
-                        case "START":
-                            guiFieldArray[i] = new GUI_Start("Start", "4000", lang.getString("StartDescription"), Color.RED, Color.BLACK);
-                            break;
-                        case "Indkomstskat":
-                            guiFieldArray[i] = new GUI_Tax(currentField.name, lang.getString("10or4000"), lang.getString("IndkomstskatDescription"), Color.GRAY, Color.BLACK);
-                            break;
-                        case "Statsskat":
-                            guiFieldArray[i] = new GUI_Tax(currentField.name, "2.000 kr", lang.getString("StatsskatDescription"), Color.GRAY, Color.BLACK);
-                            break;
-
-
+                        case "Parking" -> guiFieldArray[i] = new GUI_Refuge("./Images/parking.PNG", currentField.name, lang.getString("Parking"), lang.getString("ParkingDescription"), Color.GRAY, Color.BLACK);
+                        case "START" -> guiFieldArray[i] = new GUI_Start("Start", "4000", lang.getString("StartDescription"), Color.RED, Color.BLACK);
+                        case "Indkomstskat" -> guiFieldArray[i] = new GUI_Tax(currentField.name, lang.getString("10or4000"), lang.getString("IndkomstskatDescription"), Color.GRAY, Color.BLACK);
+                        case "Statsskat" -> guiFieldArray[i] = new GUI_Tax(currentField.name, "2.000 kr", lang.getString("StatsskatDescription"), Color.GRAY, Color.BLACK);
                     }
                 }
                 case 5 -> {
