@@ -116,25 +116,21 @@ public class Interface {
                 // Only here to avoid casting non properties to FieldProperty
             }
 
-            // Sorts types of field
+            // Sorts types of field into their respective class and values
             // TODO: Insert description into properties
             switch (currentField.fieldType) {
                 case 1 -> {
-                    GUI_Street streetField = new GUI_Street(currentField.name, String.valueOf(((FieldProperty) currentField).getPrice()), "Description", "0", curColor, Color.BLACK); //String.valueOf(((FieldProperty) currentField).getMortageValue())
-                    guiFieldArray[i] = streetField;
+                    guiFieldArray[i] = new GUI_Street(currentField.name, String.valueOf(((FieldProperty) currentField).getPrice()), "Description", "0", curColor, Color.BLACK); //String.valueOf(((FieldProperty) currentField).getMortageValue())
                 }
                 case 2 -> {
-                    GUI_Shipping shippingField = new GUI_Shipping("default", currentField.name, String.valueOf(((FieldScandlines) currentField).getPrice()), "description", "0", Color.CYAN, Color.BLACK);
-                    guiFieldArray[i] = shippingField;
+                    guiFieldArray[i] = new GUI_Shipping("default", currentField.name, String.valueOf(((FieldScandlines) currentField).getPrice()), "description", "0", Color.CYAN, Color.BLACK);
                 }
                 case 3 -> {
-                    GUI_Brewery breweryField;
                     if (currentField.name.equals("Squash")) {
-                        breweryField = new GUI_Brewery("./Images/squash.PNG", currentField.name, String.valueOf(((FieldSoda) currentField).getPrice()), "description", "0", Color.CYAN, Color.BLACK);
+                        guiFieldArray[i] = new GUI_Brewery("./Images/squash.PNG", currentField.name, String.valueOf(((FieldSoda) currentField).getPrice()), "description", "0", Color.CYAN, Color.BLACK);
                     } else {
-                        breweryField = new GUI_Brewery("./Images/cola.PNG", currentField.name, String.valueOf(((FieldSoda) currentField).getPrice()), "description", "0", Color.CYAN, Color.BLACK);
+                        guiFieldArray[i] = new GUI_Brewery("./Images/cola.PNG", currentField.name, String.valueOf(((FieldSoda) currentField).getPrice()), "description", "0", Color.CYAN, Color.BLACK);
                     }
-                    guiFieldArray[i] = breweryField;
                 }
                 case 4 -> {
                     switch (currentField.name) {
@@ -145,21 +141,17 @@ public class Interface {
                     }
                 }
                 case 5 -> {
-                    GUI_Chance chanceField = new GUI_Chance("?", lang.getString("ChanceCard"), lang.getString("ChanceCardDescription"), Color.BLACK, Color.GREEN);
-                    guiFieldArray[i] = chanceField;
+                    guiFieldArray[i] = new GUI_Chance("?", lang.getString("ChanceCard"), lang.getString("ChanceCardDescription"), Color.BLACK, Color.GREEN);
                 }
                 case 6 -> {
-                    GUI_Jail jailField;
                     if (currentField.name.equals("Jail")) {
-                        jailField = new GUI_Jail("default", currentField.name, lang.getString("Jail"), lang.getString("JailDescription"), Color.BLACK, Color.WHITE);
+                        guiFieldArray[i] = new GUI_Jail("default", currentField.name, lang.getString("Jail"), lang.getString("JailDescription"), Color.BLACK, Color.WHITE);
                     } else {
-                        jailField = new GUI_Jail("default", currentField.name, lang.getString("JailVisit"), lang.getString("JailVisitDescription"), Color.BLACK, Color.WHITE);
+                        guiFieldArray[i] = new GUI_Jail("default", currentField.name, lang.getString("JailVisit"), lang.getString("JailVisitDescription"), Color.BLACK, Color.WHITE);
                     }
-                    guiFieldArray[i] = jailField;
                 }
             }
         }
-
 
 
         // Creates final gui
