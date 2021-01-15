@@ -16,6 +16,7 @@ public class gameController {
     private Field[] fieldArray;
     private Dice diceOne = new Dice(6);
     private Dice diceTwo = new Dice(6);
+    private static boolean extraturn = false;
     private ChanceCard[] allChanceCards;
     private ChanceCard[] drawAbleChanceCards;
 
@@ -29,6 +30,7 @@ public class gameController {
         // Simple turn
         while (true) {
             for (Player player : playerArray) {
+                player.hasExtraTurn = 0;
                 game.takeTurn(player);
             }
         }
@@ -81,6 +83,17 @@ public class gameController {
             int sumRolls = diceRoll();
             // Moves player
             movePlayer(currentPlayer, sumRolls + currentPlayer.getPosition());
+            // Check for extra turn
+            if(extraturn && currentPlayer.hasExtraTurn < 2){
+                gameInterface.displayMessage(lang.getString("ExtraTurn"));
+                takeTurn(currentPlayer);
+                currentPlayer.hasExtraTurn += 1;
+            }else if(extraturn && currentPlayer.hasExtraTurn == 2){
+                // Third time 
+                gameInterface.displayMessage(lang.getString("ThirdExtraTurn"));
+                movePlayer(currentPlayer, 30);
+                currentPlayer.hasExtraTurn = 0;
+            }
         }
 
 
@@ -208,6 +221,14 @@ public class gameController {
 
         // Rolls dices
         int sumRolls = diceOne.Roll() + diceTwo.Roll();
+
+        // Check if dice roll the same
+        if(diceOne.getValue() == diceTwo.getValue()){
+            extraturn = true;
+        }else{
+            extraturn = false;
+        }
+
         // Displays dices and the result of dices on gui
         gameInterface.setBoardDice(diceOne.getValue(), diceTwo.getValue());
         gameInterface.displayMessage(lang.getString("DiceResult") + " " + diceOne.getValue() + " & " + diceTwo.getValue());
