@@ -99,24 +99,28 @@ public class Interface {
             */
 
             // Creates field color by field id
-            /* TODO: Add group id's
-            Color curColor = switch (currentField) {
-                case 0 -> Color.pink;
-                case 1 -> Color.CYAN;
-                case 2 -> Color.MAGENTA;
-                case 3 -> Color.ORANGE;
-                case 4 -> Color.RED;
-                case 5 -> Color.YELLOW;
-                case 6 -> Color.GREEN;
-                case 7 -> Color.BLUE;
-                default -> Color.WHITE;
-            };*/
+            Color curColor = null;
+            try {
+                curColor = switch (((FieldProperty) currentField).getGroupID()) {
+                    case 0 -> curColor = Color.BLUE;
+                    case 1 -> curColor = Color.ORANGE;
+                    case 2 -> curColor = Color.YELLOW;
+                    case 3 -> curColor = Color.GRAY;
+                    case 4 -> curColor = Color.RED;
+                    case 5 -> curColor = Color.WHITE;
+                    case 6 -> curColor = Color.PINK;
+                    case 7 -> curColor = Color.MAGENTA;
+                    default -> curColor = Color.WHITE;
+                };
+            } catch (ClassCastException e) {
+                // Only here to avoid casting non properties to FieldProperty
+            }
 
             // Sorts types of field
-            // TODO: FIX LANGUAGE
+            // TODO: Insert description into properties
             switch (currentField.fieldType) {
                 case 1 -> {
-                    GUI_Street streetField = new GUI_Street(currentField.name, String.valueOf(((FieldProperty) currentField).getPrice()), "description", "0", Color.WHITE, Color.BLACK); //String.valueOf(((FieldProperty) currentField).getMortageValue())
+                    GUI_Street streetField = new GUI_Street(currentField.name, String.valueOf(((FieldProperty) currentField).getPrice()), "Description", "0", curColor, Color.BLACK); //String.valueOf(((FieldProperty) currentField).getMortageValue())
                     guiFieldArray[i] = streetField;
                 }
                 case 2 -> {
