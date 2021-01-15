@@ -6,8 +6,8 @@ public class Account {
 
 
     private int balance;
-
     private int active_value;
+    private boolean bankrupt;
 
     public Account(int start_balance){
 
@@ -20,7 +20,18 @@ public class Account {
     public int getBalance(){ return this.balance; }
 
     //Tilføjer et beløb til balancen og checker om balancen er mindre end 0
-    public void addToBalance(int amount){ balance += amount;  }
+    public void addToBalance(int amount){
+        balance += amount;
+
+        // Check if the balance is bankrupt
+        if (balance >= 0) {
+            bankrupt = false;
+        } else {
+            bankrupt = true;
+        }
+    }
+
+    public boolean isBankrupt() {return bankrupt;}
 
     /**
      * Returns the total value of all properties owned by a player

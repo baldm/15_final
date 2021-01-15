@@ -115,4 +115,6 @@ public class Player {
     public void setInJail(boolean inJail) {
         isInJail = inJail;
     }
+
+    public boolean isBankrupt() {return account.isBankrupt();}
 }
