@@ -5,6 +5,8 @@ import Spil.Language;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 public class ChanceCardMovePlayerTo extends ChanceCard {
@@ -12,10 +14,11 @@ public class ChanceCardMovePlayerTo extends ChanceCard {
         private int moveTo;
     public ChanceCardMovePlayerTo(String fileName, Language language){
         try {
-            FileInputStream input = new FileInputStream("./ChanceCards/MovePlayerTo/"+ fileName);
+            FileInputStream stream = new FileInputStream("./ChanceCards/MovePlayerTo/"+ fileName);
 
             Properties prop = new Properties();
-            prop.load(input);
+
+            prop.load(new InputStreamReader(stream, StandardCharsets.UTF_8));
 
             cardName = language.getString("MoveField");
             cardID = Integer.parseInt(prop.getProperty("cardID"));
