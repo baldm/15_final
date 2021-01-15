@@ -7,10 +7,10 @@ public class RealEstateAgent {
      int[] fieldType1 = new int[0];
      int[] fieldType2 = new int[0];
 
-    public RealEstateAgent(Language lang) throws Exception {
+    public RealEstateAgent(Field[] fieldInput) {
         // Creates fields
-        FieldFactory factory = new FieldFactory(lang);
-        fieldArray = factory.getAllFields();
+
+        fieldArray = fieldInput;
         owners = new Player[fieldArray.length];
 
 
@@ -39,7 +39,7 @@ public class RealEstateAgent {
                     fieldType2[l] = i;
                     break;
                 default:
-                    throw new Exception("Error in field reader");
+                    break;
 
             }
         }
@@ -49,12 +49,13 @@ public class RealEstateAgent {
     public void setOwner(Player player,Field field) {
         owners[field.position] = player;
     }
+
     public Player checkOwner(Field field){
         return owners[field.position];
     }
 
 
-    public boolean isAllOwned(Field field) throws Exception {
+    public boolean isAllOwned(Field field) {
        switch (field.fieldType){
            case 1:
                for (int k=0;k<fieldType1.length;k +=3){
@@ -74,7 +75,7 @@ public class RealEstateAgent {
                }
 
            default:
-               throw new Exception("Error in field reader");
+               throw new RuntimeException("Error in field reader");
 
         }
     }
