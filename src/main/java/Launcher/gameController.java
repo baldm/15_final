@@ -173,7 +173,7 @@ public class gameController {
             } else {
                 gameInterface.displayMessage("Du skal rulle 2 ens for at komme ud");  // TODO: Change to support language
                 int sumRolls = diceRoll();
-                if (player.hasBeenInJail > 2) {
+                if (player.hasBeenInJail >= 2) {
                     gameInterface.displayMessage("Du har været i fængsel mere end 3 omgange\nHvis ikke du slår 2 ens nu skal du betale 1000 kr og rykke frem til summen af dit slag");  // TODO: Change to support language
                 }
                 if (diceOne.getValue() == diceTwo.getValue()) {
@@ -182,10 +182,12 @@ public class gameController {
                     player.setInJail(false);
                     movePlayer(player, sumRolls + player.getPosition());
 
-                } else if (player.hasBeenInJail > 2) {
+                } else if (player.hasBeenInJail >= 2) {
                     gameInterface.displayMessage("Du rykker frem til summen af slaget og betaler 1000 kr"); // TODO: Change to support language
                     player.hasBeenInJail = 0;
                     player.setInJail(false);
+                    player.addMoney(-1000);
+                    gameInterface.setPlayerBalance(player);
                     movePlayer(player, sumRolls + player.getPosition());
                 } else {
                     gameInterface.displayMessage("Du slog ikke 2 ens og bliver i fængsel"); // TODO: Change to support language
@@ -215,7 +217,36 @@ public class gameController {
     }
 
     private void endOfTurn(Player player) {
+        // pay rent
+
         // prompt player if they wish to do anything to their plots or whatever
+
+        // prompt mortage
+
+    }
+
+    private void mortgage(Player player) {
+
+
+        /*
+        Man kan kun pansætte ubebyggende grunde
+
+        1. Vil du hæve pantsætning eller pantsætte noget
+
+        if hæve:
+                1. Hvilken grund vil du hæve pæntsætningen på
+                2. Det koster 10% mere end grunden
+                3. har man penge nok?
+                4. Overfør penge for at modtage property tilbage
+
+        else:
+            1. Sælg huse på grunden til banken
+            2. Få penge iforhold til hvad grunden er vær
+            3. Mærker grund som pæntsat
+
+
+
+         */
     }
 
     private int diceRoll() {
