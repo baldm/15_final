@@ -160,8 +160,8 @@ public class gameController {
         gameInterface.displayMessage(lang.getString("LandedInJail"));
 
         if (player.getMoney() >= 1000) {
-            String choice = gameInterface.displayMultiButton("Vil du betale for at komme ud?", "Betal 1000 kr", "Nej"); // TODO: Change to support language
-            if (choice.equals("Betal 1000 kr")) {
+            String choice = gameInterface.displayMultiButton(lang.getString("JailQuestion"), lang.getString("JailPay"),lang.getString("JailNo")); // TODO: Bug here if not translated correctly
+            if (choice.contains("1000 kr")) {
                 player.addMoney(-1000);
                 gameInterface.setPlayerBalance(player);
                 player.setInJail(false);
@@ -171,26 +171,26 @@ public class gameController {
 
 
             } else {
-                gameInterface.displayMessage("Du skal rulle 2 ens for at komme ud");  // TODO: Change to support language
+                gameInterface.displayMessage(lang.getString("Jail2Equal"));
                 int sumRolls = diceRoll();
                 if (player.hasBeenInJail >= 2) {
-                    gameInterface.displayMessage("Du har været i fængsel mere end 3 omgange\nHvis ikke du slår 2 ens nu skal du betale 1000 kr og rykke frem til summen af dit slag");  // TODO: Change to support language
+                    gameInterface.displayMessage(lang.getString("Jail3Rounds"));
                 }
                 if (diceOne.getValue() == diceTwo.getValue()) {
-                    gameInterface.displayMessage("Du slå 2 ens og rykker frem til summen af terningerne");  // TODO: Change to support language
+                    gameInterface.displayMessage(lang.getString("Jail3RoundsDone"));
                     player.hasBeenInJail = 0;
                     player.setInJail(false);
                     movePlayer(player, sumRolls + player.getPosition());
 
                 } else if (player.hasBeenInJail >= 2) {
-                    gameInterface.displayMessage("Du rykker frem til summen af slaget og betaler 1000 kr"); // TODO: Change to support language
+                    gameInterface.displayMessage(lang.getString("JailPayedToExit"));
                     player.hasBeenInJail = 0;
                     player.setInJail(false);
                     player.addMoney(-1000);
                     gameInterface.setPlayerBalance(player);
                     movePlayer(player, sumRolls + player.getPosition());
                 } else {
-                    gameInterface.displayMessage("Du slog ikke 2 ens og bliver i fængsel"); // TODO: Change to support language
+                    gameInterface.displayMessage(lang.getString("JailStay"));
                     player.hasBeenInJail++;
                 }
             }
