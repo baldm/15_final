@@ -32,6 +32,9 @@ public class gameController {
             for (Player player : playerArray) {
                 player.hasExtraTurn = 0;
                 game.takeTurn(player);
+                if (player.hasExtraTurn > 0) {
+                    game.takeTurn(player);
+                }
             }
         }
     }
@@ -86,7 +89,6 @@ public class gameController {
             // Check for extra turn
             if(extraturn && currentPlayer.hasExtraTurn < 2){
                 gameInterface.displayMessage(lang.getString("ExtraTurn"));
-                takeTurn(currentPlayer);
                 currentPlayer.hasExtraTurn += 1;
             }else if(extraturn && currentPlayer.hasExtraTurn == 2){
                 // Third time 
@@ -149,6 +151,12 @@ public class gameController {
                 player.setPosition(player.getPosition() + ((ChanceCardMovePlayer) drawedCard).getMovePlayer());
                 gameInterface.movePlayer(player);
                 break;
+            case 5:
+                for(int n=0;n< playerArray.length;n++){
+                    playerArray[n].addMoney(((ChanceCardChangeMoney) drawedCard).getMoneyChange());
+                    player.addMoney(((ChanceCardChangeMoney) drawedCard).getMoneyChange());
+                }
+                break;
             default:
                 throw new RuntimeException("Error in ChanceCard reader");
         }
@@ -158,8 +166,8 @@ public class gameController {
         gameInterface.displayMessage(lang.getString("LandedInJail"));
 
         if (player.getMoney() >= 1000) {
-            String choice = gameInterface.displayMultiButton("Vil du betale for at komme ud?", "Betal 1000 kr", "Nej"); // TODO: Change to support language
-            if (choice.equals("Betal 1000 kr")) {
+            String choice = gameInterface.displayMultiButton(lang.getString("JailQuestion"), lang.getString("JailPay"),lang.getString("JailNo")); // TODO: Bug here if not translated correctly
+            if (choice.contains("1000 kr")) {
                 player.addMoney(-1000);
                 gameInterface.setPlayerBalance(player);
                 player.setInJail(false);
@@ -169,24 +177,26 @@ public class gameController {
 
 
             } else {
-                gameInterface.displayMessage("Du skal rulle 2 ens for at komme ud");  // TODO: Change to support language
+                gameInterface.displayMessage(lang.getString("Jail2Equal"));
                 int sumRolls = diceRoll();
-                if (player.hasBeenInJail > 2) {
-                    gameInterface.displayMessage("Du har været i fængsel mere end 3 omgange\nHvis ikke du slår 2 ens nu skal du betale 1000 kr og rykke frem til summen af dit slag");  // TODO: Change to support language
+                if (player.hasBeenInJail >= 2) {
+                    gameInterface.displayMessage(lang.getString("Jail3Rounds"));
                 }
                 if (diceOne.getValue() == diceTwo.getValue()) {
-                    gameInterface.displayMessage("Du slå 2 ens og rykker frem til summen af terningerne");  // TODO: Change to support language
+                    gameInterface.displayMessage(lang.getString("Jail3RoundsDone"));
                     player.hasBeenInJail = 0;
                     player.setInJail(false);
                     movePlayer(player, sumRolls + player.getPosition());
 
-                } else if (player.hasBeenInJail > 2) {
-                    gameInterface.displayMessage("Du rykker frem til summen af slaget og betaler 1000 kr"); // TODO: Change to support language
+                } else if (player.hasBeenInJail >= 2) {
+                    gameInterface.displayMessage(lang.getString("JailPayedToExit"));
                     player.hasBeenInJail = 0;
                     player.setInJail(false);
+                    player.addMoney(-1000);
+                    gameInterface.setPlayerBalance(player);
                     movePlayer(player, sumRolls + player.getPosition());
                 } else {
-                    gameInterface.displayMessage("Du slog ikke 2 ens og bliver i fængsel"); // TODO: Change to support language
+                    gameInterface.displayMessage(lang.getString("JailStay"));
                     player.hasBeenInJail++;
                 }
             }
@@ -213,7 +223,36 @@ public class gameController {
     }
 
     private void endOfTurn(Player player) {
+        // pay rent
+
         // prompt player if they wish to do anything to their plots or whatever
+
+        // prompt mortage
+
+    }
+
+    private void mortgage(Player player) {
+
+
+        /*
+        Man kan kun pansætte ubebyggende grunde
+
+        1. Vil du hæve pantsætning eller pantsætte noget
+
+        if hæve:
+                1. Hvilken grund vil du hæve pæntsætningen på
+                2. Det koster 10% mere end grunden
+                3. har man penge nok?
+                4. Overfør penge for at modtage property tilbage
+
+        else:
+            1. Sælg huse på grunden til banken
+            2. Få penge iforhold til hvad grunden er vær
+            3. Mærker grund som pæntsat
+
+
+
+         */
     }
 
     private int diceRoll() {
