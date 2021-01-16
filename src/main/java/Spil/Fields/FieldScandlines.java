@@ -12,6 +12,7 @@ public class FieldScandlines extends Field{
     private int[] rent;
     private int groupID;
     private int mortageValue;
+    private boolean isPledged;
 
 public FieldScandlines(String fileName){
     try {
