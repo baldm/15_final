@@ -7,6 +7,8 @@ import Spil.ChanceCardFactory;
 import Spil.Fields.Field;
 import Spil.ChanceCards.*;
 import Spil.Fields.FieldProperty;
+import Spil.Fields.FieldScandlines;
+import Spil.Fields.FieldSoda;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -112,11 +114,10 @@ public class gameController {
         }
 
         // Buying field logic
-        // TODO: Tilføj soda og scandlines
-        if (fieldArray[currentPlayer.getPosition()].fieldType == 1)  // Currently only works with properties
+        int currentFieldType = fieldArray[currentPlayer.getPosition()].fieldType;
+        if (currentFieldType == 1 || currentFieldType == 2 || currentFieldType == 3)
         {
             buyableField(currentPlayer);
-
         }
     }
 
@@ -210,19 +211,30 @@ public class gameController {
         }
     }
 
-    // TODO: DOCstring og comments
+    /**
+     * Full logic for if the player lands on a buyable field
+     * @param player - player object which landed on the field
+     */
     private void buyableField(Player player) {
 
         Field currentField = fieldArray[player.getPosition()];
         Player owner = estateAgent.checkOwner(currentField);
 
-
+        // Checks if the field is not owned
         if (owner == null) {
             gameInterface.displayMessage(lang.getString("LandedOnBuyableProperty"));
             String choice = gameInterface.displayMultiButton(lang.getString("WantToBuy"), lang.getString("Yes"), lang.getString("No"));
 
             if (choice.equals("Yes") || choice.equals("Ja")) {
-                player.addMoney(-((FieldProperty) currentField).getPrice());
+
+                // Casts the correct child class
+                switch (currentField.fieldType) {
+                    case 1 -> player.addMoney(-((FieldProperty) currentField).getPrice());
+                    case 2 -> player.addMoney(-((FieldScandlines) currentField).getPrice());
+                    case 3 -> player.addMoney(-((FieldSoda) currentField).getPrice());
+                }
+
+                // Sets owner of the field
                 estateAgent.setOwner(player, currentField);
                 gameInterface.setOwner(player, player.getPosition());
             }
@@ -230,27 +242,38 @@ public class gameController {
         } else if (owner == player) {
             // Landed on your own field, do nothing
         } else {
+
+            // Handles if the player doesnt own the field.
             gameInterface.displayMessage(lang.getString("LandedOnBoughtProperty"));
             int rent = 0;
             switch (currentField.fieldType) {
                 case 1:
+                    // Creates the rent from amount of houses
                     int amountHouses = ((FieldProperty) currentField).getHouseNumber();
                     rent = ((FieldProperty) currentField).getRent()[amountHouses];
                     break;
-                case 2:
+                case 2: // TODO: fix den her
+                    //int amountFerries = ((FieldScandlines) currentField).getRent();
+                    //rent = ((FieldScandlines) currentField).getRent()[amountFerries];
+                    break;
+                case 3:
 
+                    // Checks if all sodas are owned and finds the rent
+                    if (estateAgent.isAllOwned(currentField)) {
+                        gameInterface.displayMessage(lang.getString("SodaAllBought"));
+                        rent = (diceOne.getValue() + diceTwo.getValue())* 200;
+                    } else {
+                        gameInterface.displayMessage(lang.getString("SodaOneBought"));
+                        rent = (diceOne.getValue() + diceTwo.getValue())* 100;
+                    }
             }
-            if (currentField.fieldType == 1) {
 
-            }
-
-
+            // Pays the rent and updates the game.
             player.addMoney(- rent);
             owner.addMoney(rent);
             gameInterface.setPlayerBalance(player);
             gameInterface.setPlayerBalance(owner);
             gameInterface.displayMessage(lang.getString("PayedRent")+rent);
-            // TODO: Tilføj soda og scandlines
         }
     }
 
