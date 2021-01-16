@@ -29,14 +29,12 @@ public class gameController {
         game.gameInit();
 
 
-
-
         // Simple turn
         while (true) {
             for (Player player : playerArray) {
                 player.hasExtraTurn = 0;
                 game.takeTurn(player);
-                if (player.hasExtraTurn > 0) {
+                while (extraturn) {
                     game.takeTurn(player);
                 }
                 game.endOfTurn(player);
@@ -99,7 +97,7 @@ public class gameController {
             if(extraturn && currentPlayer.hasExtraTurn < 2){
                 gameInterface.displayMessage(lang.getString("ExtraTurn"));
                 currentPlayer.hasExtraTurn += 1;
-            }else if(extraturn && currentPlayer.hasExtraTurn == 2){
+            } else if(extraturn && currentPlayer.hasExtraTurn == 2){
                 // Third time
                 gameInterface.displayMessage(lang.getString("ThirdExtraTurn"));
                 movePlayer(currentPlayer, 30);
@@ -110,8 +108,18 @@ public class gameController {
 
 
         int currentFieldType = fieldArray[currentPlayer.getPosition()].fieldType;
-        // Buying field logic
 
+
+        // ORDER OF THESE ARE IMPORTANT,
+        // if order is changed some chance card logic will not work
+
+        // Chance card logic
+        if (currentFieldType == 5)  // Checks if its a chance field
+        {
+            drawChanceCard(currentPlayer);
+        }
+
+        // Buying field logic
         if (currentFieldType == 1 || currentFieldType == 2 || currentFieldType == 3)
         {
             buyableField(currentPlayer);
@@ -120,12 +128,6 @@ public class gameController {
         // Tax field logic
         if (currentFieldType == 4) {
             taxField(currentPlayer);
-        }
-
-        // Chance card logic
-        if (currentFieldType == 5)  // Checks if its a chance field
-        {
-            drawChanceCard(currentPlayer);
         }
 
     }
@@ -353,9 +355,9 @@ public class gameController {
             } else if (turnChoice.equals(turnChoices[1])) {
                 sellHouses(player);
             }else if (turnChoice.equals(turnChoices[2])) {
-                mortgage(player);
+                sellField(player);
             } else if (turnChoice.equals(turnChoices[3])) {
-                break;
+                mortgage(player);
             } else  {
                 break;
             }
@@ -407,8 +409,8 @@ public class gameController {
                 player.addMoney(-deltaHouseValue);
                 ((FieldProperty) buyField).setHouseNumber(5); // TODO: Check med jens om det her er rigtigt
 
-                gameInterface.setFieldHouses(buyField.fieldID, 0,player);
-                gameInterface.setFieldHotel(buyField.fieldID, true, player);
+                gameInterface.setFieldHouses(buyField.position, 0,player);
+                gameInterface.setFieldHotel(buyField.position, true, player);
                 gameInterface.setPlayerBalance(player);
             }
 
@@ -423,7 +425,7 @@ public class gameController {
                 player.addMoney(-deltaHouseValue);
                 ((FieldProperty) buyField).setHouseNumber(chosenHouseAmount);
 
-                gameInterface.setFieldHouses(buyField.fieldID, chosenHouseAmount,player);
+                gameInterface.setFieldHouses(buyField.position, chosenHouseAmount,player);
                 gameInterface.setPlayerBalance(player);
             }
         }
@@ -475,11 +477,53 @@ public class gameController {
 
         // TODO: Remove hotels also
         ((FieldProperty) sellField).setHouseNumber(chosenHouseAmount);
-        gameInterface.setFieldHouses(sellField.fieldID, (((FieldProperty) sellField).getHouseNumber()-chosenHouseAmount), player);
+        gameInterface.setFieldHouses(sellField.position, (((FieldProperty) sellField).getHouseNumber()-chosenHouseAmount), player);
 
 
     }
 
+    // TODO: TEST
+    private void sellField(Player player) {
+
+        Field[] ownedArray = estateAgent.getOwnedFields(player);
+
+        if (ownedArray.length == 0) {
+            gameInterface.displayMessage(lang.getString("NoOwnedFields"));
+            return;
+        }
+
+        String[] ownedArrayString = new String[ownedArray.length];
+
+        for (int i = 0; i < ownedArray.length; i++) {
+            ownedArrayString[i] = ownedArray[i].name;
+        }
+
+        // Select a field and find it
+        Field sellField = fieldFinder(gameInterface.displayDropdown(lang.getString("ChooseOwned"), ownedArrayString));
+        int houseAmount = 0;
+        if (sellField.fieldType == 1) {
+            houseAmount = ((FieldProperty) sellField).getHouseNumber();
+        }
+
+        if (houseAmount > 0) {
+            gameInterface.displayMessage(lang.getString("TooManyHouses"));
+            return;
+        }
+
+        int fieldPrice = switch (sellField.fieldType) {
+            case 1 -> ((FieldProperty) sellField).getPrice();
+            case 2 -> ((FieldScandlines) sellField).getPrice();
+            case 3 -> ((FieldSoda) sellField).getPrice();
+            default -> 0;
+        };
+
+        System.out.println(sellField.name);
+        player.addMoney(fieldPrice);
+        estateAgent.setOwner(null, sellField);
+        gameInterface.setOwner(null, sellField.position);
+        gameInterface.setPlayerBalance(player);
+
+    }
 
     private void mortgage(Player player) {
 
@@ -513,6 +557,7 @@ public class gameController {
         if(diceOne.getValue() == diceTwo.getValue()){
             extraturn = true;
         }else{
+            System.out.println("Extra turn is now false");
             extraturn = false;
         }
 
@@ -530,7 +575,9 @@ public class gameController {
 
     private Field fieldFinder(String fieldName) {
         for (Field field : fieldArray) {
-            if (field.name.equals(fieldName)) {return field;}
+            if (field.name.equals(fieldName)) {
+                return field;
+            }
         }
         return null;
     }

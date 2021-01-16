@@ -321,10 +321,17 @@ public class Interface {
     public void setOwner(Player player, int fieldID) {
         GUI_Field field = gui.getFields()[fieldID];     // Finds the field
         GUI_Ownable guiField = (GUI_Ownable) field;   // Changes the field to a street field
-        guiField.setOwnerName(player.getName());
-        guiField.setBorder(guiPlayerList[player.getID()].getPrimaryColor());
-        setPlayerBalance(player); // Updates the gui balance of the player
+
+        if (player == null) {
+            guiField.setBorder(Color.BLACK);
+            guiField.setOwnerName(" ");
+        } else {
+            guiField.setOwnerName(player.getName());
+            guiField.setBorder(guiPlayerList[player.getID()].getPrimaryColor());
+            setPlayerBalance(player); // Updates the gui balance of the player
+        }
     }
+
     public void removeOwner(Player player, int fieldID) {
         GUI_Field field = gui.getFields()[fieldID];     // Finds the field
         GUI_Ownable guiField = (GUI_Ownable) field;   // Changes the field to a street field
