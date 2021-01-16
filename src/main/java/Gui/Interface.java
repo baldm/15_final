@@ -182,8 +182,8 @@ public class Interface {
                         lang.getString("ThreeHouse")+ rent[3] +
                         lang.getString("FourHouse")+ rent[4] +
                          "\\n>> Hotel:___________" + rent[5] +
-                        lang.getString("HouseCost")+ "1000" + // TODO: Added price of house
-                        lang.getString("HotelCost")+ "1000"+
+                        lang.getString("HouseCost")+ ((FieldProperty) field).getHousePrice()+
+                        lang.getString("HotelCost")+ ((FieldProperty) field).getHousePrice()+
                         lang.getString("MortageValue")+ ((FieldProperty) field).getMortageValue();
             }
             case 2 -> {
