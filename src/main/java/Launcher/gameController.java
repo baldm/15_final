@@ -277,12 +277,11 @@ public class gameController {
                     int amountHouses = ((FieldProperty) currentField).getHouseNumber();
                     rent = ((FieldProperty) currentField).getRent()[amountHouses];
                     break;
-                case 2: // TODO: fix den her
-                    //int amountFerries = ((FieldScandlines) currentField).getRent();
-                    //rent = ((FieldScandlines) currentField).getRent()[amountFerries];
+                case 2:
+                    int amountFerries = estateAgent.ferriesOwned(owner);
+                    rent = ((FieldScandlines) currentField).getRent()[amountFerries];
                     break;
                 case 3:
-
                     // Checks if all sodas are owned and finds the rent
                     if (estateAgent.isAllOwned(currentField)) {
                         gameInterface.displayMessage(lang.getString("SodaAllBought"));
@@ -347,8 +346,31 @@ public class gameController {
         // prompt player if they wish to do anything to their plots or whatever
             // sell
             // buy houses
+        String[] turnChoices = {"Buy Houses", "Sell houses", "Mortgage houses", "Skip"}; // TODO: Translate
+        String turnChoice = gameInterface.displayDropdown(lang.getString("TurnChoice"));
+
+        if (turnChoice.equals(turnChoices[0])) {
+            buyHouses(player);
+        }
+
 
     }
+
+    // TODO: Forsæt
+    private void buyHouses(Player player) {
+        Field[] ownedArray = estateAgent.getOwnedFields(player);
+        String[] ownedArrayString = new String[ownedArray.length];
+
+        for (int i = 0; i < ownedArray.length; i++) {
+            if (estateAgent.isAllOwned(ownedArray[i])) {
+                ownedArrayString[i] = ownedArray[i].name;
+            }
+        }
+
+        gameInterface.displayDropdown(lang.getString("ChooseOwned"), ownedArrayString);
+
+    }
+
 
     private void mortgage(Player player) {
 
