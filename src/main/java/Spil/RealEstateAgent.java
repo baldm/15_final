@@ -97,20 +97,30 @@ public class RealEstateAgent {
     public boolean isAllOwned(Field field) {
        switch (field.fieldType){
            case 1:
-
-
-
-
-           case 2:
-               if(owners[field.position] != null && owners[fieldType2[0]].getID() == owners[fieldType2[1]].getID() && owners[fieldType2[0]].getID() == owners[fieldType2[2]].getID() && owners[fieldType2[0]].getID() == owners[fieldType2[3]].getID()){
-                   return true;
-               } else{
-                   return false;
+               boolean isTrue = false;
+               int input = ((FieldProperty) field).getGroupID();
+               for (int l = 1; l<fieldType1Sorted[input].length;l++){
+                   if (owners[fieldType1Sorted[input][l]].getID() ==
+                           owners[fieldType1Sorted[input][l-1]].getID() ){
+                       isTrue = true;
+                   }else{
+                       return false;
+                   }
                }
-
+               return isTrue;
            default:
-               throw new RuntimeException("Error. Not a buyable field");
+               throw new RuntimeException("Error. Not a Property field");
 
         }
+    }
+
+    public int ferriesOwned(Player player){
+        int ferriesOwned = 0;
+        for(int l =0; l< fieldType2.length;l++){
+            if(owners[fieldType2[l]].getID() == player.getID()){
+                ferriesOwned++;
+            }
+        }
+        return ferriesOwned;
     }
 }
