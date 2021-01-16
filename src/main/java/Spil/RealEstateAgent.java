@@ -138,7 +138,7 @@ public class RealEstateAgent {
         Field[] placeholder;
 
         for (int l = 0; l< input.length;l++){
-            if(owners[input[l]].getID() == player.getID()){
+            if(owners[input[l]] != null && owners[input[l]].getID() == player.getID()){
                 placeholder = ownedFields.clone();
                 ownedFields = new Field[ownedFields.length +1];
                 int k;
