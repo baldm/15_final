@@ -5,7 +5,6 @@ import Spil.Language;
 import Spil.Player;
 import gui_fields.*;
 import gui_main.GUI;
-import org.apache.commons.codec.language.bm.Lang;
 
 import java.awt.*;
 
@@ -118,7 +117,6 @@ public class Interface {
             }
 
             // Sorts types of field into their respective class and values
-            // TODO: Insert description into properties
             switch (currentField.fieldType) {
                 case 1 -> {
                     guiFieldArray[i] = new GUI_Street(currentField.name, String.valueOf(((FieldProperty) currentField).getPrice()), descGen(currentField, lang), "0", curColor, Color.BLACK); //String.valueOf(((FieldProperty) currentField).getMortageValue())
@@ -260,7 +258,7 @@ public class Interface {
      * @param args Strings seperated by comma
      */
     public String displayDropdown(String msg, String... args) {
-        return gui.getUserSelection(("\n\n\n"+msg), args);
+        return gui.getUserSelection((msg), args);
     }
 
     /**
