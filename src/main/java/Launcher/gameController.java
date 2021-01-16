@@ -210,6 +210,7 @@ public class gameController {
         /*
         1. check if field is available else see (4.)
 
+<<<<<<< Updated upstream
         2. Prompt buy screen
 
         3. If bought add to players properties else (auction?)
@@ -217,9 +218,34 @@ public class gameController {
         4. Check owner of field, if self skip else (5.)
 
         5. Pay rent to owner that is equivalent of the rent determined by houses on field.
+=======
+        } else if (owner == player) {
+            // Landed on your own field, do nothing
+        } else {
+            gameInterface.displayMessage(lang.getString("LandedOnBoughtProperty"));
+            int rent = 0;
+            switch (currentField.fieldType) {
+                case 1:
+                    int amountHouses = ((FieldProperty) currentField).getHouseNumber();
+                    rent = ((FieldProperty) currentField).getRent()[amountHouses];
+                    break;
+                case 2:
+
+            }
+            if (currentField.fieldType == 1) {
+
+            }
+>>>>>>> Stashed changes
 
          */
 
+            player.addMoney(- rent);
+            owner.addMoney(rent);
+            gameInterface.setPlayerBalance(player);
+            gameInterface.setPlayerBalance(owner);
+            gameInterface.displayMessage(lang.getString("PayedRent")+rent);
+            // TODO: Tilføj soda og scandlines
+        }
     }
 
     private void endOfTurn(Player player) {
