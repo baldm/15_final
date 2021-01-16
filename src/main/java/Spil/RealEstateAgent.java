@@ -56,7 +56,7 @@ public class RealEstateAgent {
 
         }
 
-        fieldType1Sorted = new int[totalGroupNumber][];
+        fieldType1Sorted = new int[totalGroupNumber][0];
 
 
 
