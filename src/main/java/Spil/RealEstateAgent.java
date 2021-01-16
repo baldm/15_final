@@ -66,8 +66,13 @@ public class RealEstateAgent {
                        }else{
                            return false;
                        }
-                   }
-                   if(field.fieldID < k+3  ){
+                   } else if(k==0){
+                       if(owners[field.position] != null && owners[fieldType1[k]].getID() == owners[fieldType1[k+1]].getID()){
+                           return true;
+                       }else{
+                           return false;
+                       }
+                   }else if(field.fieldID < k+3  ){
                        if(owners[field.position] != null && owners[fieldType1[k]].getID() == owners[fieldType1[k+1]].getID() && owners[fieldType1[k]].getID() == owners[fieldType1[k+2]].getID()){
                            return true;
                        } else {
