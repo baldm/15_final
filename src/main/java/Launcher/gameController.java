@@ -347,7 +347,7 @@ public class gameController {
             // sell
             // buy houses
         String[] turnChoices = {"Buy Houses", "Sell houses", "Mortgage houses", "Skip"}; // TODO: Translate
-        String turnChoice = gameInterface.displayDropdown(lang.getString("TurnChoice"));
+        String turnChoice = gameInterface.displayDropdown(lang.getString("TurnChoice"), turnChoices);
 
         if (turnChoice.equals(turnChoices[0])) {
             buyHouses(player);
@@ -359,6 +359,12 @@ public class gameController {
     // TODO: Forsæt
     private void buyHouses(Player player) {
         Field[] ownedArray = estateAgent.getOwnedFields(player);
+
+        if (ownedArray == null) {
+            gameInterface.displayMessage(lang.getString("NoOwnedFields"));
+            return;
+        }
+
         String[] ownedArrayString = new String[ownedArray.length];
 
         for (int i = 0; i < ownedArray.length; i++) {
