@@ -58,7 +58,15 @@ public class RealEstateAgent {
     public boolean isAllOwned(Field field) {
        switch (field.fieldType){
            case 1:
+
                for (int k=0;k<fieldType1.length;k +=3){
+                   if(k+3 < fieldType1.length){
+                       if(owners[field.position] != null && owners[fieldType1[k]].getID() == owners[fieldType1[k+1]].getID()){
+                           return true;
+                       }else{
+                           return false;
+                       }
+                   }
                    if(field.fieldID < k+3  ){
                        if(owners[field.position] != null && owners[fieldType1[k]].getID() == owners[fieldType1[k+1]].getID() && owners[fieldType1[k]].getID() == owners[fieldType1[k+2]].getID()){
                            return true;
