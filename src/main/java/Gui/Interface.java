@@ -165,7 +165,12 @@ public class Interface {
         }
     }
 
-    // TODO: Create function to create descriptions...
+    /**
+     * Helper function to generate descriptions for ownable fields on the gui
+     * @param field - The field object
+     * @param lang - the language object
+     * @return
+     */
     private String descGen(Field field, Language lang) {
 
         switch (field.fieldType) {
@@ -195,8 +200,6 @@ public class Interface {
                         lang.getString("MortageValue") + ((FieldSoda) field).getMortageValue();
             }
         }
-
-
 
         return null;
     }
