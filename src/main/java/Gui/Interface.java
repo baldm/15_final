@@ -5,6 +5,7 @@ import Spil.Language;
 import Spil.Player;
 import gui_fields.*;
 import gui_main.GUI;
+import org.apache.commons.codec.language.bm.Lang;
 
 import java.awt.*;
 
@@ -120,16 +121,16 @@ public class Interface {
             // TODO: Insert description into properties
             switch (currentField.fieldType) {
                 case 1 -> {
-                    guiFieldArray[i] = new GUI_Street(currentField.name, String.valueOf(((FieldProperty) currentField).getPrice()), "Description", "0", curColor, Color.BLACK); //String.valueOf(((FieldProperty) currentField).getMortageValue())
+                    guiFieldArray[i] = new GUI_Street(currentField.name, String.valueOf(((FieldProperty) currentField).getPrice()), descGen(currentField, lang), "0", curColor, Color.BLACK); //String.valueOf(((FieldProperty) currentField).getMortageValue())
                 }
                 case 2 -> {
-                    guiFieldArray[i] = new GUI_Shipping("default", currentField.name, String.valueOf(((FieldScandlines) currentField).getPrice()), "description", "0", Color.CYAN, Color.BLACK);
+                    guiFieldArray[i] = new GUI_Shipping("default", currentField.name, String.valueOf(((FieldScandlines) currentField).getPrice()), descGen(currentField, lang), "0", Color.CYAN, Color.BLACK);
                 }
                 case 3 -> {
                     if (currentField.name.equals("Squash")) {
-                        guiFieldArray[i] = new GUI_Brewery("./Images/squash.PNG", currentField.name, String.valueOf(((FieldSoda) currentField).getPrice()), "description", "0", Color.CYAN, Color.BLACK);
+                        guiFieldArray[i] = new GUI_Brewery("./Images/squash.PNG", currentField.name, String.valueOf(((FieldSoda) currentField).getPrice()), descGen(currentField, lang), "0", Color.CYAN, Color.BLACK);
                     } else {
-                        guiFieldArray[i] = new GUI_Brewery("./Images/cola.PNG", currentField.name, String.valueOf(((FieldSoda) currentField).getPrice()), "description", "0", Color.CYAN, Color.BLACK);
+                        guiFieldArray[i] = new GUI_Brewery("./Images/cola.PNG", currentField.name, String.valueOf(((FieldSoda) currentField).getPrice()), descGen(currentField, lang), "0", Color.CYAN, Color.BLACK);
                     }
                 }
                 case 4 -> {
@@ -165,7 +166,40 @@ public class Interface {
     }
 
     // TODO: Create function to create descriptions...
+    private String descGen(Field field, Language lang) {
 
+        switch (field.fieldType) {
+            case 1 -> {
+                int[] rent = ((FieldProperty) field).getRent();
+                return lang.getString("RentOf") + rent[0] +
+                        lang.getString("OneHouse") + rent[1] +
+                        lang.getString("TwoHouse")+ rent[2] +
+                        lang.getString("ThreeHouse")+ rent[3] +
+                        lang.getString("FourHouse")+ rent[4] +
+                         "\\n>> Hotel:___________" + rent[5] +
+                        lang.getString("HouseCost")+ "1000" + // TODO: Added price of house
+                        lang.getString("HotelCost")+ "1000"+
+                        lang.getString("MortageValue")+ ((FieldProperty) field).getMortageValue();
+            }
+            case 2 -> {
+                int[] rent = ((FieldScandlines) field).getRent();
+                return lang.getString("RentFerry") + rent[0] +
+                        lang.getString("TwoFerry") + rent[1] +
+                        lang.getString("ThreeFerry") + rent[2] +
+                        lang.getString("FourFerry") + rent[3] +
+                        lang.getString("MortageValue")+ ((FieldScandlines) field).getMortageValue();
+            }
+            case 3 -> {
+                return  lang.getString("SodaDescription")+
+                        "\n\n\n"+
+                        lang.getString("MortageValue") + ((FieldSoda) field).getMortageValue();
+            }
+        }
+
+
+
+        return null;
+    }
 
     /**
      * Internal method for finding a player in the array of gui player objects
@@ -223,7 +257,7 @@ public class Interface {
      * @param args Strings seperated by comma
      */
     public String displayDropdown(String msg, String... args) {
-        return gui.getUserSelection("\n\n\n"+msg, args);
+        return gui.getUserSelection(("\n\n\n"+msg), args);
     }
 
     /**
@@ -242,7 +276,7 @@ public class Interface {
      * @return
      */
     public String displayMultiButton(String msg, String... args) {
-        return gui.getUserButtonPressed("\n\n\n"+msg, args);
+        return gui.getUserButtonPressed(("\n\n\n"+msg), args);
     }
 
     /**
