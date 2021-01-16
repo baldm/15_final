@@ -101,7 +101,7 @@ public class RealEstateAgent {
                int input = ((FieldProperty) field).getGroupID();
                for (int l = 1; l<fieldType1Sorted[input].length;l++){
                    if (owners[fieldType1Sorted[input][l]] != null &&
-                           owners[fieldType1Sorted[input][l-1]] == null &&
+                           owners[fieldType1Sorted[input][l-1]] != null &&
                            owners[fieldType1Sorted[input][l]].getID() ==
                            owners[fieldType1Sorted[input][l-1]].getID() ){
                        isTrue = true;
