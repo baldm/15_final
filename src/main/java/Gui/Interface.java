@@ -290,6 +290,8 @@ public class Interface {
 
         // It seems to work best calling both of these commands at the same time.
         gui.displayChanceCard(input);
+        displayMessage("  ");
+        gui.displayChanceCard();
     }
 
     /**

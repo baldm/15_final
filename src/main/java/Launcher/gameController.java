@@ -107,18 +107,29 @@ public class gameController {
         }
 
 
-        // Chance card logic
-        if (fieldArray[currentPlayer.getPosition()].fieldType == 5)  // Checks if its a chance field
-        {
-            drawChanceCard(currentPlayer);
-        }
 
-        // Buying field logic
         int currentFieldType = fieldArray[currentPlayer.getPosition()].fieldType;
+        // Buying field logic
+
         if (currentFieldType == 1 || currentFieldType == 2 || currentFieldType == 3)
         {
             buyableField(currentPlayer);
         }
+
+        // Tax field logic
+        if (currentFieldType == 4) {
+            taxField(currentPlayer);
+        }
+
+        // Chance card logic
+        if (currentFieldType == 5)  // Checks if its a chance field
+        {
+            drawChanceCard(currentPlayer);
+        }
+
+        endOfTurn(currentPlayer);
+
+
     }
 
     private void drawChanceCard(Player player) {
@@ -173,8 +184,12 @@ public class gameController {
     private void jailTurn(Player player) {
         gameInterface.displayMessage(lang.getString("LandedInJail"));
 
+        // Checks if the player has enough funds to pay
         if (player.getMoney() >= 1000) {
+            // Asks if they want to pay
             String choice = gameInterface.displayMultiButton(lang.getString("JailQuestion"), lang.getString("JailPay"),lang.getString("JailNo")); // TODO: Bug here if not translated correctly
+
+            // Handles pay to exit
             if (choice.contains("1000 kr")) {
                 player.addMoney(-1000);
                 gameInterface.setPlayerBalance(player);
@@ -182,32 +197,38 @@ public class gameController {
                 player.hasBeenInJail = 0;
                 int sumRolls = diceRoll();
                 movePlayer(player, sumRolls + player.getPosition());
-
-
-            } else {
-                gameInterface.displayMessage(lang.getString("Jail2Equal"));
-                int sumRolls = diceRoll();
-                if (player.hasBeenInJail >= 2) {
-                    gameInterface.displayMessage(lang.getString("Jail3Rounds"));
-                }
-                if (diceOne.getValue() == diceTwo.getValue()) {
-                    gameInterface.displayMessage(lang.getString("Jail3RoundsDone"));
-                    player.hasBeenInJail = 0;
-                    player.setInJail(false);
-                    movePlayer(player, sumRolls + player.getPosition());
-
-                } else if (player.hasBeenInJail >= 2) {
-                    gameInterface.displayMessage(lang.getString("JailPayedToExit"));
-                    player.hasBeenInJail = 0;
-                    player.setInJail(false);
-                    player.addMoney(-1000);
-                    gameInterface.setPlayerBalance(player);
-                    movePlayer(player, sumRolls + player.getPosition());
-                } else {
-                    gameInterface.displayMessage(lang.getString("JailStay"));
-                    player.hasBeenInJail++;
-                }
+                return; // Stops method
             }
+        }
+
+        // Handles if player does not pay
+        gameInterface.displayMessage(lang.getString("Jail2Equal"));
+        int sumRolls = diceRoll();
+
+        // Checks if the player has been in jail for 3 turns
+        if (player.hasBeenInJail >= 2) {
+            gameInterface.displayMessage(lang.getString("Jail3Rounds"));
+        }
+        // Checks if they rolled the same value
+        if (diceOne.getValue() == diceTwo.getValue()) {
+            gameInterface.displayMessage(lang.getString("Jail3RoundsDone"));
+            player.hasBeenInJail = 0;
+            player.setInJail(false);
+            movePlayer(player, sumRolls + player.getPosition());
+
+            // Handles if player has been in jail to long
+        } else if (player.hasBeenInJail >= 2) {
+            gameInterface.displayMessage(lang.getString("JailPayedToExit"));
+            player.hasBeenInJail = 0;
+            player.setInJail(false);
+            player.addMoney(-1000);
+            gameInterface.setPlayerBalance(player);
+            movePlayer(player, sumRolls + player.getPosition());
+        } else {
+
+            // Handles staying in jail
+            gameInterface.displayMessage(lang.getString("JailStay"));
+            player.hasBeenInJail++;
         }
     }
 
@@ -277,11 +298,51 @@ public class gameController {
         }
     }
 
+    private void taxField(Player player) {
+        Field currentField = fieldArray[player.getPosition()];
+
+        // Switch between the type of tax field
+        switch (currentField.name) {
+
+            case "Indkomstskat":
+                gameInterface.displayMessage(lang.getString("IndkomstskatDescription"));
+
+                // Dialog for the player choice
+                String choice = gameInterface.displayMultiButton(lang.getString("IndkomstskatChoice"), "10%", "4.000 kr");
+                if (choice.equals("10%")) {
+
+                    // Taxes the player 10 %
+                    int tenprocent = (int) (((player.getMoney()/100)*0.1));
+                    tenprocent = tenprocent *100;
+                    player.addMoney(-tenprocent);
+                    gameInterface.setPlayerBalance(player);
+                } else {
+
+                    // Taxes the player 4000
+                    player.addMoney(-4000);
+                    gameInterface.setPlayerBalance(player);
+                }
+                break;
+
+            case "Statsskat":
+                // Taxes the player 2000
+                gameInterface.displayMessage(lang.getString("StatsskatDescription"));
+                player.addMoney(-2000);
+                gameInterface.setPlayerBalance(player);
+                break;
+            default:
+                break;
+        }
+
+    }
+
     private void endOfTurn(Player player) {
+        // Check if player is in the negatives of the monies
+        // prompt mortage
 
         // prompt player if they wish to do anything to their plots or whatever
 
-        // prompt mortage
+
 
     }
 
