@@ -181,6 +181,10 @@ public class gameController {
         }
     }
 
+    /**
+     * Handles the logic for a player in jail.
+     * @param player - Player object
+     */
     private void jailTurn(Player player) {
         gameInterface.displayMessage(lang.getString("LandedInJail"));
 
@@ -341,8 +345,8 @@ public class gameController {
         // prompt mortage
 
         // prompt player if they wish to do anything to their plots or whatever
-
-
+            // sell
+            // buy houses
 
     }
 
@@ -364,8 +368,6 @@ public class gameController {
             1. Sælg huse på grunden til banken
             2. Få penge iforhold til hvad grunden er vær
             3. Mærker grund som pæntsat
-
-
 
          */
     }
