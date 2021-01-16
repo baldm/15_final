@@ -5,6 +5,7 @@ import Spil.Language;
 import Spil.Player;
 import gui_fields.*;
 import gui_main.GUI;
+import org.apache.commons.codec.language.bm.Lang;
 
 import java.awt.*;
 
@@ -25,7 +26,7 @@ public class Interface {
         GUI_Field[] fields = new GUI_Field[]{};
 
         gui = new GUI(fields, Color.GRAY);
-        return displayMultiButtonMsg("Choose a language:", languages);
+        return displayDropdown("Choose a language:", languages);
     }
 
     /**
@@ -35,7 +36,7 @@ public class Interface {
      */
     public String[] initPlayerNames(Language lang) {
         // Asks for the amount of players in the game
-        String stringNumPlayers = displayMultiButtonMsg(lang.getString("EnterPlayerNumber"), "2", "3", "4", "5", "6");
+        String stringNumPlayers = displayDropdown(lang.getString("EnterPlayerNumber"), "2", "3", "4", "5", "6");
         int numPlayers = Integer.parseInt(stringNumPlayers);
 
         // Creates arrays to store player names and GUI player objects
@@ -45,7 +46,7 @@ public class Interface {
         // Loops over players
         for (int i = 0; i < numPlayers; i++) {
             playerArray[i] = displayEnterStringMsg(lang.getString("EnterPlayerName"));
-            String playerIcon = displayMultiButtonMsg(
+            String playerIcon = displayDropdown(
                     lang.getString("EnterPlayerIcon"),
                     lang.getString("Car"),
                     lang.getString("Racecar"),
@@ -116,55 +117,42 @@ public class Interface {
                 // Only here to avoid casting non properties to FieldProperty
             }
 
-            // Sorts types of field
+            // Sorts types of field into their respective class and values
             // TODO: Insert description into properties
             switch (currentField.fieldType) {
                 case 1 -> {
-                    GUI_Street streetField = new GUI_Street(currentField.name, String.valueOf(((FieldProperty) currentField).getPrice()), "Description", "0", curColor, Color.BLACK); //String.valueOf(((FieldProperty) currentField).getMortageValue())
-                    guiFieldArray[i] = streetField;
+                    guiFieldArray[i] = new GUI_Street(currentField.name, String.valueOf(((FieldProperty) currentField).getPrice()), descGen(currentField, lang), "0", curColor, Color.BLACK); //String.valueOf(((FieldProperty) currentField).getMortageValue())
                 }
                 case 2 -> {
-                    GUI_Shipping shippingField = new GUI_Shipping("default", currentField.name, String.valueOf(((FieldScandlines) currentField).getPrice()), "description", "0", Color.CYAN, Color.BLACK);
-                    guiFieldArray[i] = shippingField;
+                    guiFieldArray[i] = new GUI_Shipping("default", currentField.name, String.valueOf(((FieldScandlines) currentField).getPrice()), descGen(currentField, lang), "0", Color.CYAN, Color.BLACK);
                 }
                 case 3 -> {
-                    GUI_Brewery breweryField;
                     if (currentField.name.equals("Squash")) {
-                        breweryField = new GUI_Brewery("./Images/squash.PNG", currentField.name, String.valueOf(((FieldSoda) currentField).getPrice()), "description", "0", Color.CYAN, Color.BLACK);
+                        guiFieldArray[i] = new GUI_Brewery("./Images/squash.PNG", currentField.name, String.valueOf(((FieldSoda) currentField).getPrice()), descGen(currentField, lang), "0", Color.CYAN, Color.BLACK);
                     } else {
-                        breweryField = new GUI_Brewery("./Images/cola.PNG", currentField.name, String.valueOf(((FieldSoda) currentField).getPrice()), "description", "0", Color.CYAN, Color.BLACK);
+                        guiFieldArray[i] = new GUI_Brewery("./Images/cola.PNG", currentField.name, String.valueOf(((FieldSoda) currentField).getPrice()), descGen(currentField, lang), "0", Color.CYAN, Color.BLACK);
                     }
-                    guiFieldArray[i] = breweryField;
                 }
                 case 4 -> {
-                    if (currentField.name.equals("Parking")) {
-                        GUI_Refuge specialField = new GUI_Refuge("./Images/parking.PNG", currentField.name, lang.getString("Parking"), lang.getString("ParkingDescription"), Color.GRAY, Color.BLACK);
-                        guiFieldArray[i] = specialField;
-                    } else if (currentField.name.equals("START")){
-                        GUI_Start specialField = new GUI_Start("Start", "4000", lang.getString("StartDescription"), Color.RED, Color.BLACK);
-                        guiFieldArray[i] = specialField;
-                    }
-                    else {
-                        GUI_Tax specialField = new GUI_Tax(currentField.name, "placeholder", "description", Color.GRAY, Color.BLACK);
-                        guiFieldArray[i] = specialField;
+                    switch (currentField.name) {
+                        case "Parking" -> guiFieldArray[i] = new GUI_Refuge("./Images/parking.PNG", currentField.name, lang.getString("Parking"), lang.getString("ParkingDescription"), Color.GRAY, Color.BLACK);
+                        case "START" -> guiFieldArray[i] = new GUI_Start("Start", "4000", lang.getString("StartDescription"), Color.RED, Color.BLACK);
+                        case "Indkomstskat" -> guiFieldArray[i] = new GUI_Tax(currentField.name, lang.getString("10or4000"), lang.getString("IndkomstskatDescription"), Color.GRAY, Color.BLACK);
+                        case "Statsskat" -> guiFieldArray[i] = new GUI_Tax(currentField.name, "2.000 kr", lang.getString("StatsskatDescription"), Color.GRAY, Color.BLACK);
                     }
                 }
                 case 5 -> {
-                    GUI_Chance chanceField = new GUI_Chance("?", lang.getString("ChanceCard"), lang.getString("ChanceCardDescription"), Color.BLACK, Color.GREEN);
-                    guiFieldArray[i] = chanceField;
+                    guiFieldArray[i] = new GUI_Chance("?", lang.getString("ChanceCard"), lang.getString("ChanceCardDescription"), Color.BLACK, Color.GREEN);
                 }
                 case 6 -> {
-                    GUI_Jail jailField;
                     if (currentField.name.equals("Jail")) {
-                        jailField = new GUI_Jail("default", currentField.name, lang.getString("Jail"), lang.getString("JailDescription"), Color.BLACK, Color.WHITE);
+                        guiFieldArray[i] = new GUI_Jail("default", currentField.name, lang.getString("Jail"), lang.getString("JailDescription"), Color.BLACK, Color.WHITE);
                     } else {
-                        jailField = new GUI_Jail("default", currentField.name, lang.getString("JailVisit"), lang.getString("JailVisitDescription"), Color.BLACK, Color.WHITE);
+                        guiFieldArray[i] = new GUI_Jail("default", currentField.name, lang.getString("JailVisit"), lang.getString("JailVisitDescription"), Color.BLACK, Color.WHITE);
                     }
-                    guiFieldArray[i] = jailField;
                 }
             }
         }
-
 
 
         // Creates final gui
@@ -173,9 +161,48 @@ public class Interface {
         // Adds players to the game
         for (GUI_Player gui_player : guiPlayerList) {
             gui.addPlayer(gui_player);
+            gui_player.getCar().setPosition(gui.getFields()[0]);
         }
     }
 
+    /**
+     * Helper function to generate descriptions for ownable fields on the gui
+     * @param field - The field object
+     * @param lang - the language object
+     * @return
+     */
+    private String descGen(Field field, Language lang) {
+
+        switch (field.fieldType) {
+            case 1 -> {
+                int[] rent = ((FieldProperty) field).getRent();
+                return lang.getString("RentOf") + rent[0] +
+                        lang.getString("OneHouse") + rent[1] +
+                        lang.getString("TwoHouse")+ rent[2] +
+                        lang.getString("ThreeHouse")+ rent[3] +
+                        lang.getString("FourHouse")+ rent[4] +
+                         "\\n>> Hotel:___________" + rent[5] +
+                        lang.getString("HouseCost")+ ((FieldProperty) field).getHousePrice()+
+                        lang.getString("HotelCost")+ ((FieldProperty) field).getHousePrice()+
+                        lang.getString("MortageValue")+ ((FieldProperty) field).getMortageValue();
+            }
+            case 2 -> {
+                int[] rent = ((FieldScandlines) field).getRent();
+                return lang.getString("RentFerry") + rent[0] +
+                        lang.getString("TwoFerry") + rent[1] +
+                        lang.getString("ThreeFerry") + rent[2] +
+                        lang.getString("FourFerry") + rent[3] +
+                        lang.getString("MortageValue")+ ((FieldScandlines) field).getMortageValue();
+            }
+            case 3 -> {
+                return  lang.getString("SodaDescription")+
+                        "\n\n\n"+
+                        lang.getString("MortageValue") + ((FieldSoda) field).getMortageValue();
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Internal method for finding a player in the array of gui player objects
@@ -232,8 +259,8 @@ public class Interface {
      * @param msg String - A message before the choice
      * @param args Strings seperated by comma
      */
-    public String displayMultiButtonMsg(String msg, String... args) {
-        return gui.getUserSelection(msg, args);
+    public String displayDropdown(String msg, String... args) {
+        return gui.getUserSelection(("\n\n\n"+msg), args);
     }
 
     /**
@@ -242,7 +269,7 @@ public class Interface {
      * @return String - Input value
      */
     public String displayEnterStringMsg(String msg) {
-        return gui.getUserString(msg);
+        return gui.getUserString("\n\n\n"+msg);
     }
 
     /**
@@ -252,7 +279,7 @@ public class Interface {
      * @return
      */
     public String displayMultiButton(String msg, String... args) {
-        return gui.getUserButtonPressed(msg, args);
+        return gui.getUserButtonPressed(("\n\n\n"+msg), args);
     }
 
     /**
@@ -288,6 +315,21 @@ public class Interface {
         GUI_Field field = gui.getFields()[fieldID];     // Finds the field
         GUI_Street street = (GUI_Street) field;   // Changes the field to a street field
         street.setHotel(hotelBool);
+        setPlayerBalance(player); // Updates the gui balance of the player
+    }
+
+    public void setOwner(Player player, int fieldID) {
+        GUI_Field field = gui.getFields()[fieldID];     // Finds the field
+        GUI_Ownable guiField = (GUI_Ownable) field;   // Changes the field to a street field
+        guiField.setOwnerName(player.getName());
+        guiField.setBorder(guiPlayerList[player.getID()].getPrimaryColor());
+        setPlayerBalance(player); // Updates the gui balance of the player
+    }
+    public void removeOwner(Player player, int fieldID) {
+        GUI_Field field = gui.getFields()[fieldID];     // Finds the field
+        GUI_Ownable guiField = (GUI_Ownable) field;   // Changes the field to a street field
+        guiField.setOwnerName(null);
+        guiField.setBorder(Color.BLACK);
         setPlayerBalance(player); // Updates the gui balance of the player
     }
 
