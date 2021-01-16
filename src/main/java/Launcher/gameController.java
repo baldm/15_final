@@ -6,6 +6,7 @@ import Spil.*;
 import Spil.ChanceCardFactory;
 import Spil.Fields.Field;
 import Spil.ChanceCards.*;
+import Spil.Fields.FieldProperty;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -13,6 +14,7 @@ public class gameController {
     private static Player[] playerArray;
     private Language lang;
     private Interface gameInterface;
+    private RealEstateAgent estateAgent;
     private Field[] fieldArray;
     private Dice diceOne = new Dice(6);
     private Dice diceTwo = new Dice(6);
@@ -54,6 +56,10 @@ public class gameController {
         FieldFactory factory = new FieldFactory(lang);
         fieldArray = factory.getAllFields();
 
+        // Creates real estate agent
+        estateAgent = new RealEstateAgent(fieldArray);
+
+
         // Dialog for entering player names
         String[] playerStringArray = gameInterface.initPlayerNames(lang);
 
@@ -91,7 +97,7 @@ public class gameController {
                 gameInterface.displayMessage(lang.getString("ExtraTurn"));
                 currentPlayer.hasExtraTurn += 1;
             }else if(extraturn && currentPlayer.hasExtraTurn == 2){
-                // Third time 
+                // Third time
                 gameInterface.displayMessage(lang.getString("ThirdExtraTurn"));
                 movePlayer(currentPlayer, 30);
                 currentPlayer.hasExtraTurn = 0;
@@ -106,6 +112,7 @@ public class gameController {
         }
 
         // Buying field logic
+        // TODO: Tilføj soda og scandlines
         if (fieldArray[currentPlayer.getPosition()].fieldType == 1)  // Currently only works with properties
         {
             buyableField(currentPlayer);
@@ -203,22 +210,23 @@ public class gameController {
         }
     }
 
+    // TODO: DOCstring og comments
     private void buyableField(Player player) {
-        gameInterface.displayMessage(lang.getString("LandedOnBuyableProperty"));
 
-        // LOGIC
-        /*
-        1. check if field is available else see (4.)
+        Field currentField = fieldArray[player.getPosition()];
+        Player owner = estateAgent.checkOwner(currentField);
 
-<<<<<<< Updated upstream
-        2. Prompt buy screen
 
-        3. If bought add to players properties else (auction?)
+        if (owner == null) {
+            gameInterface.displayMessage(lang.getString("LandedOnBuyableProperty"));
+            String choice = gameInterface.displayMultiButton(lang.getString("WantToBuy"), lang.getString("Yes"), lang.getString("No"));
 
-        4. Check owner of field, if self skip else (5.)
+            if (choice.equals("Yes") || choice.equals("Ja")) {
+                player.addMoney(-((FieldProperty) currentField).getPrice());
+                estateAgent.setOwner(player, currentField);
+                gameInterface.setOwner(player, player.getPosition());
+            }
 
-        5. Pay rent to owner that is equivalent of the rent determined by houses on field.
-=======
         } else if (owner == player) {
             // Landed on your own field, do nothing
         } else {
@@ -235,9 +243,7 @@ public class gameController {
             if (currentField.fieldType == 1) {
 
             }
->>>>>>> Stashed changes
 
-         */
 
             player.addMoney(- rent);
             owner.addMoney(rent);
@@ -249,7 +255,6 @@ public class gameController {
     }
 
     private void endOfTurn(Player player) {
-        // pay rent
 
         // prompt player if they wish to do anything to their plots or whatever
 
