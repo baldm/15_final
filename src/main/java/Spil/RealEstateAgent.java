@@ -123,4 +123,33 @@ public class RealEstateAgent {
         }
         return ferriesOwned;
     }
+
+    public Field[] getOwnedFields(Player player) {
+        Field[] ownedFields = new Field[0];
+       ownedFields = addField(fieldType1,ownedFields,player);
+       ownedFields = addField(fieldType2,ownedFields,player);
+
+       return ownedFields;
+
+    }
+
+    private Field[] addField(int[] input,Field[] fieldInput,Player player){
+        Field[] ownedFields = fieldInput;
+        Field[] placeholder;
+
+        for (int l = 0; l< input.length;l++){
+            if(owners[input[l]].getID() == player.getID()){
+                placeholder = ownedFields.clone();
+                ownedFields = new Field[ownedFields.length +1];
+                int k;
+                for (k =0; k< placeholder.length;k++){
+                    ownedFields[k] = placeholder[k];
+                }
+                ownedFields[k] = fieldArray[input[l]];
+            }
+
+        }
+        return ownedFields;
+
+    }
 }
