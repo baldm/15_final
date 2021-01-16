@@ -67,11 +67,18 @@ public class RealEstateAgent {
                            return false;
                        }
                    } else if(k==0){
-                       if(owners[field.position] != null && owners[fieldType1[k]].getID() == owners[fieldType1[k+1]].getID()){
-                           return true;
+                       if(field.fieldID < k+2){
+
+
+                            if(owners[field.position] != null && owners[fieldType1[k]].getID() == owners[fieldType1[k+1]].getID()){
+                            return true;
+                            }else{
+                             return false;
+                            }
                        }else{
-                           return false;
+                           k--;
                        }
+
                    }else if(field.fieldID < k+3  ){
                        if(owners[field.position] != null && owners[fieldType1[k]].getID() == owners[fieldType1[k+1]].getID() && owners[fieldType1[k]].getID() == owners[fieldType1[k+2]].getID()){
                            return true;
