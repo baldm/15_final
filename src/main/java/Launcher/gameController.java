@@ -117,6 +117,9 @@ public class gameController {
             drawChanceCard(currentPlayer);
         }
 
+        // Update again if chancecard changed players position
+        currentFieldType = fieldArray[currentPlayer.getPosition()].fieldType;
+
         // Buying field logic
         if (currentFieldType == 1 || currentFieldType == 2 || currentFieldType == 3)
         {
