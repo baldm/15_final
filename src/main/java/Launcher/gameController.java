@@ -33,6 +33,11 @@ public class gameController {
         while (playerArray.length > 1) {
             for (Player player : playerArray) {
                 player.hasExtraTurn = 0;
+                // TEST:
+                game.buyField(player, game.fieldFinder("Frederiksberggade"));
+                game.buyField(player, game.fieldFinder("Rådhuspladsen"));
+
+                // TEST END
                 game.takeTurn(player);
                 while (extraturn) {
                     game.takeTurn(player);
@@ -249,21 +254,7 @@ public class gameController {
         // Checks if the field is not owned
         if (owner == null) {
             gameInterface.displayMessage(lang.getString("LandedOnBuyableProperty"));
-            String choice = gameInterface.displayMultiButton(lang.getString("WantToBuy"), lang.getString("Yes"), lang.getString("No"));
-
-            if (choice.equals("Yes") || choice.equals("Ja")) {
-
-                // Casts the correct child class
-                switch (currentField.fieldType) {
-                    case 1 -> player.addMoney(-((FieldProperty) currentField).getPrice());
-                    case 2 -> player.addMoney(-((FieldScandlines) currentField).getPrice());
-                    case 3 -> player.addMoney(-((FieldSoda) currentField).getPrice());
-                }
-
-                // Sets owner of the field
-                estateAgent.setOwner(player, currentField);
-                gameInterface.setOwner(player, player.getPosition());
-            }
+            buyField(player, currentField);
 
         } else if (owner == player) {
             // Landed on your own field, do nothing
@@ -302,6 +293,29 @@ public class gameController {
         }
     }
 
+    private void buyField(Player player, Field currentField) {
+
+        String choice = gameInterface.displayMultiButton(lang.getString("WantToBuy"), lang.getString("Yes"), lang.getString("No"));
+
+        if (choice.equals("Yes") || choice.equals("Ja")) {
+
+            // Casts the correct child class
+            switch (currentField.fieldType) {
+                case 1 -> player.addMoney(-((FieldProperty) currentField).getPrice());
+                case 2 -> player.addMoney(-((FieldScandlines) currentField).getPrice());
+                case 3 -> player.addMoney(-((FieldSoda) currentField).getPrice());
+            }
+
+            // Sets owner of the field
+            estateAgent.setOwner(player, currentField);
+            gameInterface.setOwner(player, currentField.position);
+        }
+    }
+
+    /**
+     * Full logic that handles when a
+     * @param player
+     */
     private void taxField(Player player) {
         Field currentField = fieldArray[player.getPosition()];
 
@@ -316,16 +330,15 @@ public class gameController {
                 if (choice.equals("10%")) {
 
                     // Taxes the player 10 %
-                    int tenprocent = (int) (((player.getMoney()/100)*0.1));
-                    tenprocent = tenprocent *100;
-                    player.addMoney(-tenprocent);
-                    gameInterface.setPlayerBalance(player);
+                    int tenpercent = (int) (((player.getMoney()/100)*0.1));
+                    tenpercent = tenpercent *100;
+                    player.addMoney(-tenpercent);
                 } else {
 
                     // Taxes the player 4000
                     player.addMoney(-4000);
-                    gameInterface.setPlayerBalance(player);
                 }
+                gameInterface.setPlayerBalance(player);
                 break;
 
             case "Statsskat":
@@ -353,7 +366,7 @@ public class gameController {
             }else if (turnChoice.equals(turnChoices[2])) {
                 sellField(player);
             } else if (turnChoice.equals(turnChoices[3])) {
-                mortgage(player);
+                PledgeField(player);
             } else  {
                 break;
             }
@@ -375,13 +388,21 @@ public class gameController {
             return;
         }
 
-        String[] ownedArrayString = new String[ownedArray.length];
+        int ownedInGroups = 0;
 
-        for (int i = 0; i < ownedArray.length; i++) {
+        for (Field field : ownedArray) {
+            if (estateAgent.isAllOwned(field) && field.fieldType == 1) {
+                ownedInGroups++;
+            }
+        }
+
+        String[] ownedArrayString = new String[ownedInGroups];
+
+        for (int i = 0, k = 0; i < ownedArray.length; i++) {
             if (ownedArray[i] != null) {
                 if (ownedArray[i].fieldType == 1) {
                     if (estateAgent.isAllOwned(ownedArray[i])) {
-                        ownedArrayString[i] = ownedArray[i].name;
+                        ownedArrayString[k++] = ownedArray[i].name;
                     }
                 }
             }
@@ -391,12 +412,13 @@ public class gameController {
             return;
         }
 
+
         Field buyField = fieldFinder(gameInterface.displayDropdown(lang.getString("ChooseOwned"), ownedArrayString));
         int houseAmount = ((FieldProperty) buyField).getHouseNumber();
 
-        gameInterface.displayMessage("BuyHousesDescription");
+        gameInterface.displayMessage(lang.getString("BuyHousesDescription"));
         String[] houseChoices = {"1","2","3","4","Hotel"};
-        String chosenHouseAmountString = gameInterface.displayDropdown(lang.getString("SellAmountHouses"), houseChoices);
+        String chosenHouseAmountString = gameInterface.displayDropdown(lang.getString("BuyAmountHouses"), houseChoices);
 
         int currentHouseValue = houseAmount * ((FieldProperty) buyField).getHousePrice();
         int newHouseValue;
@@ -405,6 +427,7 @@ public class gameController {
         if (chosenHouseAmountString.equals("Hotel")) {
             newHouseValue = ((FieldProperty) buyField).getHousePrice() * 5;
             deltaHouseValue = newHouseValue - currentHouseValue;
+
 
             if (deltaHouseValue < player.getMoney()) {
                 gameInterface.displayMessage(lang.getString("InsufficientFunds"));
@@ -423,7 +446,8 @@ public class gameController {
             newHouseValue = ((FieldProperty) buyField).getHousePrice() * chosenHouseAmount;
             deltaHouseValue = newHouseValue - currentHouseValue;
 
-            if (deltaHouseValue < player.getMoney()) {
+
+            if (deltaHouseValue > player.getMoney()) {
                 gameInterface.displayMessage(lang.getString("InsufficientFunds"));
             } else {
                 player.addMoney(-deltaHouseValue);
@@ -470,7 +494,7 @@ public class gameController {
             houseAmountChoices[i] = String.valueOf(i);
         }
 
-       int chosenHouseAmount = Integer.parseInt(gameInterface.displayDropdown(lang.getString("SellAmountHouses"), houseAmountChoices));
+        int chosenHouseAmount = Integer.parseInt(gameInterface.displayDropdown(lang.getString("SellAmountHouses"), houseAmountChoices));
 
         // Sells all houses on field
         int housePrice = ((FieldProperty) sellField).getHousePrice();
@@ -503,9 +527,6 @@ public class gameController {
         for (int i = 0; i < ownedArray.length; i++) {
             if (ownedArray[i] != null) {
                 ownedArrayString[i] = ownedArray[i].name;
-                System.out.println("Faktisk loadet:"+ownedArray[i].name);
-            } else {
-                System.out.println("Der er noget her der er null");
             }
         }
 
@@ -521,19 +542,33 @@ public class gameController {
             return;
         }
 
-        int fieldPrice = switch (sellField.fieldType) {
-            case 1 -> ((FieldProperty) sellField).getPrice();
-            case 2 -> ((FieldScandlines) sellField).getPrice();
-            case 3 -> ((FieldSoda) sellField).getPrice();
-            default -> 0;
-        };
 
-        player.addMoney(fieldPrice);
+        String[] playerNamesStringArray = new String[playerArray.length];
+
+        for (int i = 0; i < playerArray.length; i++) {
+            playerNamesStringArray[i] = playerArray[i].getName();
+        }
+
+        String playerChoice = gameInterface.displayDropdown(lang.getString("PickPlayer"), playerNamesStringArray);
+
+        Player buyer;
+
+        for (Player loopPlayer : playerArray) {
+            if (loopPlayer.getName().equals(playerChoice)) {
+                buyer = loopPlayer;
+            }
+        }
+
+        int priceChoice = gameInterface.
+
+
+                // OLD
+                        player.addMoney();
         estateAgent.setOwner(null, sellField);
         gameInterface.removeOwner(player, sellField.position);
 
     }
-    
+
 
     private int diceRoll() {
         gameInterface.displayMessage(lang.getString("RollDice"));
@@ -592,6 +627,9 @@ public class gameController {
     }
 
     private void removePlayerFromGame(Player player) {
+
+        // TODO: Handle players properties
+
         Player[] newPlayerArray = new Player[playerArray.length-1];
 
         playerArray[player.getID()] = null;
@@ -625,15 +663,15 @@ public class gameController {
             gameInterface.displayMessage(lang.getString("NoOwnedFields"));
             return;
         }
-            for(int i = 0; i<ownedFields.length;i++){
+        for(int i = 0; i<ownedFields.length;i++){
 
-            }
+        }
 
-            for(int i = 0; i< ownedFields.length;i++){
-                if(ownedFields[i].name != null){
-                    ownedArrayString[i] = ownedFields[i].name;
-                }
+        for(int i = 0; i< ownedFields.length;i++){
+            if(ownedFields[i].name != null){
+                ownedArrayString[i] = ownedFields[i].name;
             }
+        }
 
 
         // Select a field and find it
