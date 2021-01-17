@@ -136,7 +136,7 @@ public class gameController {
         int drawedCardNumber;
 
         if (drawAbleChanceCards.length > 1) {
-            drawedCardNumber = ThreadLocalRandom.current().nextInt(0, drawAbleChanceCards.length+1);
+            drawedCardNumber = ThreadLocalRandom.current().nextInt(0, drawAbleChanceCards.length);
             drawedCard = drawAbleChanceCards[drawedCardNumber];
             ChanceCard[] chanceCardsPlaceholder = drawAbleChanceCards.clone();
             drawAbleChanceCards = new ChanceCard[drawAbleChanceCards.length - 1];
