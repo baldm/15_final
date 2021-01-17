@@ -83,4 +83,12 @@ public class FieldProperty extends Field {
     public void setHouseNumber(int input){
         houseNumber = input;
     }
+
+    public void setPledged(boolean pledged) {
+        isPledged = pledged;
+    }
+
+    public boolean isPledged() {
+        return isPledged;
+    }
 }
