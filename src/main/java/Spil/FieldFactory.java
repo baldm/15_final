@@ -95,7 +95,7 @@ public class FieldFactory {
         return input;
     }
     /**
-     * Expands current fieldarray allfields
+     * Expands current fieldarray allfields and adding all newly created fields
      * @return expanded Field-Array
      */
     private Field[] addFields(){
