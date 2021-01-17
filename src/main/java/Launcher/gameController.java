@@ -783,7 +783,7 @@ public class gameController {
         String[] ArrayString;
         Field[] allOwnedFields = ownedFields.clone();
         Field[] placeholder;
-        if(allOwnedFields == null){
+        if(allOwnedFields.length == 0){
             lang.getString("NoFieldsPledged");
             return;
         }
