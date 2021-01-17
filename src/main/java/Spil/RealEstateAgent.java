@@ -53,6 +53,7 @@ public class RealEstateAgent {
                         fieldType3[l] = placeholder[l];
                     }
                     fieldType3[l] = i;
+                    break;
                 default:
                     break;
 
