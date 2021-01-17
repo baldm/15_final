@@ -505,14 +505,15 @@ public class gameController {
         // Updates the board
         gameInterface.setPlayerBalance(player);
 
-        // TODO: Remove hotels also
+        // Removes the houses
         ((FieldProperty) sellField).setHouseNumber(chosenHouseAmount);
         gameInterface.setFieldHouses(sellField.position, (((FieldProperty) sellField).getHouseNumber()-chosenHouseAmount), player);
+        gameInterface.setFieldHotel(sellField.position, false,player);
 
 
     }
 
-
+    
     private void sellField(Player player) {
 
         Field[] ownedArray = estateAgent.getOwnedFields(player);
