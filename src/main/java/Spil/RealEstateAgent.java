@@ -221,15 +221,17 @@ public class RealEstateAgent {
                         if (((FieldScandlines) placeholder[i]).isPledged()) {
                             ownedFields = new Field[++h];
                             ownedFields[h - 1] = placeholder[i];
-                            break;
+
 
                         }
+                        break;
                     case 3:
                         if (((FieldSoda) placeholder[i]).isPledged()) {
                             ownedFields = new Field[++h];
                             ownedFields[h - 1] = placeholder[i];
-                            break;
+
                         }
+                        break;
                 }
 
             }
