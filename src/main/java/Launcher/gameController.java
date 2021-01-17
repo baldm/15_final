@@ -681,7 +681,7 @@ public class gameController {
         }
         int h=0;
         ownedFields = new Field[h];
-            if(allOwnedFields == null){
+            if(allOwnedFields.length == 0){
                 lang.getString("NoOwnedFields");
                 return;
             }
@@ -701,7 +701,7 @@ public class gameController {
                             for (int k = 0; k< placeholder.length;k++){
                                 ownedFields[k]=placeholder[k];
                             }
-                            ownedFields[++h] = allOwnedFields[i];
+                            ownedFields[ownedFields.length-1] = allOwnedFields[i];
                         }
                         break;
                     case 2:
@@ -712,7 +712,7 @@ public class gameController {
                             for (int k = 0; k< placeholder.length;k++){
                                 ownedFields[k]=placeholder[k];
                             }
-                            ownedFields[++h] = allOwnedFields[i];
+                            ownedFields[ownedFields.length-1] = allOwnedFields[i];
 
                         }
                         break;
@@ -723,7 +723,7 @@ public class gameController {
                             for (int k = 0; k< placeholder.length;k++){
                                 ownedFields[k]=placeholder[k];
                             }
-                            ownedFields[++h] = allOwnedFields[i];
+                            ownedFields[ownedFields.length-1] = allOwnedFields[i];
                         }
                         break;
                     default:
@@ -732,26 +732,8 @@ public class gameController {
 
                 ownedArrayString = new String[ownedFields.length];
 
-        for(int i = 0; i < ownedFields.length;i++){
-            if(ownedFields[i].name != null){
-                switch (ownedFields[i].fieldType){
-                    case 1:
-                        ownedArrayString[i] = ownedFields[i].name + " " +
-                                lang.getString("mortage") +  " " +
-                                ((FieldProperty) ownedFields[i]).getMortageValue();
-                        break;
-                    case 2:
-                        ownedArrayString[i] = ownedFields[i].name + " " +
-                                lang.getString("mortage") +  " " +
-                                ((FieldScandlines) ownedFields[i]).getMortageValue();    break;
-                    case 3:
-                        ownedArrayString[i] = ownedFields[i].name + " " +
-                                lang.getString("mortage") +  " " +
-                                ((FieldSoda) ownedFields[i]).getMortageValue();
-                    break;
-
-                }
-            }
+        for (int i=0; i<ownedFields.length;i++){
+            ownedArrayString[i] = ownedFields[i].name;
         }
 
 
@@ -763,12 +745,15 @@ public class gameController {
                 case 1:
                     player.addMoney(((FieldProperty) sellField).getMortageValue());
                     ((FieldProperty) sellField).setPledged(true);
+                    break;
                 case 2:
                     player.addMoney(((FieldScandlines) sellField).getMortageValue());
                     ((FieldScandlines) sellField).setPledged(true);
+                    break;
                 case 3:
                     player.addMoney(((FieldSoda) sellField).getMortageValue());
                     ((FieldSoda) sellField).setPledged(true);
+                    break;
             }
 
 
@@ -783,8 +768,9 @@ public class gameController {
         String[] ArrayString;
         Field[] allOwnedFields = ownedFields.clone();
         Field[] placeholder;
-        if(allOwnedFields.length == 0){
-            lang.getString("NoFieldsPledged");
+
+        if (ownedFields.length == 0) {
+            gameInterface.displayMessage(lang.getString("NoFieldsPledged"));
             return;
         }
         int h=0;
@@ -794,11 +780,11 @@ public class gameController {
                 case 1:
                     if(((FieldProperty) allOwnedFields[k]).isPledged()){
                         placeholder = ownedFields.clone();
-                        ownedFields = new Field[++h];
+                        ownedFields = new Field[ownedFields.length+1];
                         for(int m =0; m<placeholder.length;m++){
                             ownedFields[m] = placeholder[m];
                         }
-                        ownedFields[h] = allOwnedFields[k];
+                        ownedFields[ownedFields.length-1] = allOwnedFields[k];
                     }
                     break;
                 case 2:
@@ -827,27 +813,8 @@ public class gameController {
 
         ArrayString = new String[ownedFields.length];
         // Creating StringArray with pledged properties and price for unpledging
-        for(int i = 0; i < ownedFields.length;i++){
-            if(ownedFields[i].name != null){
-                switch (ownedFields[i].fieldType){
-                    case 1:
-                        ArrayString[i] = ownedFields[i].name + " " +
-                                lang.getString("price") +  " " +
-                                (int)( (((FieldProperty) ownedFields[i]).getMortageValue()/100)*1.10)*100;
-                        break;
-                    case 2:
-                        ArrayString[i] = ownedFields[i].name + " " +
-                                lang.getString("price") +  " " +
-                                (int)( (((FieldScandlines) ownedFields[i]).getMortageValue()/100)*1.10)*100;
-                        break;
-                    case 3:
-                        ArrayString[i] = ownedFields[i].name + " " +
-                                lang.getString("price") +  " " +
-                                (int)( (((FieldSoda) ownedFields[i]).getMortageValue()/100)*1.10)*100;
-                        break;
-
-                }
-            }
+        for (int i=0; i<ownedFields.length;i++){
+            ArrayString[i] = ownedFields[i].name;
         }
 
         // Select a field and find it
