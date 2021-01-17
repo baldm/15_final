@@ -24,7 +24,7 @@ public class gameController {
     private ChanceCard[] allChanceCards;
     private ChanceCard[] drawAbleChanceCards;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         gameController game = new gameController();
         game.gameInit();
 
@@ -40,6 +40,7 @@ public class gameController {
                 game.endOfTurn(player);
             }
         }
+        game.gameIsOver(playerArray[0]);
     }
 
     // TODO: Write docstring
@@ -607,9 +608,7 @@ public class gameController {
         gameInterface.removePlayer(player);
 
         for (int i = 0, k=0; i < playerArray.length; i++) {
-            if (playerArray[i] == null) {
-                continue;
-            } else {
+            if (playerArray[i] != null) {
                 newPlayerArray[k] = playerArray[i];
                 k++;
             }
@@ -617,5 +616,10 @@ public class gameController {
         playerArray = newPlayerArray;
 
 
+    }
+    private void gameIsOver(Player player) {
+        gameInterface.displayMessage(lang.getString("GameOver"));
+        gameInterface.displayChance("Congrats");
+        gameInterface.displayMessage(lang.getString("WinnerIs") + " " + player.getName());
     }
 }
