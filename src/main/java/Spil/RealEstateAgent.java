@@ -9,6 +9,10 @@ public class RealEstateAgent {
      int[][] fieldType1Sorted;
      int[] fieldType2 = new int[0];
      int[] fieldType3 = new int[0];
+    /**
+     * Creates a RealEstateAgent for the game.
+     * Tracks all fields owner and if a field is pledged
+     */
 
     public RealEstateAgent(Field[] fieldInput) {
         // Creates fields
@@ -101,10 +105,17 @@ public class RealEstateAgent {
         return owners[field.position];
     }
 
+    /**
+     * Checks if a player owns all fields the same group of a field of type
+     * "FieldProperties" or "FieldSoda"
+     * @return boolean
+     */
 
     public boolean isAllOwned(Field field) {
         boolean isTrue = false;
+        //Checking which field-type the field is
        switch (field.fieldType){
+           //Fieldtype: FieldProperty
            case 1:
 
                int input = ((FieldProperty) field).getGroupID();
@@ -120,7 +131,7 @@ public class RealEstateAgent {
 
                }
                return isTrue;
-
+           //Fieldtype: FieldSoda
            case 3:
 
                for (int l=1;l<fieldType3.length;l++){
@@ -140,7 +151,10 @@ public class RealEstateAgent {
 
         }
     }
-
+    /**
+     * Checks how many of fieldtype "FieldScandlines" a palyer owns
+     * @return int
+     */
     public int ferriesOwned(Player player){
         int ferriesOwned = 0;
         for(int l =0; l< fieldType2.length;l++){
@@ -151,17 +165,25 @@ public class RealEstateAgent {
         }
         return ferriesOwned;
     }
-
+    /**
+     * Finds all non-pledged fields a palyer owns
+     * @return Field[]-array
+     */
     public Field[] getOwnedFields (Player player) {
         Field[] ownedFields = new Field[0];
+        //Creating an array with all owned fields
        ownedFields = addField(fieldType1,ownedFields,player);
        ownedFields = addField(fieldType2,ownedFields,player);
         ownedFields = addField(fieldType3,ownedFields,player);
+
+        //Checks if the array is equal "null"
         if(ownedFields != null) {
             Field[] placeholder = ownedFields.clone();
             int h = 0;
             ownedFields = new Field[h];
             for (int i = 0; i < placeholder.length; i++) {
+                //Sorts and casts all fields to their respective field-type
+                //Removing all fields which is pledged
                 switch (placeholder[i].fieldType) {
                     case 1:
                         if (!((FieldProperty) placeholder[i]).isPledged()) {
@@ -188,15 +210,22 @@ public class RealEstateAgent {
         return ownedFields;
     }
 
+    /**
+     * Finds all pledged fields a palyer owns
+     * @return Field[]-array
+     */
     public Field[] getPledgedFields (Player player) {
         Field[] ownedFields = new Field[0];
         ownedFields = addField(fieldType1, ownedFields, player);
         ownedFields = addField(fieldType2, ownedFields, player);
+        //Making sure player owns any fields
         if(ownedFields != null){
             Field[] placeholder = ownedFields.clone();
             int h = 0;
             ownedFields = new Field[h];
             for (int i = 0; i < placeholder.length; i++) {
+                //Sorts and casts all fields to their respective field-type
+                //Removing all fields which is not pledged
                 switch (placeholder[i].fieldType) {
                     case 1:
                         if (((FieldProperty) placeholder[i]).isPledged()) {
@@ -224,6 +253,11 @@ public class RealEstateAgent {
 
         return ownedFields;
     }
+
+    /**
+     * Expands Field-Array, then adds all the newly created Fields
+     * @return an array of Fields
+     */
 
     private Field[] addField(int[] input,Field[] fieldInput,Player player){
         Field[] ownedFields = fieldInput;

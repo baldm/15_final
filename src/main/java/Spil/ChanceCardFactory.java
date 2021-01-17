@@ -80,7 +80,7 @@ private ChanceCard[] allCards = new ChanceCard[0];
     }
 
     /**
-     * Adds all the chancecards to a chancecardArray
+     * Expands chanceCard array, then adds all the newly created chancecards
      * @return an array of chancecards
      */
     private ChanceCard[] addCards(){
