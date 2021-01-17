@@ -34,6 +34,11 @@ public class gameController {
             for (Player player : playerArray) {
                 player.hasExtraTurn = 0;
 
+                game.buyField(player, game.fieldFinder("Roskildevej"));
+                game.buyField(player, game.fieldFinder("Valby Langgade"));
+                game.buyField(player, game.fieldFinder("Allégade"));
+
+
                 game.takeTurn(player);
                 while (extraturn) {
                     game.takeTurn(player);
@@ -511,13 +516,14 @@ public class gameController {
                 if (ownedArray[i].fieldType == 1) {
                     if (((FieldProperty) ownedArray[i]).getHouseNumber() > 0) {
                         ownedArrayString[i] = ownedArray[i].name;
+                        System.out.println(ownedArray[i].name);
                     }
                 }
             }
         }
 
         // Dialog if no houses are found
-        if (ownedArrayString[0] == null) {
+        if (ownedArrayString.length == 0) {
             gameInterface.displayMessage(lang.getString("NoHouses"));
             return;
         }
