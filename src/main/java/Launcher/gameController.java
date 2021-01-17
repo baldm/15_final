@@ -629,7 +629,23 @@ public class gameController {
 
     private void removePlayerFromGame(Player player) {
 
+        Field[] ownedFields = estateAgent.getOwnedFields(player);
+
+        if (ownedFields != null) {
+            for (Field field : ownedFields) {
+                if (field.fieldType == 1) {
+                    ((FieldProperty) field).setHouseNumber(0);
+                    gameInterface.setFieldHouses(field.position, 0, player);
+                    gameInterface.setFieldHotel(field.position, false, player);
+
+                }
+                gameInterface.removeOwner(player, field.position);
+                estateAgent.setOwner(null, field);
+            }
+        }
+
         playerArray[player.getID()] = null;
+        
 
         Player[] newPlayerArray = new Player[playerArray.length-1];
 
@@ -646,7 +662,7 @@ public class gameController {
     }
     private void gameIsOver(Player player) {
         gameInterface.displayMessage(lang.getString("GameOver"));
-        gameInterface.displayChance("Congrats");
+        gameInterface.displayChance(lang.getString("Congrats"));
         gameInterface.displayMessage(lang.getString("WinnerIs") + " " + player.getName());
     }
     /**
