@@ -503,6 +503,9 @@ public class gameController {
         for (int i = 0; i < ownedArray.length; i++) {
             if (ownedArray[i] != null) {
                 ownedArrayString[i] = ownedArray[i].name;
+                System.out.println("Faktisk loadet:"+ownedArray[i].name);
+            } else {
+                System.out.println("Der er noget her der er null");
             }
         }
 
