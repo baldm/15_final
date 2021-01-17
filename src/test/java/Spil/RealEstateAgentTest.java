@@ -18,7 +18,6 @@ class RealEstateAgentTest {
     RealEstateAgent agent = new RealEstateAgent(fieldArray);
 
     Player p1 = new Player("Spiller1", 1000, 0);
-    Player p2 = new Player("Spiller2", 1000, 1);
 
     @Test
     void setAndCheckOwner(){
@@ -54,13 +53,8 @@ class RealEstateAgentTest {
         agent.setOwner(p1, allegade);
         agent.setOwner(p1, amagertorv);
 
-        for(int i = 0; i < agent.getOwnedFields(p1).length; i++){
-            if(agent.getOwnedFields(p1)[i] != null){
-                System.out.println(agent.getOwnedFields(p1)[i].name);
-            }
-        }
-
-        assertTrue(1 == 1);
+        assertEquals(agent.getOwnedFields(p1)[0].name, allegade.name);
+        assertEquals(agent.getOwnedFields(p1)[1].name, amagertorv.name);
     }
 
 
