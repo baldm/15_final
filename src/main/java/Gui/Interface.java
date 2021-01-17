@@ -174,7 +174,7 @@ public class Interface {
      * @return
      */
     private String descGen(Field field, Language lang) {
-
+        // Sorts into field type
         switch (field.fieldType) {
             case 1 -> {
                 int[] rent = ((FieldProperty) field).getRent();
@@ -220,6 +220,10 @@ public class Interface {
      * @param player - Player object
      */
     public void movePlayer(Player player){
+        // Gets the gui player object
+        // Gets the car of the player object
+        // Gets the gui field object that the player is on
+        // Moves the player
         guiPlayerList[player.getID()].getCar().setPosition( gui.getFields()[player.getPosition()]);
     }
 
@@ -228,6 +232,9 @@ public class Interface {
      * @param player - Player object
      */
     public void removePlayer(Player player){
+        // Gets the field that the player is on
+        // Gets the gui player object
+        // Hides the car from the board
         gui.getFields()[player.getPosition()].setCar(guiPlayerList[player.getID()], false);
     }
 
@@ -253,6 +260,7 @@ public class Interface {
      * @param player playerObject
      */
     public void setPlayerBalance(Player player) {
+        // Hides the balance if its under zero
         if (player.getMoney() < 0) {
             guiPlayerList[player.getID()].setBalance(0);
         } else {
@@ -295,9 +303,8 @@ public class Interface {
      */
     public void displayChance(String input) {
 
-        // It seems to work best calling both of these commands at the same time.
         gui.displayChanceCard(input);
-        displayMessage("  ");
+        displayMessage("  "); // Ensures that the player has read the chance card
         gui.displayChanceCard();
     }
 
@@ -327,10 +334,16 @@ public class Interface {
         setPlayerBalance(player); // Updates the gui balance of the player
     }
 
+    /**
+     * Makes the owner of the field shown on the board
+     * @param player - The player object that owns the field (null for remove owner)
+     * @param fieldID - Position of the field
+     */
     public void setOwner(Player player, int fieldID) {
         GUI_Field field = gui.getFields()[fieldID];     // Finds the field
         GUI_Ownable guiField = (GUI_Ownable) field;   // Changes the field to a street field
 
+        // Check if the owner has to be reverted to default
         if (player == null) {
             guiField.setBorder(Color.BLACK);
             guiField.setOwnerName(" ");
@@ -341,6 +354,11 @@ public class Interface {
         }
     }
 
+    /**
+     * Removes the owner on the board
+     * @param player - Player which doesnt have the field anymore
+     * @param fieldID - Position of the field
+     */
     public void removeOwner(Player player, int fieldID) {
         GUI_Field field = gui.getFields()[fieldID];     // Finds the field
         GUI_Ownable guiField = (GUI_Ownable) field;   // Changes the field to a street field
@@ -349,6 +367,11 @@ public class Interface {
         setPlayerBalance(player); // Updates the gui balance of the player
     }
 
+    /**
+     * Displays an input field to put in integers
+     * @param msg - String message before the input field
+     * @return integer that was input
+     */
     public int displayEnterInteger(String msg) {
         return gui.getUserInteger(msg);
     }
