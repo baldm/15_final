@@ -253,7 +253,12 @@ public class Interface {
      * @param player playerObject
      */
     public void setPlayerBalance(Player player) {
-        guiPlayerList[player.getID()].setBalance(player.getMoney());
+        if (player.getMoney() < 0) {
+            guiPlayerList[player.getID()].setBalance(0);
+        } else {
+            guiPlayerList[player.getID()].setBalance(player.getMoney());
+        }
+
     }
 
     /**

@@ -36,6 +36,7 @@ public class gameController {
                 // TEST:
                 game.buyField(player, game.fieldFinder("Frederiksberggade"));
                 game.buyField(player, game.fieldFinder("Rådhuspladsen"));
+                player.addMoney(-15000);
 
                 // TEST END
                 game.takeTurn(player);
@@ -379,7 +380,7 @@ public class gameController {
 
     }
 
-    // TODO: TEST
+
     private void buyHouses(Player player) {
         Field[] ownedArray = estateAgent.getOwnedFields(player);
 
@@ -459,7 +460,7 @@ public class gameController {
         }
     }
 
-    // TODO: TEST
+
     private void sellHouses(Player player) {
         Field[] ownedArray = estateAgent.getOwnedFields(player);
 
@@ -512,7 +513,7 @@ public class gameController {
 
     }
 
-    // TODO: TEST
+
     private void sellField(Player player) {
 
         Field[] ownedArray = estateAgent.getOwnedFields(player);
@@ -628,12 +629,10 @@ public class gameController {
 
     private void removePlayerFromGame(Player player) {
 
-        // TODO: Handle players properties
+        playerArray[player.getID()] = null;
 
         Player[] newPlayerArray = new Player[playerArray.length-1];
 
-        playerArray[player.getID()] = null;
-        gameInterface.removePlayer(player);
 
         for (int i = 0, k=0; i < playerArray.length; i++) {
             if (playerArray[i] != null) {
@@ -641,9 +640,9 @@ public class gameController {
                 k++;
             }
         }
+
+        gameInterface.removePlayer(player);
         playerArray = newPlayerArray;
-
-
     }
     private void gameIsOver(Player player) {
         gameInterface.displayMessage(lang.getString("GameOver"));
@@ -677,8 +676,6 @@ public class gameController {
         // Select a field and find it
         Field sellField = fieldFinder(gameInterface.displayDropdown(
                 lang.getString("ChooseOwned"), ownedArrayString));
-
-
 
 
     }
