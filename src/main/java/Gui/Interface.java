@@ -344,4 +344,8 @@ public class Interface {
         setPlayerBalance(player); // Updates the gui balance of the player
     }
 
+    public int displayEnterInteger(String msg) {
+        return gui.getUserInteger(msg);
+    }
+
 }

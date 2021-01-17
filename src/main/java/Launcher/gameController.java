@@ -551,7 +551,7 @@ public class gameController {
 
         String playerChoice = gameInterface.displayDropdown(lang.getString("PickPlayer"), playerNamesStringArray);
 
-        Player buyer;
+        Player buyer = null;
 
         for (Player loopPlayer : playerArray) {
             if (loopPlayer.getName().equals(playerChoice)) {
@@ -559,13 +559,13 @@ public class gameController {
             }
         }
 
-        int priceChoice = gameInterface.
+        int priceChoice = gameInterface.displayEnterInteger(lang.getString("PickPrice"));
 
-
-                // OLD
-                        player.addMoney();
-        estateAgent.setOwner(null, sellField);
-        gameInterface.removeOwner(player, sellField.position);
+        player.addMoney(priceChoice);
+        buyer.addMoney(-priceChoice);
+        gameInterface.setPlayerBalance(player);
+        estateAgent.setOwner(buyer, sellField);
+        gameInterface.setOwner(buyer, sellField.position);
 
     }
 
