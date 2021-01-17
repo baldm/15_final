@@ -616,6 +616,11 @@ public class gameController {
         // Dialog to get the price of the field
         int priceChoice = gameInterface.displayEnterInteger(lang.getString("PickPrice"));
 
+        if (priceChoice > buyer.getMoney()) {
+            gameInterface.displayMessage(lang.getString("InsufficientFunds"));
+            return;
+        }
+
         // Transferes money and updates the board
         player.addMoney(priceChoice);
         buyer.addMoney(-priceChoice);
