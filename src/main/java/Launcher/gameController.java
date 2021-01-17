@@ -547,7 +547,7 @@ public class gameController {
 
         else:
             1. Sælg huse på grunden til banken
-            2. Få penge iforhold til hvad grunden er vær
+            2. Få penge iforhold til hvad grunden er værd
             3. Mærker grund som pæntsat
 
          */
@@ -629,5 +629,37 @@ public class gameController {
         gameInterface.displayMessage(lang.getString("GameOver"));
         gameInterface.displayChance("Congrats");
         gameInterface.displayMessage(lang.getString("WinnerIs") + " " + player.getName());
+    }
+    /**
+     * Full logic for a player to pledge an owned property
+     * @param player - player object which landed on the field
+     */
+    private void PledgeField(Player player){
+
+        Field[] ownedFields = estateAgent.getOwnedFields(player);
+        String[] ownedArrayString = new String[ownedFields.length];
+
+        if (ownedFields.length == 0) {
+            gameInterface.displayMessage(lang.getString("NoOwnedFields"));
+            return;
+        }
+            for(int i = 0; i<ownedFields.length;i++){
+
+            }
+
+            for(int i = 0; i< ownedFields.length;i++){
+                if(ownedFields[i].name != null){
+                    ownedArrayString[i] = ownedFields[i].name;
+                }
+            }
+
+
+        // Select a field and find it
+        Field sellField = fieldFinder(gameInterface.displayDropdown(
+                lang.getString("ChooseOwned"), ownedArrayString));
+
+
+
+
     }
 }
