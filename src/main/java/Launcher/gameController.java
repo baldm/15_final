@@ -518,11 +518,7 @@ public class gameController {
                 }
             }
         }
-        // Dialog if no houses are found
-        if (ownedArrayString.length == 0) {
-            gameInterface.displayMessage(lang.getString("NoHouses"));
-            return;
-        }
+
 
         // Filters out null fields
         String[] ownedArrayStringWithoutNull = new String[fieldsWithHousesCounter];
@@ -530,6 +526,11 @@ public class gameController {
             if (ownedArrayString[i] != null) {
                 ownedArrayStringWithoutNull[k++] = ownedArrayString[i];
             }
+        }
+        // Dialog if no houses are found
+        if (ownedArrayStringWithoutNull.length == 0) {
+            gameInterface.displayMessage(lang.getString("NoHouses"));
+            return;
         }
 
 
