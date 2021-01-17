@@ -8,6 +8,7 @@ public class RealEstateAgent {
      int[] fieldType1 = new int[0];
      int[][] fieldType1Sorted;
      int[] fieldType2 = new int[0];
+     int[] fieldType3 = new int[0];
 
     public RealEstateAgent(Field[] fieldInput) {
         // Creates fields
@@ -35,12 +36,19 @@ public class RealEstateAgent {
                 case 2:
                     int l;
                     placeholder = fieldType2.clone();
-                    fieldType2 = new int[fieldType1.length+1];
+                    fieldType2 = new int[fieldType2.length+1];
                     for( l = 0;l<placeholder.length;l++){
                         fieldType2[l] = placeholder[l];
                     }
                     fieldType2[l] = i;
                     break;
+                case 3:
+                    placeholder = fieldType3.clone();
+                    fieldType3 = new int[fieldType3.length+1];
+                    for( l = 0;l<placeholder.length;l++){
+                        fieldType3[l] = placeholder[l];
+                    }
+                    fieldType3[l] = i;
                 default:
                     break;
 
@@ -95,9 +103,10 @@ public class RealEstateAgent {
 
 
     public boolean isAllOwned(Field field) {
+        boolean isTrue = false;
        switch (field.fieldType){
            case 1:
-               boolean isTrue = false;
+
                int input = ((FieldProperty) field).getGroupID();
                for (int l = 1; l<fieldType1Sorted[input].length;l++){
                    if (owners[fieldType1Sorted[input][l]] != null &&
@@ -108,10 +117,26 @@ public class RealEstateAgent {
                    }else{
                        return false;
                    }
+
+               }
+               return isTrue;
+
+           case 3:
+
+               for (int l=1;l<fieldType3.length;l++){
+                   if((owners[fieldType3[l-1]] != null &&
+                           owners[fieldType3[l]] != null &&
+                           owners[fieldType3[l-1]].getID() ==
+                                   owners[fieldType3[l]].getID())){
+                       isTrue = true;
+                   }else{
+                       return false;
+                   }
+
                }
                return isTrue;
            default:
-               throw new RuntimeException("Error. Not a Property field");
+               throw new RuntimeException("Error. Not a Property or Soda field");
 
         }
     }
@@ -130,32 +155,36 @@ public class RealEstateAgent {
         Field[] ownedFields = new Field[0];
        ownedFields = addField(fieldType1,ownedFields,player);
        ownedFields = addField(fieldType2,ownedFields,player);
-        if(ownedFields != null){
-            Field [] placeholder = ownedFields.clone();
-            int h=0;
+        ownedFields = addField(fieldType3,ownedFields,player);
+        if(ownedFields != null) {
+            Field[] placeholder = ownedFields.clone();
+            int h = 0;
             ownedFields = new Field[h];
-            for(int i = 0; i< placeholder.length;i++){
-                switch (placeholder[i].fieldType){
+            for (int i = 0; i < placeholder.length; i++) {
+                switch (placeholder[i].fieldType) {
                     case 1:
-                        if(!((FieldProperty) placeholder[i]).isPledged()){
+                        if (!((FieldProperty) placeholder[i]).isPledged()) {
                             ownedFields = new Field[++h];
-                            ownedFields[h-1] = placeholder[i];
+                            ownedFields[h - 1] = placeholder[i];
                         }
                         break;
                     case 2:
-                        if(!((FieldScandlines) placeholder[i]).isPledged()){
+                        if (!((FieldScandlines) placeholder[i]).isPledged()) {
                             ownedFields = new Field[++h];
-                            ownedFields[h-1] = placeholder[i];
+                            ownedFields[h - 1] = placeholder[i];
+                            break;
+                        }
+                    case 3:
+                        if (!((FieldSoda) placeholder[i]).isPledged()) {
+                            ownedFields = new Field[++h];
+                            ownedFields[h - 1] = placeholder[i];
                             break;
                         }
                 }
             }
+
         }
-
-
-
-       return ownedFields;
-
+        return ownedFields;
     }
 
     public Field[] getPledgedFields (Player player) {
@@ -176,6 +205,13 @@ public class RealEstateAgent {
                         break;
                     case 2:
                         if (((FieldScandlines) placeholder[i]).isPledged()) {
+                            ownedFields = new Field[++h];
+                            ownedFields[h - 1] = placeholder[i];
+                            break;
+
+                        }
+                    case 3:
+                        if (((FieldSoda) placeholder[i]).isPledged()) {
                             ownedFields = new Field[++h];
                             ownedFields[h - 1] = placeholder[i];
                             break;

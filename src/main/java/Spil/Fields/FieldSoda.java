@@ -12,6 +12,7 @@ public class FieldSoda extends Field {
     private int[] rentMultiplier;
     private int groupID;
     private int mortageValue;
+    private boolean isPledged = false;
 
     public FieldSoda(String fileName){
         try {
@@ -57,5 +58,12 @@ public class FieldSoda extends Field {
 
     public int[] getRentMultiplier() {
         return rentMultiplier;
+    }
+    public void setPledged(boolean pledged) {
+        isPledged = pledged;
+    }
+
+    public boolean isPledged() {
+        return isPledged;
     }
 }
