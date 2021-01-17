@@ -44,7 +44,9 @@ public class gameController {
         game.gameIsOver(playerArray[0]);
     }
 
-    // TODO: Write docstring
+    /**
+     * Initilizes the Game
+     */
     private void gameInit() {
 
         LanguageScanner langScanner = new LanguageScanner();
