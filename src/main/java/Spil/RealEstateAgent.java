@@ -170,7 +170,7 @@ public class RealEstateAgent {
                     case 1:
                         if (!((FieldProperty) allOwnedFields[i]).isPledged()) {
                             ownedFields = new Field[++h];
-                            for (int k=0;k<h;k++){
+                            for (int k=0;k< placeholder.length;k++){
                                 ownedFields[k] = placeholder[k];
                             }
                             ownedFields[h-1] = allOwnedFields[i];
@@ -179,7 +179,7 @@ public class RealEstateAgent {
                     case 2:
                         if (!((FieldScandlines) allOwnedFields[i]).isPledged()) {
                             ownedFields = new Field[++h];
-                            for (int k=0;k<h;k++){
+                            for (int k=0;k< placeholder.length;k++){
                                 ownedFields[k] = placeholder[k];
                             }
                             ownedFields[h - 1] = allOwnedFields[i];
@@ -188,7 +188,7 @@ public class RealEstateAgent {
                     case 3:
                         if (!((FieldSoda) allOwnedFields[i]).isPledged()) {
                             ownedFields = new Field[++h];
-                            for (int k=0;k<h;k++){
+                            for (int k=0;k< placeholder.length;k++){
                                 ownedFields[k] = placeholder[k];
                             }
                             ownedFields[h - 1] = allOwnedFields[i];
