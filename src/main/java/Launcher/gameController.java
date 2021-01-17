@@ -815,7 +815,7 @@ public class gameController {
                 } else{
                     gameInterface.displayMessage(lang.getString("InsufficientFunds"));
                 }
-
+                break;
             case 2:
                 if( (int)( (((FieldScandlines) sellField).getMortageValue()/100)*1.10)*100 <=
                         player.getMoney()) {
@@ -824,9 +824,16 @@ public class gameController {
                 } else{
                     gameInterface.displayMessage(lang.getString("InsufficientFunds"));
                 }
+                break;
             case 3:
-                player.addMoney(((FieldSoda) sellField).getMortageValue());
-                ((FieldSoda) sellField).setPledged(false);
+                if( (int)( (((FieldSoda) sellField).getMortageValue()/100)*1.10)*100 <=
+                        player.getMoney()) {
+                    player.addMoney(-(int)( (((FieldSoda) sellField).getMortageValue()/100)*1.10)*100);
+                    ((FieldSoda) sellField).setPledged(false);
+                }else{
+                    gameInterface.displayMessage(lang.getString("InsufficientFunds"));
+                }
+                break;
         }
 
     }
