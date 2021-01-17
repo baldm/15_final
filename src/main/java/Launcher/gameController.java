@@ -401,7 +401,7 @@ public class gameController {
 
         // Creates an array of owned fields and check if they exist.
         Field[] ownedArray = estateAgent.getOwnedFields(player);
-        if (ownedArray.length == 0) {
+        if (ownedArray.length == 0 ) {
             gameInterface.displayMessage(lang.getString("NoOwnedFields"));
             return;
         }
@@ -409,8 +409,10 @@ public class gameController {
         // Counts how many fields are in full groups
         int ownedInGroups = 0;
         for (Field field : ownedArray) {
-            if (estateAgent.isAllOwned(field) && field.fieldType == 1) {
-                ownedInGroups++;
+            if (field.fieldType == 1) {
+                if (estateAgent.isAllOwned(field)) {
+                    ownedInGroups++;
+                }
             }
         }
 
@@ -426,7 +428,7 @@ public class gameController {
             }
         }
         // If one doesnt own all field in group
-        if (ownedArrayString[0] == null) {
+        if (ownedArrayString.length == 0) {
             gameInterface.displayMessage(lang.getString("DoesntOwnFieldGroup"));
             return;
         }
