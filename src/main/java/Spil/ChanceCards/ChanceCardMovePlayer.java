@@ -11,6 +11,10 @@ import java.util.Properties;
 
 public class ChanceCardMovePlayer extends ChanceCard {
     private int movePlayer;
+    /**
+     * Loads a .property file in folder "./ChanceCards/MovePlayer/"
+     * and creates a ChanceCard of childclass ChanceCardMovePlayer
+     */
 
     public ChanceCardMovePlayer(String fileName, Language language) {
         try {

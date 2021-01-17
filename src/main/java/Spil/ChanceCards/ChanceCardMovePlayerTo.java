@@ -12,6 +12,11 @@ import java.util.Properties;
 public class ChanceCardMovePlayerTo extends ChanceCard {
 
         private int moveTo;
+    /**
+     * Loads a .property file in folder "./ChanceCards/MovePlayerTo/"
+     * and creates a ChanceCard of childclass ChanceCardMovePlayerTo
+     */
+
     public ChanceCardMovePlayerTo(String fileName, Language language){
         try {
             FileInputStream stream = new FileInputStream("./ChanceCards/MovePlayerTo/"+ fileName);

@@ -11,7 +11,10 @@ import java.util.Properties;
 
 public class ChanceCardChangeMoney extends ChanceCard{
     private int moneyChange;
-
+    /**
+     * Loads a .property file in folder "./ChanceCards/ChangeMoney/"
+     * and creates a ChanceCard of childclass ChanceCardChangeMoney
+     */
     public ChanceCardChangeMoney(String fileName, Language language){
         try {
             FileInputStream input = new FileInputStream("./ChanceCards/ChangeMoney/"+ fileName);
