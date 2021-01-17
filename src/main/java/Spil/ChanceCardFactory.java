@@ -58,9 +58,19 @@ private ChanceCard[] allCards = new ChanceCard[0];
         }
 
     }
+
+    /**
+     * Get all chancecards
+     * @return An array of chancecards
+     */
     public ChanceCard[] getAllCards(){
         return allCards;
     }
+
+    /**
+     * Get all the filenames from the ChanceCards folder
+     * @param folderName Type of chancecard
+     */
     private void getNames(String folderName){
 
         File allFields = new File("./ChanceCards/" + folderName);
@@ -69,6 +79,10 @@ private ChanceCard[] allCards = new ChanceCard[0];
 
     }
 
+    /**
+     * Adds all the chancecards to a chancecardArray
+     * @return an array of chancecards
+     */
     private ChanceCard[] addCards(){
 
         placeholder = new ChanceCard[allCards.length];

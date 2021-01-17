@@ -10,11 +10,18 @@ public class Dice {
 
     Random r = new Random();
 
+    /**
+     * Set facevalue to the input (value)
+     * @param value number of eyes on the dice
+     */
     public Dice(int value){
         facevalue = value;
     }
 
-
+    /**
+     * Generates a random number between 1 and 6
+     * @return integer between 1 and 6
+     */
     public int Roll(){
         int[] sides = {1, 2, 3, 4, 5, 6};
 
@@ -23,6 +30,10 @@ public class Dice {
         return facevalue;
     }
 
+    /**
+     * Takes dice last value
+     * @return value of dice
+     */
     public int getValue(){
         return facevalue;
     }
