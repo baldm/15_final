@@ -30,7 +30,7 @@ public class gameController {
 
 
         // Simple turn
-        while (true) {
+        while (playerArray.length > 1) {
             for (Player player : playerArray) {
                 player.hasExtraTurn = 0;
                 game.takeTurn(player);
@@ -105,10 +105,7 @@ public class gameController {
             }
         }
 
-
-
         int currentFieldType = fieldArray[currentPlayer.getPosition()].fieldType;
-
 
         // ORDER OF THESE ARE IMPORTANT,
         // if order is changed some chance card logic will not work
@@ -340,14 +337,9 @@ public class gameController {
     }
 
     private void endOfTurn(Player player) {
-        // Check if player is in the negatives of the monies
-        // prompt mortage
 
-        // prompt player if they wish to do anything to their plots or whatever
-            // sell
-            // buy houses
         while (true) {
-            String[] turnChoices = {"Buy Houses", "Sell houses", "Sell field", "Mortgage houses", "Skip"}; // TODO: Translate
+            String[] turnChoices = {lang.getString("BuyHouses"), lang.getString("SellHouses"), lang.getString("SellField"), lang.getString("MortgageHouses"), lang.getString("Skip")};
             String turnChoice = gameInterface.displayDropdown(lang.getString("TurnChoice"), turnChoices);
 
             if (turnChoice.equals(turnChoices[0])) {
@@ -362,6 +354,12 @@ public class gameController {
                 break;
             }
         }
+
+        // handles loss
+        if (hasPlayerLost(player)) {
+            removePlayerFromGame(player);
+        }
+
     }
 
     // TODO: TEST
@@ -520,8 +518,7 @@ public class gameController {
         System.out.println(sellField.name);
         player.addMoney(fieldPrice);
         estateAgent.setOwner(null, sellField);
-        gameInterface.setOwner(null, sellField.position);
-        gameInterface.setPlayerBalance(player);
+        gameInterface.removeOwner(player, sellField.position);
 
     }
 
@@ -557,7 +554,6 @@ public class gameController {
         if(diceOne.getValue() == diceTwo.getValue()){
             extraturn = true;
         }else{
-            System.out.println("Extra turn is now false");
             extraturn = false;
         }
 
@@ -582,4 +578,44 @@ public class gameController {
         return null;
     }
 
+    private boolean hasPlayerLost(Player player) {
+        if (player.getMoney() < 0) {
+            while (player.getMoney() < 0) {
+                gameInterface.displayMessage(lang.getString("UnderZeroMoney"));
+                String[] turnChoices = {lang.getString("SellHouses"), lang.getString("SellField"), lang.getString("MortgageHouses"), lang.getString("Forfeit")};
+                String turnChoice = gameInterface.displayDropdown(lang.getString("TurnChoice"), turnChoices);
+
+                if (turnChoice.equals(turnChoices[0])) {
+                    buyHouses(player);
+                } else if (turnChoice.equals(turnChoices[1])) {
+                    sellHouses(player);
+                } else if (turnChoice.equals(turnChoices[2])) {
+                    sellField(player);
+                } else {
+                    gameInterface.displayMessage(lang.getString("PlayerLeftGame"));
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void removePlayerFromGame(Player player) {
+        Player[] newPlayerArray = new Player[playerArray.length-1];
+
+        playerArray[player.getID()] = null;
+        gameInterface.removePlayer(player);
+
+        for (int i = 0, k=0; i < playerArray.length; i++) {
+            if (playerArray[i] == null) {
+                continue;
+            } else {
+                newPlayerArray[k] = playerArray[i];
+                k++;
+            }
+        }
+        playerArray = newPlayerArray;
+
+
+    }
 }
