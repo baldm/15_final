@@ -14,7 +14,7 @@ public class FieldProperty extends Field {
     private int mortageValue;
     private int houseNumber =   0;
     private int housePrice;
-    private boolean isPledged;
+    private boolean isPledged = false;
 
 
     public FieldProperty(String fileName){
