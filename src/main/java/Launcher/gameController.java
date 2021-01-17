@@ -740,7 +740,6 @@ public class gameController {
         Field[] ownedFields = estateAgent.getPledgedFields(player);
         String[] ArrayString;
         Field[] allOwnedFields = ownedFields.clone();
-        int[][] ownedFieldsSorted = estateAgent.getFieldType1Sorted();
         Field[] placeholder;
         if(allOwnedFields == null){
             lang.getString("NoFieldsPledged");
