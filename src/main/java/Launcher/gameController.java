@@ -791,21 +791,21 @@ public class gameController {
                 case 2:
                     if(((FieldScandlines) allOwnedFields[k]).isPledged()){
                         placeholder = ownedFields.clone();
-                        ownedFields = new Field[++h];
+                        ownedFields = new Field[ownedFields.length+1];
                         for(int m =0; m<placeholder.length;m++){
                             ownedFields[m] = placeholder[m];
                         }
-                        ownedFields[h] = allOwnedFields[k];
+                        ownedFields[ownedFields.length-1] = allOwnedFields[k];
                     }
                     break;
                 case 3:
                     if(((FieldSoda) allOwnedFields[k]).isPledged()){
                         placeholder = ownedFields.clone();
-                        ownedFields = new Field[++h];
+                        ownedFields = new Field[ownedFields.length+1];
                         for(int m =0; m<placeholder.length;m++){
                             ownedFields[m] = placeholder[m];
                         }
-                        ownedFields[h] = allOwnedFields[k];
+                        ownedFields[ownedFields.length-1] = allOwnedFields[k];
                     }
                     break;
             }
