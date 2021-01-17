@@ -291,10 +291,17 @@ public class gameController {
         }
     }
 
+    /**
+     * Buys a field on the board and in logic
+     * @param player The player buying
+     * @param currentField The field to be bought
+     */
     private void buyField(Player player, Field currentField) {
 
+        // Dialog confirming to buy
         String choice = gameInterface.displayMultiButton(lang.getString("WantToBuy"), lang.getString("Yes"), lang.getString("No"));
 
+        // Checks if yes
         if (choice.equals("Yes") || choice.equals("Ja")) {
 
             // Casts the correct child class
@@ -351,12 +358,19 @@ public class gameController {
 
     }
 
+    /**
+     * Handles the dialog at the end of a turn
+     * @param player which is at the end of a turn
+     */
     private void endOfTurn(Player player) {
 
+        // Dialog keeps being open until closed
         while (true) {
+            // Gets choice
             String[] turnChoices = {lang.getString("BuyHouses"), lang.getString("SellHouses"), lang.getString("SellField"), lang.getString("MortgageHouses"), lang.getString("UnPledge"), lang.getString("Skip")};
             String turnChoice = gameInterface.displayDropdown(lang.getString("TurnChoice"), turnChoices);
 
+            // Sorts choice and starts choice
             if (turnChoice.equals(turnChoices[0])) {
                 buyHouses(player);
             } else if (turnChoice.equals(turnChoices[1])) {
