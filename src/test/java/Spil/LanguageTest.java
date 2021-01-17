@@ -16,6 +16,6 @@ public class LanguageTest extends TestCase {
     public void testInternational(){
         String test = lang.getString("internationalTest");
 
-        assertEquals(test.equals("æ æ å e båj u'e i e sø") ,true);
+        assertEquals(test.equals("æ ø å") ,true);
     }
 }
