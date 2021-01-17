@@ -626,32 +626,209 @@ public class gameController {
      * Full logic for a player to pledge an owned property
      * @param player - player object which landed on the field
      */
-    private void PledgeField(Player player){
+    private void pledgeField(Player player){
 
         Field[] ownedFields = estateAgent.getOwnedFields(player);
-        String[] ownedArrayString = new String[ownedFields.length];
-
+        String[] ownedArrayString;
+        Field[] allOwnedFields = ownedFields.clone();
+        int[][] ownedFieldsSorted = estateAgent.getFieldType1Sorted();
+        Field[] placeholder;
         if (ownedFields.length == 0) {
             gameInterface.displayMessage(lang.getString("NoOwnedFields"));
             return;
         }
-            for(int i = 0; i<ownedFields.length;i++){
+        int h=0;
+        ownedFields = new Field[h];
 
-            }
+            for(int i = 0; i<allOwnedFields.length;i++)
+                switch (allOwnedFields[i].fieldType) {
+                    case 1:
+                        int[] allFieldsInGroup = ownedFieldsSorted[((FieldProperty) allOwnedFields[i]).getGroupID()];
+                        boolean anyHouses = false;
+                        for(int m =0; m<allFieldsInGroup.length;m++){
+                            if(((FieldProperty) fieldArray[allFieldsInGroup[m]]).getHouseNumber() != 0){
+                                anyHouses = true;
+                            }
+                        }
+                        if (!((FieldProperty) allOwnedFields[i]).isPledged() && !anyHouses) {
+                            placeholder = ownedFields.clone();
+                            ownedFields = new Field[ownedFields.length+1];
+                            for (int k = 0; k< placeholder.length;k++){
+                                ownedFields[k]=placeholder[k];
+                            }
+                            ownedFields[++h] = allOwnedFields[i];
+                        }
+                        break;
+                    case 2:
+                        if (!((FieldScandlines) allOwnedFields[i]).isPledged()) {
 
-            for(int i = 0; i< ownedFields.length;i++){
-                if(ownedFields[i].name != null){
-                    ownedArrayString[i] = ownedFields[i].name;
+                            placeholder = ownedFields.clone();
+                            ownedFields = new Field[ownedFields.length+1];
+                            for (int k = 0; k< placeholder.length;k++){
+                                ownedFields[k]=placeholder[k];
+                            }
+                            ownedFields[++h] = allOwnedFields[i];
+
+                        }
+                        break;
+                    case 3:
+                        if (!((FieldSoda) allOwnedFields[i]).isPledged()) {
+                            placeholder = ownedFields.clone();
+                            ownedFields = new Field[ownedFields.length+1];
+                            for (int k = 0; k< placeholder.length;k++){
+                                ownedFields[k]=placeholder[k];
+                            }
+                            ownedFields[++h] = allOwnedFields[i];
+                        }
+                        break;
+                    default:
+
+                    }
+
+                ownedArrayString = new String[ownedFields.length];
+
+        for(int i = 0; i < ownedFields.length;i++){
+            if(ownedFields[i].name != null){
+                switch (ownedFields[i].fieldType){
+                    case 1:
+                        ownedArrayString[i] = ownedFields[i].name + " " +
+                                lang.getString("mortage") +  " " +
+                                ((FieldProperty) ownedFields[i]).getMortageValue();
+                        break;
+                    case 2:
+                        ownedArrayString[i] = ownedFields[i].name + " " +
+                                lang.getString("mortage") +  " " +
+                                ((FieldScandlines) ownedFields[i]).getMortageValue();    break;
+                    case 3:
+                        ownedArrayString[i] = ownedFields[i].name + " " +
+                                lang.getString("mortage") +  " " +
+                                ((FieldSoda) ownedFields[i]).getMortageValue();
+                    break;
+
                 }
             }
+        }
 
 
         // Select a field and find it
         Field sellField = fieldFinder(gameInterface.displayDropdown(
                 lang.getString("ChooseOwned"), ownedArrayString));
 
-
+            switch (sellField.fieldType){
+                case 1:
+                    player.addMoney(((FieldProperty) sellField).getMortageValue());
+                    ((FieldProperty) sellField).setPledged(true);
+                case 2:
+                    player.addMoney(((FieldScandlines) sellField).getMortageValue());
+                    ((FieldScandlines) sellField).setPledged(true);
+                case 3:
+                    player.addMoney(((FieldSoda) sellField).getMortageValue());
+                    ((FieldSoda) sellField).setPledged(true);
+            }
 
 
     }
+
+    /**
+     * Full logic for a player to unpledge an owned property
+     * @param player - player object which landed on the field
+     */
+    private void unPledgeField(Player player){
+        Field[] ownedFields = estateAgent.getPledgedFields(player);
+        String[] ArrayString;
+        Field[] allOwnedFields = ownedFields.clone();
+        int[][] ownedFieldsSorted = estateAgent.getFieldType1Sorted();
+        Field[] placeholder;
+        int h=0;
+        ownedFields = new Field[h];
+        for(int k = 0; k< allOwnedFields.length;k++){
+            switch (allOwnedFields[k].fieldType){
+                case 1:
+                    if(((FieldProperty) allOwnedFields[k]).isPledged()){
+                        placeholder = ownedFields.clone();
+                        ownedFields = new Field[++h];
+                        for(int m =0; m<placeholder.length;m++){
+                            ownedFields[m] = placeholder[m];
+                        }
+                        ownedFields[h] = allOwnedFields[k];
+                    }
+                    break;
+                case 2:
+                    if(((FieldScandlines) allOwnedFields[k]).isPledged()){
+                        placeholder = ownedFields.clone();
+                        ownedFields = new Field[++h];
+                        for(int m =0; m<placeholder.length;m++){
+                            ownedFields[m] = placeholder[m];
+                        }
+                        ownedFields[h] = allOwnedFields[k];
+                    }
+                    break;
+                case 3:
+                    if(((FieldSoda) allOwnedFields[k]).isPledged()){
+                        placeholder = ownedFields.clone();
+                        ownedFields = new Field[++h];
+                        for(int m =0; m<placeholder.length;m++){
+                            ownedFields[m] = placeholder[m];
+                        }
+                        ownedFields[h] = allOwnedFields[k];
+                    }
+                    break;
+            }
+        }
+
+
+        ArrayString = new String[ownedFields.length];
+        // Creating StringArray with pledged properties and price for unpledging
+        for(int i = 0; i < ownedFields.length;i++){
+            if(ownedFields[i].name != null){
+                switch (ownedFields[i].fieldType){
+                    case 1:
+                        ArrayString[i] = ownedFields[i].name + " " +
+                                lang.getString("price") +  " " +
+                                (int)( (((FieldProperty) ownedFields[i]).getMortageValue()/100)*1.10)*100;
+                        break;
+                    case 2:
+                        ArrayString[i] = ownedFields[i].name + " " +
+                                lang.getString("price") +  " " +
+                                (int)( (((FieldScandlines) ownedFields[i]).getMortageValue()/100)*1.10)*100;
+                        break;
+                    case 3:
+                        ArrayString[i] = ownedFields[i].name + " " +
+                                lang.getString("price") +  " " +
+                                (int)( (((FieldSoda) ownedFields[i]).getMortageValue()/100)*1.10)*100;
+                        break;
+
+                }
+            }
+        }
+
+        // Select a field and find it
+        Field sellField = fieldFinder(gameInterface.displayDropdown(
+                lang.getString("ChooseOwned"), ArrayString));
+
+        switch (sellField.fieldType){
+            case 1:
+                if( (int)( (((FieldProperty) sellField).getMortageValue()/100)*1.10)*100 <=
+                        player.getMoney()){
+                    player.addMoney(-(int)( (((FieldProperty) sellField).getMortageValue()/100)*1.10)*100);
+                    ((FieldProperty) sellField).setPledged(false);
+                } else{
+                    gameInterface.displayMessage(lang.getString("InsufficientFunds"));
+                }
+
+            case 2:
+                if( (int)( (((FieldScandlines) sellField).getMortageValue()/100)*1.10)*100 <=
+                        player.getMoney()) {
+                    player.addMoney( -(int)( (((FieldScandlines) sellField).getMortageValue()/100)*1.10)*100);
+                    ((FieldScandlines) sellField).setPledged(false);
+                } else{
+                    gameInterface.displayMessage(lang.getString("InsufficientFunds"));
+                }
+            case 3:
+                player.addMoney(((FieldSoda) sellField).getMortageValue());
+                ((FieldSoda) sellField).setPledged(false);
+        }
+
+    }
+
 }
