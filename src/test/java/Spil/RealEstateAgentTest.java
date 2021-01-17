@@ -74,6 +74,19 @@ class RealEstateAgentTest {
         assertEquals(agent.getOwnedFields(p1)[1].name, amagertorv.name);
     }
 
+    @Test
+    void getPledgedFields(){
+
+        FieldProperty allegade = new FieldProperty("allegade.properties");
+        FieldProperty amagertorv = new FieldProperty("amagertorv.properties");
+
+        agent.setOwner(p1, allegade);
+        agent.setOwner(p1, amagertorv);
+
+        assertEquals(agent.getPledgedFields(p1)[0].name, allegade.name);
+
+    }
+
 
     
 }
