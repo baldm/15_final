@@ -12,7 +12,7 @@ public class FieldScandlines extends Field{
     private int[] rent;
     private int groupID;
     private int mortageValue;
-    private boolean isPledged;
+    private boolean isPledged = false;
 
 public FieldScandlines(String fileName){
     try {
@@ -65,4 +65,11 @@ public FieldScandlines(String fileName){
         return mortageValue;
     }
 
+    public void setPledged(boolean pledged) {
+        isPledged = pledged;
+    }
+
+    public boolean isPledged() {
+        return isPledged;
+    }
 }

@@ -5,7 +5,6 @@ import Spil.Language;
 import Spil.Player;
 import gui_fields.*;
 import gui_main.GUI;
-import org.apache.commons.codec.language.bm.Lang;
 
 import java.awt.*;
 
@@ -54,12 +53,16 @@ public class Interface {
                     "UFO");
 
             // Handles the type of car
-            GUI_Car.Type type = switch (playerIcon) {
-                case "Tractor" -> GUI_Car.Type.TRACTOR;
-                case "Racecar" -> GUI_Car.Type.RACECAR;
-                case "UFO" -> GUI_Car.Type.UFO;
-                default -> GUI_Car.Type.CAR;
-            };
+            GUI_Car.Type type;
+            if (playerIcon.equals(lang.getString("Racecar"))) {
+                type = GUI_Car.Type.RACECAR;
+            } else if (playerIcon.equals(lang.getString("Tractor"))) {
+                type = GUI_Car.Type.TRACTOR;
+            } else if (playerIcon.equals("UFO")) {
+                type = GUI_Car.Type.UFO;
+            } else {
+                type = GUI_Car.Type.CAR;
+            }
 
             // Creates the car object
             new GUI_Car();
@@ -118,7 +121,6 @@ public class Interface {
             }
 
             // Sorts types of field into their respective class and values
-            // TODO: Insert description into properties
             switch (currentField.fieldType) {
                 case 1 -> {
                     guiFieldArray[i] = new GUI_Street(currentField.name, String.valueOf(((FieldProperty) currentField).getPrice()), descGen(currentField, lang), "0", curColor, Color.BLACK); //String.valueOf(((FieldProperty) currentField).getMortageValue())
@@ -260,7 +262,7 @@ public class Interface {
      * @param args Strings seperated by comma
      */
     public String displayDropdown(String msg, String... args) {
-        return gui.getUserSelection(("\n\n\n"+msg), args);
+        return gui.getUserSelection((msg), args);
     }
 
     /**
@@ -290,6 +292,8 @@ public class Interface {
 
         // It seems to work best calling both of these commands at the same time.
         gui.displayChanceCard(input);
+        displayMessage("  ");
+        gui.displayChanceCard();
     }
 
     /**
@@ -321,10 +325,17 @@ public class Interface {
     public void setOwner(Player player, int fieldID) {
         GUI_Field field = gui.getFields()[fieldID];     // Finds the field
         GUI_Ownable guiField = (GUI_Ownable) field;   // Changes the field to a street field
-        guiField.setOwnerName(player.getName());
-        guiField.setBorder(guiPlayerList[player.getID()].getPrimaryColor());
-        setPlayerBalance(player); // Updates the gui balance of the player
+
+        if (player == null) {
+            guiField.setBorder(Color.BLACK);
+            guiField.setOwnerName(" ");
+        } else {
+            guiField.setOwnerName(player.getName());
+            guiField.setBorder(guiPlayerList[player.getID()].getPrimaryColor());
+            setPlayerBalance(player); // Updates the gui balance of the player
+        }
     }
+
     public void removeOwner(Player player, int fieldID) {
         GUI_Field field = gui.getFields()[fieldID];     // Finds the field
         GUI_Ownable guiField = (GUI_Ownable) field;   // Changes the field to a street field
