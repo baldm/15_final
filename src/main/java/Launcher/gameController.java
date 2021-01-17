@@ -354,7 +354,7 @@ public class gameController {
     private void endOfTurn(Player player) {
 
         while (true) {
-            String[] turnChoices = {lang.getString("BuyHouses"), lang.getString("SellHouses"), lang.getString("SellField"), lang.getString("MortgageHouses"), lang.getString("Skip")};
+            String[] turnChoices = {lang.getString("BuyHouses"), lang.getString("SellHouses"), lang.getString("SellField"), lang.getString("MortgageHouses"), lang.getString("UnPledge"), lang.getString("Skip")};
             String turnChoice = gameInterface.displayDropdown(lang.getString("TurnChoice"), turnChoices);
 
             if (turnChoice.equals(turnChoices[0])) {
@@ -364,7 +364,9 @@ public class gameController {
             }else if (turnChoice.equals(turnChoices[2])) {
                 sellField(player);
             } else if (turnChoice.equals(turnChoices[3])) {
-                PledgeField(player);
+                pledgeField(player);
+            } else if (turnChoice.equals(turnChoices[4])) {
+                unPledgeField(player);
             } else  {
                 break;
             }
@@ -614,7 +616,7 @@ public class gameController {
                 } else if (turnChoice.equals(turnChoices[1])) {
                     sellField(player);
                 } else if (turnChoice.equals(turnChoices[2])) {
-                    PledgeField(player);
+                    pledgeField(player);
                 } else {
                     gameInterface.displayMessage(lang.getString("PlayerLeftGame"));
                     return true;
