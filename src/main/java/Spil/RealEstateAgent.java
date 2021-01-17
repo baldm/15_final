@@ -144,7 +144,8 @@ public class RealEstateAgent {
     public int ferriesOwned(Player player){
         int ferriesOwned = 0;
         for(int l =0; l< fieldType2.length;l++){
-            if(owners[fieldType2[l]].getID() == player.getID()){
+            if(owners[fieldType2[l]] != null &&
+                    owners[fieldType2[l]].getID() == player.getID()){
                 ferriesOwned++;
             }
         }
@@ -243,5 +244,9 @@ public class RealEstateAgent {
 
         return ownedFields;
 
+    }
+
+    public int[][] getFieldType1Sorted() {
+        return fieldType1Sorted;
     }
 }
