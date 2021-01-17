@@ -33,14 +33,7 @@ public class gameController {
         while (playerArray.length > 1) {
             for (Player player : playerArray) {
                 player.hasExtraTurn = 0;
-
-                player.addMoney(50000000);
-                game.buyField(player, game.fieldFinder("Roskildevej"));
-                game.buyField(player, game.fieldFinder("Valby Langgade"));
-                game.buyField(player, game.fieldFinder("Allégade"));
-
-
-
+                
                 game.takeTurn(player);
                 while (extraturn) {
                     game.takeTurn(player);
@@ -538,7 +531,6 @@ public class gameController {
                 ownedArrayStringWithoutNull[k++] = ownedArrayString[i];
             }
         }
-
 
 
         // Select a field and find it
