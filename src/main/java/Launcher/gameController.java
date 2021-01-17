@@ -533,28 +533,7 @@ public class gameController {
         gameInterface.removeOwner(player, sellField.position);
 
     }
-
-    private void mortgage(Player player) {
-
-
-        /*
-        Man kan kun pansætte ubebyggende grunde
-
-        1. Vil du hæve pantsætning eller pantsætte noget
-
-        if hæve:
-                1. Hvilken grund vil du hæve pæntsætningen på
-                2. Det koster 10% mere end grunden
-                3. har man penge nok?
-                4. Overfør penge for at modtage property tilbage
-
-        else:
-            1. Sælg huse på grunden til banken
-            2. Få penge iforhold til hvad grunden er værd
-            3. Mærker grund som pæntsat
-
-         */
-    }
+    
 
     private int diceRoll() {
         gameInterface.displayMessage(lang.getString("RollDice"));
@@ -598,11 +577,11 @@ public class gameController {
                 String turnChoice = gameInterface.displayDropdown(lang.getString("TurnChoice"), turnChoices);
 
                 if (turnChoice.equals(turnChoices[0])) {
-                    buyHouses(player);
-                } else if (turnChoice.equals(turnChoices[1])) {
                     sellHouses(player);
-                } else if (turnChoice.equals(turnChoices[2])) {
+                } else if (turnChoice.equals(turnChoices[1])) {
                     sellField(player);
+                } else if (turnChoice.equals(turnChoices[2])) {
+                    PledgeField(player);
                 } else {
                     gameInterface.displayMessage(lang.getString("PlayerLeftGame"));
                     return true;
