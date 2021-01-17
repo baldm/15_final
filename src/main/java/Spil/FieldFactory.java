@@ -15,7 +15,7 @@ public class FieldFactory {
     public FieldFactory(Language lang){
 
         /**
-         * ChanceFields
+         * adding ChanceFields
          */
         input = getNames("Chance/");
         addFields();
@@ -23,7 +23,7 @@ public class FieldFactory {
             allFields[i++] = new FieldChance(input[n]);
         }
         /**
-         * Properties
+         * adding PropertiesFields
          */
         input = getNames("FieldProperties/");
         addFields();
@@ -31,7 +31,7 @@ public class FieldFactory {
             allFields[i++] = new FieldProperty(input[n]);
         }
         /**
-         * Jail
+         * adding JailFields
          */
         input = getNames("Jail/");
         addFields();
@@ -39,7 +39,7 @@ public class FieldFactory {
             allFields[i++] = new FieldJail(input[n],lang);
         }
         /**
-         * Scandlines
+         * ScandlinesFields
          */
         input = getNames("Scandlines/");
         addFields();
@@ -47,15 +47,16 @@ public class FieldFactory {
             allFields[i++] = new FieldScandlines(input[n]);
         }
         /**
-         * Special
+         * adding SpecialFields
          */
         input = getNames("Special/");
         addFields();
         for(int n = 0; n< input.length;n++){
             allFields[i++] = new FieldSpecial(input[n]);
         }
+
         /**
-         * Soda
+         * Adding Soda fields
          */
         input = getNames("FieldSoda/");
         addFields();
@@ -63,6 +64,10 @@ public class FieldFactory {
             allFields[i++] = new FieldSoda(input[n]);
         }
 
+        /**
+         * Sorts all the fields by position on the board
+         * @return Field[] array
+         */
         Field[] unsortedFields;
         unsortedFields = allFields.clone();
 
@@ -71,16 +76,17 @@ public class FieldFactory {
             allFields[unsortedFields[k].position] = unsortedFields[k];
         }
 
-
-
-
     }
     public Field[] getAllFields(){
         return allFields;
     }
 
 
-
+    /**
+     * Scans a folder for all files
+     * @param folderName the folder you want to scan
+     * @return a String[] array with all the filenames
+     */
     private String[] getNames(String folderName) {
 
         File allFields = new File("./Field/" + folderName);
@@ -88,7 +94,10 @@ public class FieldFactory {
 
         return input;
     }
-
+    /**
+     * Expands current fieldarray allfields
+     * @return expanded Field-Array
+     */
     private Field[] addFields(){
 
             placeholder = new Field[allFields.length];
