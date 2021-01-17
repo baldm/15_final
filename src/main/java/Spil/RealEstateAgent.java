@@ -212,7 +212,6 @@ public class RealEstateAgent {
                         break;
                     case 3:
                         if (!((FieldSoda) allOwnedFields[i]).isPledged()) {
-                            ownedFields = new Field[++h];
                             placeholder = ownedFields.clone();
                             ownedFields = new Field[++h];
 
