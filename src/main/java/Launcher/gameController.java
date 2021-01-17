@@ -33,12 +33,7 @@ public class gameController {
         while (playerArray.length > 1) {
             for (Player player : playerArray) {
                 player.hasExtraTurn = 0;
-                // TEST:
-                game.buyField(player, game.fieldFinder("Frederiksberggade"));
-                game.buyField(player, game.fieldFinder("Rådhuspladsen"));
-                player.addMoney(-15000);
 
-                // TEST END
                 game.takeTurn(player);
                 while (extraturn) {
                     game.takeTurn(player);
@@ -645,7 +640,7 @@ public class gameController {
         }
 
         playerArray[player.getID()] = null;
-        
+
 
         Player[] newPlayerArray = new Player[playerArray.length-1];
 
