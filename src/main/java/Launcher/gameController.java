@@ -681,7 +681,10 @@ public class gameController {
         }
         int h=0;
         ownedFields = new Field[h];
-
+            if(allOwnedFields == null){
+                lang.getString("NoOwnedFields");
+                return;
+            }
             for(int i = 0; i<allOwnedFields.length;i++)
                 switch (allOwnedFields[i].fieldType) {
                     case 1:
@@ -779,8 +782,11 @@ public class gameController {
         Field[] ownedFields = estateAgent.getPledgedFields(player);
         String[] ArrayString;
         Field[] allOwnedFields = ownedFields.clone();
-        int[][] ownedFieldsSorted = estateAgent.getFieldType1Sorted();
         Field[] placeholder;
+        if(allOwnedFields == null){
+            lang.getString("NoFieldsPledged");
+            return;
+        }
         int h=0;
         ownedFields = new Field[h];
         for(int k = 0; k< allOwnedFields.length;k++){
