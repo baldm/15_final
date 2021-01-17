@@ -760,10 +760,15 @@ public class gameController {
                 return;
             }
             for(int i = 0; i<allOwnedFields.length;i++)
+                // Sorting all owned nonpledged fields
+                // and checking requirements for pledging the field-type
+
                 switch (allOwnedFields[i].fieldType) {
+                // FieldProperty
                     case 1:
                         int[] allFieldsInGroup = ownedFieldsSorted[((FieldProperty) allOwnedFields[i]).getGroupID()];
                         boolean anyHouses = false;
+                        // Checking for any houses on field any field in group
                         for(int m =0; m<allFieldsInGroup.length;m++){
                             if(((FieldProperty) fieldArray[allFieldsInGroup[m]]).getHouseNumber() != 0){
                                 anyHouses = true;
@@ -771,6 +776,7 @@ public class gameController {
                         }
                         if (!((FieldProperty) allOwnedFields[i]).isPledged() && !anyHouses) {
                             placeholder = ownedFields.clone();
+                            // adding field to Field-array
                             ownedFields = new Field[ownedFields.length+1];
                             for (int k = 0; k< placeholder.length;k++){
                                 ownedFields[k]=placeholder[k];
@@ -779,6 +785,7 @@ public class gameController {
                         }
                         break;
                     case 2:
+                        // FieldScandlines
                         if (!((FieldScandlines) allOwnedFields[i]).isPledged()) {
 
                             placeholder = ownedFields.clone();
@@ -791,6 +798,7 @@ public class gameController {
                         }
                         break;
                     case 3:
+                        // FieldSoda
                         if (!((FieldSoda) allOwnedFields[i]).isPledged()) {
                             placeholder = ownedFields.clone();
                             ownedFields = new Field[ownedFields.length+1];
@@ -805,7 +813,7 @@ public class gameController {
                     }
 
                 ownedArrayString = new String[ownedFields.length];
-
+        // Creating StringArray with non-pledged properties' names
         for (int i=0; i<ownedFields.length;i++){
             ownedArrayString[i] = ownedFields[i].name;
         }
@@ -842,16 +850,18 @@ public class gameController {
         String[] ArrayString;
         Field[] allOwnedFields = ownedFields.clone();
         Field[] placeholder;
-
+        //Checking if player owns any field
         if (ownedFields.length == 0) {
             gameInterface.displayMessage(lang.getString("NoFieldsPledged"));
             return;
         }
         int h=0;
         ownedFields = new Field[h];
+        //Adding all non-pledged fields
         for(int k = 0; k< allOwnedFields.length;k++){
             switch (allOwnedFields[k].fieldType){
                 case 1:
+                    //FieldProperty
                     if(((FieldProperty) allOwnedFields[k]).isPledged()){
                         placeholder = ownedFields.clone();
                         ownedFields = new Field[ownedFields.length+1];
@@ -862,6 +872,7 @@ public class gameController {
                     }
                     break;
                 case 2:
+                    //FieldScandlines
                     if(((FieldScandlines) allOwnedFields[k]).isPledged()){
                         placeholder = ownedFields.clone();
                         ownedFields = new Field[ownedFields.length+1];
@@ -872,6 +883,7 @@ public class gameController {
                     }
                     break;
                 case 3:
+                    //FieldSoda
                     if(((FieldSoda) allOwnedFields[k]).isPledged()){
                         placeholder = ownedFields.clone();
                         ownedFields = new Field[ownedFields.length+1];
@@ -886,7 +898,7 @@ public class gameController {
 
 
         ArrayString = new String[ownedFields.length];
-        // Creating StringArray with pledged properties and price for unpledging
+        // Creating StringArray with pledged properties' names
         for (int i=0; i<ownedFields.length;i++){
             ArrayString[i] = ownedFields[i].name;
         }
@@ -895,6 +907,7 @@ public class gameController {
         Field sellField = fieldFinder(gameInterface.displayDropdown(
                 lang.getString("ChooseOwned"), ArrayString));
 
+        //un-pleding field and paying bank back
         switch (sellField.fieldType){
             case 1:
                 if( (int)( (((FieldProperty) sellField).getMortageValue()/100)*1.10)*100 <=
