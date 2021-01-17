@@ -375,9 +375,11 @@ public class gameController {
         String[] ownedArrayString = new String[ownedArray.length];
 
         for (int i = 0; i < ownedArray.length; i++) {
-            if (ownedArray[i].fieldType == 1) {
-                if (estateAgent.isAllOwned(ownedArray[i])) {
-                    ownedArrayString[i] = ownedArray[i].name;
+            if (ownedArray[i] != null) {
+                if (ownedArray[i].fieldType == 1) {
+                    if (estateAgent.isAllOwned(ownedArray[i])) {
+                        ownedArrayString[i] = ownedArray[i].name;
+                    }
                 }
             }
         }
@@ -441,9 +443,11 @@ public class gameController {
         String[] ownedArrayString = new String[ownedArray.length];
 
         for (int i = 0; i < ownedArray.length; i++) {
-            if (ownedArray[i].fieldType == 1) {
-                if (((FieldProperty) ownedArray[i]).getHouseNumber() > 0) {
-                    ownedArrayString[i] = ownedArray[i].name;
+            if (ownedArray[i] != null) {
+                if (ownedArray[i].fieldType == 1) {
+                    if (((FieldProperty) ownedArray[i]).getHouseNumber() > 0) {
+                        ownedArrayString[i] = ownedArray[i].name;
+                    }
                 }
             }
         }
@@ -494,7 +498,9 @@ public class gameController {
         String[] ownedArrayString = new String[ownedArray.length];
 
         for (int i = 0; i < ownedArray.length; i++) {
-            ownedArrayString[i] = ownedArray[i].name;
+            if (ownedArray[i] != null) {
+                ownedArrayString[i] = ownedArray[i].name;
+            }
         }
 
         // Select a field and find it
@@ -516,7 +522,6 @@ public class gameController {
             default -> 0;
         };
 
-        System.out.println(sellField.name);
         player.addMoney(fieldPrice);
         estateAgent.setOwner(null, sellField);
         gameInterface.removeOwner(player, sellField.position);
