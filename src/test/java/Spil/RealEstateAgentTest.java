@@ -32,6 +32,22 @@ class RealEstateAgentTest {
     }
 
     @Test
+    void isAllOwned(){
+
+        FieldProperty rod = new FieldProperty("rødovrevej.properties");
+        FieldProperty hvid = new FieldProperty("hvidovrevej.properties");
+
+        agent.setOwner(p1, rod);
+        agent.setOwner(p1, hvid);
+        
+        assertTrue(agent.isAllOwned(rod));
+
+        FieldProperty allegade = new FieldProperty("allegade.properties");
+
+        assertFalse(agent.isAllOwned(allegade));
+    }
+
+    @Test
     void ferriesOwned(){
         FieldScandlines scandlines = new FieldScandlines("GedserRostock.properties");
         FieldScandlines molslinjen = new FieldScandlines("Molslinjen.properties");
