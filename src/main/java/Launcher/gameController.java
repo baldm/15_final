@@ -33,12 +33,7 @@ public class gameController {
         while (playerArray.length > 1) {
             for (Player player : playerArray) {
                 player.hasExtraTurn = 0;
-
-                game.buyField(player, game.fieldFinder("Roskildevej"));
-                game.buyField(player, game.fieldFinder("Valby Langgade"));
-                game.buyField(player, game.fieldFinder("Allégade"));
-
-
+                
                 game.takeTurn(player);
                 while (extraturn) {
                     game.takeTurn(player);
@@ -461,7 +456,7 @@ public class gameController {
             deltaHouseValue = newHouseValue - currentHouseValue;
 
             // checks if player has enough money
-            if (deltaHouseValue < player.getMoney()) {
+            if (deltaHouseValue > player.getMoney()) {
                 gameInterface.displayMessage(lang.getString("InsufficientFunds"));
 
             } else {
@@ -510,32 +505,42 @@ public class gameController {
         }
 
         // Creates and array of the names of the owned fields wtih houses in a String[]
+        int fieldsWithHousesCounter = 0;
         String[] ownedArrayString = new String[ownedArray.length];
+
         for (int i = 0; i < ownedArray.length; i++) {
             if (ownedArray[i] != null) {
                 if (ownedArray[i].fieldType == 1) {
                     if (((FieldProperty) ownedArray[i]).getHouseNumber() > 0) {
+                        fieldsWithHousesCounter++;
                         ownedArrayString[i] = ownedArray[i].name;
-                        System.out.println(ownedArray[i].name);
                     }
                 }
             }
         }
-
         // Dialog if no houses are found
         if (ownedArrayString.length == 0) {
             gameInterface.displayMessage(lang.getString("NoHouses"));
             return;
         }
 
+        // Filters out null fields
+        String[] ownedArrayStringWithoutNull = new String[fieldsWithHousesCounter];
+        for (int i = 0, k=0; i < ownedArrayString.length; i++) {
+            if (ownedArrayString[i] != null) {
+                ownedArrayStringWithoutNull[k++] = ownedArrayString[i];
+            }
+        }
+
+
         // Select a field and find it
-        Field sellField = fieldFinder(gameInterface.displayDropdown(lang.getString("ChooseOwned"), ownedArrayString));
+        Field sellField = fieldFinder(gameInterface.displayDropdown(lang.getString("ChooseOwned"), ownedArrayStringWithoutNull));
         int houseAmount = ((FieldProperty) sellField).getHouseNumber();
 
         // Select amount of houses to sell:
         String[] houseAmountChoices = new String[houseAmount];
         for (int i = 1; i <= houseAmount; i++) {
-            houseAmountChoices[i] = String.valueOf(i);
+            houseAmountChoices[i-1] = String.valueOf(i);
         }
 
         int chosenHouseAmount = Integer.parseInt(gameInterface.displayDropdown(lang.getString("SellAmountHouses"), houseAmountChoices));
@@ -551,8 +556,8 @@ public class gameController {
 
         // Removes the houses
         ((FieldProperty) sellField).setHouseNumber(chosenHouseAmount);
-        gameInterface.setFieldHouses(sellField.position, (((FieldProperty) sellField).getHouseNumber()-chosenHouseAmount), player);
         gameInterface.setFieldHotel(sellField.position, false,player);
+        gameInterface.setFieldHouses(sellField.position, ((FieldProperty) sellField).getHouseNumber(), player);
 
     }
 
