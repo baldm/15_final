@@ -65,4 +65,11 @@ public FieldScandlines(String fileName){
         return mortageValue;
     }
 
+    public void setPledged(boolean pledged) {
+        isPledged = pledged;
+    }
+
+    public boolean isPledged() {
+        return isPledged;
+    }
 }

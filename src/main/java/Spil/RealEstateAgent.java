@@ -126,13 +126,66 @@ public class RealEstateAgent {
         return ferriesOwned;
     }
 
-    public Field[] getOwnedFields(Player player) {
+    public Field[] getOwnedFields (Player player) {
         Field[] ownedFields = new Field[0];
        ownedFields = addField(fieldType1,ownedFields,player);
        ownedFields = addField(fieldType2,ownedFields,player);
+        if(ownedFields != null){
+            Field [] placeholder = ownedFields.clone();
+            int h=0;
+            ownedFields = new Field[h];
+            for(int i = 0; i< placeholder.length;i++){
+                switch (placeholder[i].fieldType){
+                    case 1:
+                        if(!((FieldProperty) placeholder[i]).isPledged()){
+                            ownedFields = new Field[++h];
+                            ownedFields[h-1] = placeholder[i];
+                        }
+                        break;
+                    case 2:
+                        if(!((FieldScandlines) placeholder[i]).isPledged()){
+                            ownedFields = new Field[++h];
+                            ownedFields[h-1] = placeholder[i];
+                            break;
+                        }
+                }
+            }
+        }
+
+
 
        return ownedFields;
 
+    }
+
+    public Field[] getPledgedFields (Player player) {
+        Field[] ownedFields = new Field[0];
+        ownedFields = addField(fieldType1, ownedFields, player);
+        ownedFields = addField(fieldType2, ownedFields, player);
+        if(ownedFields != null){
+            Field[] placeholder = ownedFields.clone();
+            int h = 0;
+            ownedFields = new Field[h];
+            for (int i = 0; i < placeholder.length; i++) {
+                switch (placeholder[i].fieldType) {
+                    case 1:
+                        if (((FieldProperty) placeholder[i]).isPledged()) {
+                            ownedFields = new Field[++h];
+                            ownedFields[h - 1] = placeholder[i];
+                        }
+                        break;
+                    case 2:
+                        if (((FieldScandlines) placeholder[i]).isPledged()) {
+                            ownedFields = new Field[++h];
+                            ownedFields[h - 1] = placeholder[i];
+                            break;
+                        }
+                }
+
+            }
+        }
+
+        return ownedFields;
     }
 
     private Field[] addField(int[] input,Field[] fieldInput,Player player){
@@ -151,6 +204,7 @@ public class RealEstateAgent {
             }
 
         }
+
         return ownedFields;
 
     }

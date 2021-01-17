@@ -24,13 +24,13 @@ public class gameController {
     private ChanceCard[] allChanceCards;
     private ChanceCard[] drawAbleChanceCards;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         gameController game = new gameController();
         game.gameInit();
 
 
         // Simple turn
-        while (true) {
+        while (playerArray.length > 1) {
             for (Player player : playerArray) {
                 player.hasExtraTurn = 0;
                 game.takeTurn(player);
@@ -40,6 +40,7 @@ public class gameController {
                 game.endOfTurn(player);
             }
         }
+        game.gameIsOver(playerArray[0]);
     }
 
     // TODO: Write docstring
@@ -105,10 +106,7 @@ public class gameController {
             }
         }
 
-
-
         int currentFieldType = fieldArray[currentPlayer.getPosition()].fieldType;
-
 
         // ORDER OF THESE ARE IMPORTANT,
         // if order is changed some chance card logic will not work
@@ -138,7 +136,7 @@ public class gameController {
         int drawedCardNumber;
 
         if (drawAbleChanceCards.length > 1) {
-            drawedCardNumber = ThreadLocalRandom.current().nextInt(0, drawAbleChanceCards.length+1);
+            drawedCardNumber = ThreadLocalRandom.current().nextInt(0, drawAbleChanceCards.length);
             drawedCard = drawAbleChanceCards[drawedCardNumber];
             ChanceCard[] chanceCardsPlaceholder = drawAbleChanceCards.clone();
             drawAbleChanceCards = new ChanceCard[drawAbleChanceCards.length - 1];
@@ -340,14 +338,9 @@ public class gameController {
     }
 
     private void endOfTurn(Player player) {
-        // Check if player is in the negatives of the monies
-        // prompt mortage
 
-        // prompt player if they wish to do anything to their plots or whatever
-            // sell
-            // buy houses
         while (true) {
-            String[] turnChoices = {"Buy Houses", "Sell houses", "Sell field", "Mortgage houses", "Skip"}; // TODO: Translate
+            String[] turnChoices = {lang.getString("BuyHouses"), lang.getString("SellHouses"), lang.getString("SellField"), lang.getString("MortgageHouses"), lang.getString("Skip")};
             String turnChoice = gameInterface.displayDropdown(lang.getString("TurnChoice"), turnChoices);
 
             if (turnChoice.equals(turnChoices[0])) {
@@ -362,6 +355,12 @@ public class gameController {
                 break;
             }
         }
+
+        // handles loss
+        if (hasPlayerLost(player)) {
+            removePlayerFromGame(player);
+        }
+
     }
 
     // TODO: TEST
@@ -376,9 +375,11 @@ public class gameController {
         String[] ownedArrayString = new String[ownedArray.length];
 
         for (int i = 0; i < ownedArray.length; i++) {
-            if (ownedArray[i].fieldType == 1) {
-                if (estateAgent.isAllOwned(ownedArray[i])) {
-                    ownedArrayString[i] = ownedArray[i].name;
+            if (ownedArray[i] != null) {
+                if (ownedArray[i].fieldType == 1) {
+                    if (estateAgent.isAllOwned(ownedArray[i])) {
+                        ownedArrayString[i] = ownedArray[i].name;
+                    }
                 }
             }
         }
@@ -442,9 +443,11 @@ public class gameController {
         String[] ownedArrayString = new String[ownedArray.length];
 
         for (int i = 0; i < ownedArray.length; i++) {
-            if (ownedArray[i].fieldType == 1) {
-                if (((FieldProperty) ownedArray[i]).getHouseNumber() > 0) {
-                    ownedArrayString[i] = ownedArray[i].name;
+            if (ownedArray[i] != null) {
+                if (ownedArray[i].fieldType == 1) {
+                    if (((FieldProperty) ownedArray[i]).getHouseNumber() > 0) {
+                        ownedArrayString[i] = ownedArray[i].name;
+                    }
                 }
             }
         }
@@ -495,7 +498,9 @@ public class gameController {
         String[] ownedArrayString = new String[ownedArray.length];
 
         for (int i = 0; i < ownedArray.length; i++) {
-            ownedArrayString[i] = ownedArray[i].name;
+            if (ownedArray[i] != null) {
+                ownedArrayString[i] = ownedArray[i].name;
+            }
         }
 
         // Select a field and find it
@@ -517,11 +522,9 @@ public class gameController {
             default -> 0;
         };
 
-        System.out.println(sellField.name);
         player.addMoney(fieldPrice);
         estateAgent.setOwner(null, sellField);
-        gameInterface.setOwner(null, sellField.position);
-        gameInterface.setPlayerBalance(player);
+        gameInterface.removeOwner(player, sellField.position);
 
     }
 
@@ -557,7 +560,6 @@ public class gameController {
         if(diceOne.getValue() == diceTwo.getValue()){
             extraturn = true;
         }else{
-            System.out.println("Extra turn is now false");
             extraturn = false;
         }
 
@@ -582,4 +584,47 @@ public class gameController {
         return null;
     }
 
+    private boolean hasPlayerLost(Player player) {
+        if (player.getMoney() < 0) {
+            while (player.getMoney() < 0) {
+                gameInterface.displayMessage(lang.getString("UnderZeroMoney"));
+                String[] turnChoices = {lang.getString("SellHouses"), lang.getString("SellField"), lang.getString("MortgageHouses"), lang.getString("Forfeit")};
+                String turnChoice = gameInterface.displayDropdown(lang.getString("TurnChoice"), turnChoices);
+
+                if (turnChoice.equals(turnChoices[0])) {
+                    buyHouses(player);
+                } else if (turnChoice.equals(turnChoices[1])) {
+                    sellHouses(player);
+                } else if (turnChoice.equals(turnChoices[2])) {
+                    sellField(player);
+                } else {
+                    gameInterface.displayMessage(lang.getString("PlayerLeftGame"));
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void removePlayerFromGame(Player player) {
+        Player[] newPlayerArray = new Player[playerArray.length-1];
+
+        playerArray[player.getID()] = null;
+        gameInterface.removePlayer(player);
+
+        for (int i = 0, k=0; i < playerArray.length; i++) {
+            if (playerArray[i] != null) {
+                newPlayerArray[k] = playerArray[i];
+                k++;
+            }
+        }
+        playerArray = newPlayerArray;
+
+
+    }
+    private void gameIsOver(Player player) {
+        gameInterface.displayMessage(lang.getString("GameOver"));
+        gameInterface.displayChance("Congrats");
+        gameInterface.displayMessage(lang.getString("WinnerIs") + " " + player.getName());
+    }
 }

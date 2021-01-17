@@ -53,12 +53,16 @@ public class Interface {
                     "UFO");
 
             // Handles the type of car
-            GUI_Car.Type type = switch (playerIcon) {
-                case "Tractor" -> GUI_Car.Type.TRACTOR;
-                case "Racecar" -> GUI_Car.Type.RACECAR;
-                case "UFO" -> GUI_Car.Type.UFO;
-                default -> GUI_Car.Type.CAR;
-            };
+            GUI_Car.Type type;
+            if (playerIcon.equals(lang.getString("Racecar"))) {
+                type = GUI_Car.Type.RACECAR;
+            } else if (playerIcon.equals(lang.getString("Tractor"))) {
+                type = GUI_Car.Type.TRACTOR;
+            } else if (playerIcon.equals("UFO")) {
+                type = GUI_Car.Type.UFO;
+            } else {
+                type = GUI_Car.Type.CAR;
+            }
 
             // Creates the car object
             new GUI_Car();
