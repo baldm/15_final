@@ -8,7 +8,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 public class FieldChance extends Field{
-
+    /**
+     * Loads a .property file in folder "./Field/Chance/"
+     * and creates a Field of childclass FieldChance
+     */
     public FieldChance(String fileName){
         try{
             FileInputStream input = new FileInputStream("./Field/Chance/"+ fileName);

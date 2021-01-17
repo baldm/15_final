@@ -11,6 +11,10 @@ public class FieldSpecial extends Field {
     private boolean isStart;
     private boolean isParking;
     private  boolean isTaxes;
+    /**
+     * Loads a .property file in folder "./Field/Special/"
+     * and creates a Field of childclass FieldSpecial
+     */
     public FieldSpecial(String fileName){
         try{
             FileInputStream input = new FileInputStream("./Field/Special/"+ fileName);

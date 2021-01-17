@@ -12,7 +12,10 @@ import java.util.Properties;
 public class FieldJail extends Field{
         private boolean isVisit;
         private String Description;
-
+    /**
+     * Loads a .property file in folder "./Field/Jail/"
+     * and creates a Field of childclass FieldJail
+     */
     public FieldJail(String fileName, Language lang){
 
         try{

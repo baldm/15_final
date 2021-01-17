@@ -13,7 +13,10 @@ public class FieldSoda extends Field {
     private int groupID;
     private int mortageValue;
     private boolean isPledged = false;
-
+    /**
+     * Loads a .property file in folder "./Field/FieldSoda/"
+     * and creates a Field of childclass FieldSoda
+     */
     public FieldSoda(String fileName){
         try {
             FileInputStream input = new FileInputStream("./Field/FieldSoda/"+ fileName);

@@ -16,7 +16,10 @@ public class FieldProperty extends Field {
     private int housePrice;
     private boolean isPledged = false;
 
-
+    /**
+     * Loads a .property file in folder "./Field/FieldProperties/"
+     * and creates a Field of childclass FieldProperty
+     */
     public FieldProperty(String fileName){
         try {
             FileInputStream input = new FileInputStream("./Field/FieldProperties/"+ fileName);
