@@ -755,33 +755,34 @@ public class gameController {
         }
         int h=0;
         ownedFields = new Field[h];
-            if(allOwnedFields.length == 0){
+            if(allOwnedFields.length == 0 ){
                 lang.getString("NoOwnedFields");
                 return;
             }
-            for(int i = 0; i<allOwnedFields.length;i++)
+
+            for(int i = 0; i<allOwnedFields.length;i++) {
                 // Sorting all owned nonpledged fields
                 // and checking requirements for pledging the field-type
 
                 switch (allOwnedFields[i].fieldType) {
-                // FieldProperty
+                    // FieldProperty
                     case 1:
                         int[] allFieldsInGroup = ownedFieldsSorted[((FieldProperty) allOwnedFields[i]).getGroupID()];
                         boolean anyHouses = false;
                         // Checking for any houses on field any field in group
-                        for(int m =0; m<allFieldsInGroup.length;m++){
-                            if(((FieldProperty) fieldArray[allFieldsInGroup[m]]).getHouseNumber() != 0){
+                        for (int m = 0; m < allFieldsInGroup.length; m++) {
+                            if (((FieldProperty) fieldArray[allFieldsInGroup[m]]).getHouseNumber() != 0) {
                                 anyHouses = true;
                             }
                         }
                         if (!((FieldProperty) allOwnedFields[i]).isPledged() && !anyHouses) {
                             placeholder = ownedFields.clone();
                             // adding field to Field-array
-                            ownedFields = new Field[ownedFields.length+1];
-                            for (int k = 0; k< placeholder.length;k++){
-                                ownedFields[k]=placeholder[k];
+                            ownedFields = new Field[ownedFields.length + 1];
+                            for (int k = 0; k < placeholder.length; k++) {
+                                ownedFields[k] = placeholder[k];
                             }
-                            ownedFields[ownedFields.length-1] = allOwnedFields[i];
+                            ownedFields[ownedFields.length - 1] = allOwnedFields[i];
                         }
                         break;
                     case 2:
@@ -789,11 +790,11 @@ public class gameController {
                         if (!((FieldScandlines) allOwnedFields[i]).isPledged()) {
 
                             placeholder = ownedFields.clone();
-                            ownedFields = new Field[ownedFields.length+1];
-                            for (int k = 0; k< placeholder.length;k++){
-                                ownedFields[k]=placeholder[k];
+                            ownedFields = new Field[ownedFields.length + 1];
+                            for (int k = 0; k < placeholder.length; k++) {
+                                ownedFields[k] = placeholder[k];
                             }
-                            ownedFields[ownedFields.length-1] = allOwnedFields[i];
+                            ownedFields[ownedFields.length - 1] = allOwnedFields[i];
 
                         }
                         break;
@@ -801,17 +802,17 @@ public class gameController {
                         // FieldSoda
                         if (!((FieldSoda) allOwnedFields[i]).isPledged()) {
                             placeholder = ownedFields.clone();
-                            ownedFields = new Field[ownedFields.length+1];
-                            for (int k = 0; k< placeholder.length;k++){
-                                ownedFields[k]=placeholder[k];
+                            ownedFields = new Field[ownedFields.length + 1];
+                            for (int k = 0; k < placeholder.length; k++) {
+                                ownedFields[k] = placeholder[k];
                             }
-                            ownedFields[ownedFields.length-1] = allOwnedFields[i];
+                            ownedFields[ownedFields.length - 1] = allOwnedFields[i];
                         }
                         break;
                     default:
 
-                    }
-
+                }
+            }
                 ownedArrayString = new String[ownedFields.length];
         // Creating StringArray with non-pledged properties' names
         for (int i=0; i<ownedFields.length;i++){
@@ -851,7 +852,7 @@ public class gameController {
         Field[] allOwnedFields = ownedFields.clone();
         Field[] placeholder;
         //Checking if player owns any field
-        if (ownedFields.length == 0) {
+        if (allOwnedFields.length == 0 |allOwnedFields==null ) {
             gameInterface.displayMessage(lang.getString("NoFieldsPledged"));
             return;
         }

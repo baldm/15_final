@@ -178,31 +178,50 @@ public class RealEstateAgent {
 
         //Checks if the array is equal "null"
         if(ownedFields != null) {
-            Field[] placeholder = ownedFields.clone();
+            Field[] allOwnedFields = ownedFields.clone();
+            Field [] placeholder;
             int h = 0;
             ownedFields = new Field[h];
-            for (int i = 0; i < placeholder.length; i++) {
+            for (int i = 0; i < allOwnedFields.length; i++) {
                 //Sorts and casts all fields to their respective field-type
                 //Removing all fields which is pledged
-                switch (placeholder[i].fieldType) {
+                switch (allOwnedFields[i].fieldType) {
                     case 1:
-                        if (!((FieldProperty) placeholder[i]).isPledged()) {
+                        if (!((FieldProperty) allOwnedFields[i]).isPledged()) {
+                            placeholder = ownedFields.clone();
                             ownedFields = new Field[++h];
-                            ownedFields[h - 1] = placeholder[i];
+
+                            for(int k = 0;k<placeholder.length;k++){
+                                ownedFields[k] = placeholder[k];
+                            }
+                            ownedFields[h - 1] = allOwnedFields[i];
                         }
                         break;
                     case 2:
-                        if (!((FieldScandlines) placeholder[i]).isPledged()) {
+                        if (!((FieldScandlines) allOwnedFields[i]).isPledged()) {
+                            placeholder = ownedFields.clone();
                             ownedFields = new Field[++h];
-                            ownedFields[h - 1] = placeholder[i];
-                            break;
+
+                            for(int k = 0;k<placeholder.length;k++){
+                                ownedFields[k] = placeholder[k];
+                            }
+                            ownedFields[h - 1] = allOwnedFields[i];
+
                         }
+                        break;
                     case 3:
-                        if (!((FieldSoda) placeholder[i]).isPledged()) {
+                        if (!((FieldSoda) allOwnedFields[i]).isPledged()) {
                             ownedFields = new Field[++h];
-                            ownedFields[h - 1] = placeholder[i];
-                            break;
+                            placeholder = ownedFields.clone();
+                            ownedFields = new Field[++h];
+
+                            for(int k = 0;k<placeholder.length;k++){
+                                ownedFields[k] = placeholder[k];
+                            }
+                            ownedFields[h - 1] = allOwnedFields[i];
+
                         }
+                        break;
                 }
             }
 
@@ -216,36 +235,49 @@ public class RealEstateAgent {
      */
     public Field[] getPledgedFields (Player player) {
         Field[] ownedFields = new Field[0];
+        Field[] placeholder;
         ownedFields = addField(fieldType1, ownedFields, player);
         ownedFields = addField(fieldType2, ownedFields, player);
         //Making sure player owns any fields
         if(ownedFields != null){
-            Field[] placeholder = ownedFields.clone();
+            Field[] allOwnedFields = ownedFields.clone();
             int h = 0;
             ownedFields = new Field[h];
-            for (int i = 0; i < placeholder.length; i++) {
+            for (int i = 0; i < allOwnedFields.length; i++) {
                 //Sorts and casts all fields to their respective field-type
                 //Removing all fields which is not pledged
-                switch (placeholder[i].fieldType) {
+                switch (allOwnedFields[i].fieldType) {
                     case 1:
-                        if (((FieldProperty) placeholder[i]).isPledged()) {
+                        if (((FieldProperty) allOwnedFields[i]).isPledged()) {
+                            placeholder = ownedFields.clone();
                             ownedFields = new Field[++h];
-                            ownedFields[h - 1] = placeholder[i];
+                            for(int k =0; k< placeholder.length;k++){
+                                ownedFields[k] = placeholder[k];
+                            }
+                            ownedFields[h - 1] = allOwnedFields[i];
                         }
                         break;
                     case 2:
-                        if (((FieldScandlines) placeholder[i]).isPledged()) {
+                        if (((FieldScandlines) allOwnedFields[i]).isPledged()) {
+                            placeholder = ownedFields.clone();
                             ownedFields = new Field[++h];
-                            ownedFields[h - 1] = placeholder[i];
-                            break;
+                            for(int k =0; k< placeholder.length;k++){
+                                ownedFields[k] = placeholder[k];
+                            }
+                            ownedFields[h-1] = allOwnedFields[i];
+                        }
+                        break;
+                    case 3:
+                        if (((FieldSoda) allOwnedFields[i]).isPledged()) {
+                            placeholder = ownedFields.clone();
+                            ownedFields = new Field[++h];
+                            for(int k =0; k< placeholder.length;k++){
+                                ownedFields[k] = placeholder[k];
+                            }
+                            ownedFields[h - 1] = allOwnedFields[i];
 
                         }
-                    case 3:
-                        if (((FieldSoda) placeholder[i]).isPledged()) {
-                            ownedFields = new Field[++h];
-                            ownedFields[h - 1] = placeholder[i];
-                            break;
-                        }
+                        break;
                 }
 
             }
