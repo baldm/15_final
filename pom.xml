@@ -6,7 +6,7 @@
 
     <groupId>groupId</groupId>
     <artifactId>15_final</artifactId>
-    <version>0.5</version>
+    <version>1.1</version>
     <build>
         <plugins>
             <plugin>
