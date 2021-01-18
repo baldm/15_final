@@ -33,7 +33,6 @@ public class gameController {
         while (playerArray.length > 1) {
             for (Player player : playerArray) {
                 player.hasExtraTurn = 0;
-                game.buyField(player, game.fieldFinder("Squash"));
                 game.takeTurn(player);
                 while (extraturn) {
                     game.takeTurn(player);
