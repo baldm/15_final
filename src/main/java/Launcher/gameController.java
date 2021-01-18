@@ -856,8 +856,8 @@ public class gameController {
                     ((FieldSoda) sellField).setPledged(true);
                     break;
             }
+        gameInterface.pledgeField(player, sellField.position);
         gameInterface.setPlayerBalance(player);
-
     }
 
     /**
@@ -956,6 +956,7 @@ public class gameController {
                 }
                 break;
         }
+        gameInterface.unpledgeField(player, sellField.position);
         gameInterface.setPlayerBalance(player);
 
     }

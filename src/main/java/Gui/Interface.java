@@ -260,13 +260,7 @@ public class Interface {
      * @param player playerObject
      */
     public void setPlayerBalance(Player player) {
-        // Hides the balance if its under zero
-        if (player.getMoney() < 0) {
-            guiPlayerList[player.getID()].setBalance(0);
-        } else {
-            guiPlayerList[player.getID()].setBalance(player.getMoney());
-        }
-
+        guiPlayerList[player.getID()].setBalance(player.getMoney());
     }
 
     /**
@@ -302,7 +296,6 @@ public class Interface {
      * @param input String message
      */
     public void displayChance(String input) {
-
         gui.displayChanceCard(input);
         displayMessage("  "); // Ensures that the player has read the chance card
         gui.displayChanceCard();
@@ -366,6 +359,31 @@ public class Interface {
         guiField.setBorder(Color.BLACK);
         setPlayerBalance(player); // Updates the gui balance of the player
     }
+
+    /**
+     * Gives the field a crisscrossed pattern
+     * @param player Player that owns it
+     * @param fieldID The field position
+     */
+    public void pledgeField(Player player, int fieldID) {
+        GUI_Field field = gui.getFields()[fieldID];     // Finds the field
+        GUI_Ownable guiField = (GUI_Ownable) field;   // Changes the field to a street field
+        guiField.setBorder(guiPlayerList[player.getID()].getPrimaryColor(), Color.BLACK);
+        setPlayerBalance(player); // Updates the gui balance of the player
+    }
+
+    /**
+     * Removes the crisscrossed pattern
+     * @param player
+     * @param fieldID
+     */
+    public void unpledgeField(Player player, int fieldID) {
+        GUI_Field field = gui.getFields()[fieldID];     // Finds the field
+        GUI_Ownable guiField = (GUI_Ownable) field;   // Changes the field to a street field
+        guiField.setBorder(guiPlayerList[player.getID()].getPrimaryColor());
+        setPlayerBalance(player); // Updates the gui balance of the player
+    }
+
 
     /**
      * Displays an input field to put in integers
