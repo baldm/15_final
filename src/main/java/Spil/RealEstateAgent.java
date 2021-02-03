@@ -251,9 +251,11 @@ public class RealEstateAgent {
                         if (((FieldProperty) allOwnedFields[i]).isPledged()) {
                             placeholder = ownedFields.clone();
                             ownedFields = new Field[++h];
+
                             for(int k =0; k< placeholder.length;k++){
                                 ownedFields[k] = placeholder[k];
                             }
+
                             ownedFields[h - 1] = allOwnedFields[i];
                         }
                         break;
@@ -295,15 +297,15 @@ public class RealEstateAgent {
         Field[] ownedFields = fieldInput;
         Field[] placeholder;
 
-        for (int l = 0; l< input.length;l++){
-            if(owners[input[l]] != null && owners[input[l]].getID() == player.getID()){
+        for (int i : input) {
+            if (owners[i] != null && owners[i].getID() == player.getID()) {
                 placeholder = ownedFields.clone();
-                ownedFields = new Field[ownedFields.length +1];
+                ownedFields = new Field[ownedFields.length + 1];
                 int k;
-                for (k =0; k< placeholder.length;k++){
+                for (k = 0; k < placeholder.length; k++) {
                     ownedFields[k] = placeholder[k];
                 }
-                ownedFields[k] = fieldArray[input[l]];
+                ownedFields[k] = fieldArray[i];
             }
 
         }
